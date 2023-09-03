@@ -1,0 +1,22 @@
+name: Feature Request
+labels: [feature request]
+
+title: '[feature request] '
+description: Suggest a new feature or improvement.
+
+assignees:
+  - 'bitterteriyaki'
+
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for taking time to fill out this feature request! Please fill out
+        the following information to help us understand your request.
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: >
+        Please provide a detailed description of your feature request.
+      placeholder: ex. I would like to see X added to the API.

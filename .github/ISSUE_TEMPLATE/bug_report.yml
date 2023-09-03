@@ -1,0 +1,40 @@
+name: Bug Report
+labels: [unconfirmed bug]
+
+title: '[bug] '
+description: Report broken or incorrect behaviour.
+
+assignees:
+  - 'bitterteriyaki'
+
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for taking time to fill out this bug report! Please fill out
+        the following information to help us debug your issue.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: A bug happened!
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of the API are you using?
+      multiple: false
+      options:
+        - 0.x
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: >
+        Please copy and paste any relevant logs here. This will be
+        automatically formatted into code, so no need for backticks.
+      render: shell-script
