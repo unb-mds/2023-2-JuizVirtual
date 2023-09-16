@@ -30,5 +30,5 @@ Integrantes
    Luiza Maluf       221008294  `@LuizaMaluf <https://github.com/LuizaMaluf>`_
    Letícia Hladczuk  221039209  `@HladczukLe <https://github.com/HladczukLe>`_
    Esther Silva      190106034  `@EstherSousa <https://github.com/EstherSousa>`_
-   Gabriel Fernando  221007644  `@MMcLovin <https://github.com/MMcLovin>`_
+   Gabriel Fernando  222022162  `@MMcLovin <https://github.com/MMcLovin>`_
    ================  =========  ======================================================
