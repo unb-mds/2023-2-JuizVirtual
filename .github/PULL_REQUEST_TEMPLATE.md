@@ -1,36 +1,33 @@
-# What this PR introduces?
+# O que este PR introduz?
 
-<!-- Please, includes a description of this PR. -->
+<!-- Por favor, inclua uma descrição deste PR. -->
 
-## PR Checklist
+## Checklist
 
-Please check if your PR fulfills the following requirements:
+Por favor, cheque se seu PR atende aos seguintes requisitos:
 
-- [ ] I have updated the documentation accordingly (if necessary).
-- [ ] I have added tests to cover my changes (if necessary).
-- [ ] All new and existing tests passed.
-- [ ] My code follows the code style of this project.
+- [ ] Eu atualizei a documentação de acordo (se necessário).
+- [ ] Eu adicionei testes para cobrir minhas mudanças (se necessário).
+- [ ] Todos os novos e existentes testes passaram.
+- [ ] Meu código segue o estilo de código deste projeto.
 
-## PR Type
+## Tipo de PR
 
-What kind of change does this PR introduce?
+Que tipo de mudança este PR introduz?
 
-- [ ] Bug fix
+- [ ] Correção de bug
 - [ ] Feature request
-- [ ] Documentation update
-- [ ] Code style update (formatting, local variables, etc.)
-- [ ] Refactoring (no functional changes, no API changes)
-- [ ] Dependencies update
-- [ ] CI/CD related changes
-- [ ] Chore (non-code changes)
-- [ ] Build related changes (e.g. Dockerfile, pyproject.toml, etc.)
+- [ ] Atualização na documentação
+- [ ] Atualização no estilo do código (formatação, variáveis locais, etc.)
+- [ ] Refatoração (sem mudanças funcionais, sem mudanças na API)
+- [ ] Atualizações de dependências
+- [ ] Mudanças relacionadas a CI/CD
+- [ ] Chore (mudanças não relacionadas a código)
+- [ ] Mudanças relacionadas a build (e.g. Dockerfile, pyproject.toml, etc.)
 
-## Does this PR introduce a breaking change?
+## Este PR introduz uma mudança que quebra a compatibilidade?
 
-- [ ] Yes
-- [ ] No
+- [ ] Sim
+- [ ] Não
 
-<!-- If this PR contains a breaking change, please describe the impact and
-migration path for existing applications below. -->
-
-## Other information (Screenshtos, details, etc.)
+## Outras informações (screenshots, detalhes, etc.)
