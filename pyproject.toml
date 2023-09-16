@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "2023-2-squad06"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.1.2"
+sphinxawesome-theme = {version = "^5.0.0b3", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
