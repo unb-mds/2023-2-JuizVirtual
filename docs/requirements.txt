@@ -1,0 +1,2 @@
+sphinx>=7.1.2,<7.2
+sphinxawesome-theme>=5.0.0b3
