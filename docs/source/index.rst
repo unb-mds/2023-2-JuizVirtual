@@ -3,17 +3,24 @@ Introdução
 
 .. rst-class:: lead
 
-   Aqui você encontrará informações sobre o projeto, como instalar e executar a
-   aplicação, como contribuir com o desenvolvimento e como explorar o projeto.
+   Aqui você encontrará informações gerais sobre o projeto.
 
 Sumário
 -------
 
-Todo o processo de desenvolvimento do projeto foi documentado aqui, desde a
-concepção até a entrega final. Este projeto foi desenvolvido por alunos da
-turma 03 de **Métodos de Desenvolvimento de Software (2023/2) da Universidade
-de Brasília**, como parte da avaliação da disciplina. O projeto consiste em um
-sistema de...
+Esta é a documentação do projeto da Squad 06. Aqui você encontrará informações
+sobre o projeto, como o que é, quem são os integrantes, como instalar e rodar o
+projeto, etc.
+
+Todo o processo de desenvolvimento do projeto será documentado aqui, desde a
+concepção até a entrega final, passando por todas as etapas de desenvolvimento,
+incluindo as reuniões de planejamento, daily meetings e as decisões tomadas
+durante o desenvolvimento. E claro, a documentação do projeto em si.
+
+O projeto consiste no desenvolvimento de um juiz online para competições de
+programação. O projeto foi desenvolvido por alunos da turma 03 de Métodos de
+Desenvolvimento de Software (2023/2) da Universidade de Brasília, como parte
+da avaliação da disciplina.
 
 Integrantes
 ~~~~~~~~~~~
