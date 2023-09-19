@@ -22,31 +22,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from typing import List
+
 from sphinxawesome_theme.postprocess import Icons
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+#########################
+#  Project information  #
+#########################
 
-project = 'MDS Squad 06'
-copyright = '2023, Squad 06'
-author = 'Squad 06'
+project = "MDS Squad 06"
+copyright = "2023, Squad 06."
+author = "Squad 06"
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+###########################
+#  General configuration  #
+###########################
 
-extensions = []
+extensions: List[str] = []
 
-templates_path = ['_templates']
-exclude_patterns = []
+templates_path = ["_templates"]
+exclude_patterns: List[str] = []
 
-language = 'pt'
+language = "pt"
 
-# Options for HTML output
+##################
+#  HTML Options  #
+##################
 
 html_title = "Squad 06"
 html_theme = "sphinxawesome_theme"
 html_permalinks_icon = Icons.permalinks_icon
 
 html_static_path = ["_static"]
-# html_css_files = ["feedback.css"]
-# html_js_files = [("feedback.js", {"defer": "defer"})]
