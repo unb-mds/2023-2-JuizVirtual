@@ -29,5 +29,4 @@ Temas propostos
     Um clone do Twitter               `#12 <https://github.com/unb-mds/2023-2-Squad06/issues/11>`_
     ================================  ============================================================
 
-
 .. [1] Este foi o tema escolhido pela professora.
