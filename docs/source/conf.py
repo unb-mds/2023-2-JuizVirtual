@@ -40,7 +40,7 @@ copyright = f"2023-present, {author}."
 #  General configuration  #
 ###########################
 
-extensions: List[str] = []
+extensions = ["sphinx_design"]
 
 templates_path = ["_templates"]
 exclude_patterns: List[str] = []

@@ -23,6 +23,7 @@ optional = true
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.1.2"
 sphinxawesome-theme = {version = "^5.0.0b3", allow-prereleases = true}
+sphinx-design = "^0.5.0"
 
 [build-system]
 requires = ["poetry-core"]
