@@ -42,13 +42,13 @@ SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 RUN apt-get update \
   && apt-get upgrade -y \
   && apt-get install -y --no-install-recommends \
-  bash \
-  brotli \
-  build-essential \
-  curl \
-  gettext \
-  git \
-  libpq-dev \
+    bash \
+    brotli \
+    build-essential \
+    curl \
+    gettext \
+    git \
+    libpq-dev \
   # Installing Poetry:
   && curl -sSL 'https://install.python-poetry.org' | python - \
   && poetry --version \
@@ -76,8 +76,7 @@ RUN groupadd -g "${GID}" -r web \
 
 COPY --chown=web:web ./poetry.lock ./pyproject.toml /app/
 
-RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
-  echo "${DJANGO_ENV}" \
+RUN --mount=type=cache,target="$POETRY_CACHE_DIR" echo "${DJANGO_ENV}" \
   && poetry version \
   && poetry run pip install --no-deps --upgrade pip \
   && poetry install \
