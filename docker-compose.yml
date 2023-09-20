@@ -1,0 +1,42 @@
+services:
+  django:
+    image: virtual-judge:dev
+    container_name: django
+    build:
+      context: .
+      dockerfile: docker/django/Dockerfile
+      target: development-build
+      args:
+        - DJANGO_ENV=development
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+      cache_from:
+        - "virtual-judge:dev"
+        - "virtual-judge:latest"
+        - "*"
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    networks:
+      - main
+    env_file:
+      - config/.env
+    command: python -Wd manage.py runserver 0.0.0.0:8000
+
+  postgres:
+    image: postgres:16.0-alpine
+    container_name: postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+    networks:
+      - main
+    env_file:
+      - config/.env
+    restart: unless-stopped
+
+volumes:
+  data:
+
+networks:
+  main:
