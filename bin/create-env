@@ -9,6 +9,6 @@ print(get_random_string(64))
 EOM
 
 SECRET_KEY=$(python3 -c "${SECRET_KEY_CMD}")
-OUTPUT=$(sed "s/^\(DJANGO_SECRET_KEY=\).*/\1$SECRET_KEY/" config/.env)
+OUTPUT=$(sed "s/^\(DJANGO_SECRET_KEY=\).*/\1$SECRET_KEY/" config/.env.example)
 
 echo "$OUTPUT" > config/.env
