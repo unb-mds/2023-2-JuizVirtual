@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This script creates a .env file in the config directory and generates a
+# random secret key for the Django app automatically.
+
+read -r -d '' SECRET_KEY_CMD << EOM
+from django.utils.crypto import get_random_string;
+print(get_random_string(64))
+EOM
+
+SECRET_KEY=$(python3 -c "${SECRET_KEY_CMD}")
+OUTPUT=$(sed "s/^\(DJANGO_SECRET_KEY=\).*/\1$SECRET_KEY/" config/.env.example)
+
+echo "$OUTPUT" > config/.env
