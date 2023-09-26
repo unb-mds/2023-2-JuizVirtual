@@ -72,6 +72,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "guardian",
+    "bootstrap5",
 ]
 
 LOCAL_APPS: List[str] = []

@@ -310,6 +310,24 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-bootstrap-v5"
+version = "1.0.11"
+description = "Bootstrap 5 support for Django projects"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "django-bootstrap-v5-1.0.11.tar.gz", hash = "sha256:2d431308859ce3cab7729bb09c76039059cd5fbdd34484da82c4c7f8d49da3a2"},
+    {file = "django_bootstrap_v5-1.0.11-py3-none-any.whl", hash = "sha256:a207aa804938164c8450bbbef4faaba6d2093b3236000557a50f3bd44b53d268"},
+]
+
+[package.dependencies]
+beautifulsoup4 = ">=4.8.0,<5.0.0"
+django = ">=2.2,<5.0"
+
+[package.extras]
+docs = ["m2r2 (>=0.2.5,<0.3.0)", "sphinx (>=4.4,<5.0)", "sphinx_rtd_theme (>=1.0,<2.0)"]
+
+[[package]]
 name = "django-environ"
 version = "0.11.2"
 description = "A package that allows you to utilize 12factor inspired environment variables to configure your Django application."
@@ -1228,4 +1246,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2ea75b49f99ad42defebffde188bf07a9beb5b8e72907a5ac25b7bf8f294ad42"
+content-hash = "3a8f0148cc9385bc37f6705a756bbc9fbeed1bb3b7c44c7b65e0b34f63dfcdc6"
