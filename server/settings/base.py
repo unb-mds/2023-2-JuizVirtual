@@ -1,7 +1,7 @@
 from os.path import join
 from typing import List
 
-from server.settings import APPS_DIR, BASE_DIR, env
+from server.settings import BASE_DIR, env
 
 ######################
 #  General Settings  #
@@ -24,11 +24,6 @@ USE_TZ = True
 
 LOCALE_PATHS = [join(BASE_DIR, "locale")]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 #################
 #  Middlewares  #
 #################
@@ -48,6 +43,11 @@ MIDDLEWARE = [
 ###############
 
 DATABASES = {"default": env.db()}
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ##########
 #  URLs  #
@@ -70,7 +70,9 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS: List[str] = []
+THIRD_PARTY_APPS = [
+    "guardian",
+]
 
 LOCAL_APPS: List[str] = []
 
@@ -100,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [APPS_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,3 +120,24 @@ TEMPLATES = [
 ##################
 
 STATIC_URL = "/static/"
+
+####################
+#  Authentication  #
+####################
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
+]
+
+LOGIN_REDIRECT_URL = "home"
+
+LOGOUT_REDIRECT_URL = "home"
+
+LOGIN_URL = "login"
+
+#####################
+#  Django Guardian  #
+#####################
+
+ANONYMOUS_USER_NAME = None
