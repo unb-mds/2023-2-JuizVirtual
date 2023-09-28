@@ -45,6 +45,7 @@
                 Home
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link text-white" href="#">
                 Contests
@@ -79,6 +80,7 @@
             </div>
           {% else %}
             <a href="{% url 'login' %}" class="nav-link text-white">Sign in</a>
+            <a href="{% url 'register' %}" class="nav-link text-white">Register</a>
           {% endif %}
         </div>
       </div>
