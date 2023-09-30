@@ -75,9 +75,7 @@ THIRD_PARTY_APPS = [
     "bootstrap5",
 ]
 
-LOCAL_APPS = [
-    "apps.users"
-]
+LOCAL_APPS = ["apps.users"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

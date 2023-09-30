@@ -20,7 +20,7 @@ class UserAdmin(DefaultUserAdmin):
                     "is_staff",
                     "is_superuser",
                 )
-            }
+            },
         ),
     ]
     add_fieldsets = (

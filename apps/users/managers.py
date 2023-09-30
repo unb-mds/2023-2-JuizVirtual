@@ -24,13 +24,17 @@ class UserManager(BaseUserManager[User]):
 
         return user
 
-    def create_user(self, username: str, email: str, password: str, **fields: bool) -> User:
+    def create_user(
+        self, username: str, email: str, password: str, **fields: bool
+    ) -> User:
         fields.setdefault("is_staff", False)
         fields.setdefault("is_superuser", False)
 
         return self._create_user(username, email, password, **fields)
 
-    def create_superuser(self, username: str, email: str, password: str, **fields: bool) -> User:
+    def create_superuser(
+        self, username: str, email: str, password: str, **fields: bool
+    ) -> User:
         fields["is_staff"] = True
         fields["is_superuser"] = True
 

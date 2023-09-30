@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db.models import EmailField, CharField, BooleanField
+from django.db.models import BooleanField, CharField, EmailField
 
-from core.models import TimestampedModel
 from apps.users.managers import UserManager
+from core.models import TimestampedModel
 
 
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
