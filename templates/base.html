@@ -69,6 +69,9 @@
                 {{ user.username }}
               </a>
               <ul class="dropdown-menu">
+                {% if user.is_staff %}
+                  <li><a href="{% url 'admin:index' %}" class="dropdown-item">Admin</a></li>
+                {% endif %}
                 <li><a href="#" class="dropdown-item">You profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
