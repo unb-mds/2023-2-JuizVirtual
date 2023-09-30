@@ -75,7 +75,7 @@ THIRD_PARTY_APPS = [
     "bootstrap5",
 ]
 
-LOCAL_APPS: List[str] = []
+LOCAL_APPS = ["apps.users"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -136,6 +136,11 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
+
+# The model to use to represent an user.
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
+
+AUTH_USER_MODEL = "users.User"
 
 #####################
 #  Django Guardian  #
