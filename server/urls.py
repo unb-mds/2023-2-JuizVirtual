@@ -13,5 +13,5 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     # Local views
     path("", home_view, name="home"),
-    path("register/", register_view, name="register"),
+    path("contests/", include("apps.contests.urls")),
 ]
