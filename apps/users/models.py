@@ -1,12 +1,21 @@
+from typing import TYPE_CHECKING, Any, List
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db.models import BooleanField, CharField, EmailField
 
 from apps.users.managers import UserManager
 from core.models import TimestampedModel
 
+if TYPE_CHECKING:
+    from apps.contests.models import Contest
+else:
+    Contest = Any
+
 
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     """Represents an user."""
+
+    contests: List[Contest]
 
     email = EmailField(db_index=True, max_length=256, unique=True)
     username = CharField(db_index=True, max_length=128, unique=True)

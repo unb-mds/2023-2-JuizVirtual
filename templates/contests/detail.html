@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ contest.title }}{% endblock title %}
+
+{% block content %}
+  <div>
+    <h1>{{ contest }}</h1>
+    <p>{{ contest.description }}</p>
+  </div>
+
+  <form action="{% url 'contests:send' contest.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+      <legend>
+        <h1>{{ question.question_text }}</h1>
+      </legend>
+
+      {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+      {% endif %}
+
+      <textarea name="code" id="code" cols="50" rows="10"></textarea>
+    </fieldset>
+
+    <input type="submit" value="Vote">
+  </form>
+{% endblock content %}
