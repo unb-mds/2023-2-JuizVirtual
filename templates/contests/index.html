@@ -3,17 +3,21 @@
 {% block title %}Contests{% endblock title %}
 
 {% block content %}
-  {% if contests %}
-    <ul>
-      {% for contest in contests %}
-        <li>
-          <a href="{% url 'contests:detail' contest.id %}">
-            {{ contest }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No contests are available.</p>
-  {% endif %}
+  <div class="gap-3" style="display: grid;">
+    {% for contest in contests %}
+      <div class="g-col-6 card">
+        <div class="card-header">
+          <a href="{% url 'contests:detail' contest.id %}">{{ contest }}</a>
+        </div>
+        <div class="card-body">
+          <p>{{ contest.description }}</p>
+
+          <ul>
+            <li>Starting at {{ contest.start_time }}</li>
+            <li>Ending at: {{ contest.end_time }}</li>
+          </ul>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock content %}
