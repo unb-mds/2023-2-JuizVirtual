@@ -44,6 +44,9 @@
                 <li>
                   Duration: {{ contest.start_time|timesince:contest.end_time }}
                 </li>
+                <li>
+                  {{ contest.problems.all|length }} problems
+                </li>
               </ul>
             </div>
           </div>
@@ -90,6 +93,9 @@
                 </li>
                 <li>
                   Duration: {{ contest.start_time|timesince:contest.end_time }}
+                </li>
+                <li>
+                  {{ contest.problems.all|length }} problems
                 </li>
               </ul>
             </div>
