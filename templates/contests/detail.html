@@ -8,20 +8,11 @@
     <p>{{ contest.description }}</p>
   </div>
 
-  <form action="{% url 'contests:send' contest.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-      <legend>
-        <h1>{{ question.question_text }}</h1>
-      </legend>
+  <h2>Tasks</h2>
 
-      {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-      {% endif %}
-
-      <textarea name="code" id="code" cols="50" rows="10"></textarea>
-    </fieldset>
-
-    <input type="submit" value="Vote">
-  </form>
+  <ul>
+    {% for problem in contest.problems.all %}
+      <li><a href="{% url 'problems:detail' problem.id %}">{{ problem }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock content %}
