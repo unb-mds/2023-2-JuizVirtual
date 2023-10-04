@@ -57,7 +57,11 @@
               </a>
               <ul class="dropdown-menu">
                 {% if user.is_staff %}
-                  <li><a href="{% url 'admin:index' %}" class="dropdown-item">Admin</a></li>
+                  <li>
+                    <a href="{% url 'admin:index' %}" class="dropdown-item">
+                      Admin
+                    </a>
+                  </li>
                 {% endif %}
                 <li><a href="#" class="dropdown-item">You profile</a></li>
                 <li><hr class="dropdown-divider"></li>
@@ -79,5 +83,7 @@
   <main class="container mt-5" style="max-width: 640px;">
     {% block content %}{% endblock content %}
   </main>
+
+  <footer class="mt-5"></footer>
 </body>
 </html>

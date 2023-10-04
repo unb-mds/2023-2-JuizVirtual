@@ -5,30 +5,97 @@
 {% load humanize %}
 
 {% block content %}
-  <div class="gap-3" style="display: grid;">
-    {% for contest in contests %}
-      <div class="g-col-6 card">
-        <div class="card-header">
-          <a href="{% url 'contests:detail' contest.id %}">{{ contest }}</a>
-          <span class="text-muted align-middle" style="font-size: 0.90rem;">
-            Posted at: {{ contest.created_at }}
-          </span>
-        </div>
-        <div class="card-body">
-          <p>{{ contest.description }}</p>
-          <ul>
-            <li>
-              Starting at {{ contest.start_time }}
-            </li>
-            <li>
-              Ending at: {{ contest.end_time }}
-            </li>
-            <li>
-              Duration: {{ contest.start_time|timesince:contest.end_time }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    {% endfor %}
+  <div>
+    <h3>Upcoming Contests</h3>
+
+    <div class="gap-3" style="display: grid;">
+      {% for contest in contests %}
+        {% if contest.status in valid_statuses %}
+          <div class="g-col-6 card">
+            <div class="card-header">
+              <a href="{% url 'contests:detail' contest.id %}">
+                {{ contest }}
+              </a>
+              <span
+                class="text-muted align-middle"
+                style="font-size: 0.90rem;"
+              >
+                Posted at: {{ contest.created_at }}
+              </span>
+              {% if contest.status == "Pending" %}
+                <span class="badge bg-secondary float-end mt-1">
+                  {{ contest.status }}
+                </span>
+              {% elif contest.status == "Running" %}
+                <span class="badge bg-primary float-end mt-1">
+                  {{ contest.status }}
+                </span>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <p>{{ contest.description }}</p>
+              <ul>
+                <li>
+                  Starting at {{ contest.start_time }}
+                </li>
+                <li>
+                  Ending at: {{ contest.end_time }}
+                </li>
+                <li>
+                  Duration: {{ contest.start_time|timesince:contest.end_time }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
-{% endblock content %}
+
+  <div class="mt-4">
+    <h3>Past Contests</h3>
+
+    <div class="gap-3" style="display: grid;">
+      {% for contest in contests %}
+        {% if contest.status not in valid_statuses %}
+          <div class="g-col-6 card">
+            <div class="card-header">
+              <a href="{% url 'contests:detail' contest.id %}">
+                {{ contest }}
+              </a>
+              <span
+                class="text-muted align-middle"
+                style="font-size: 0.90rem;"
+              >
+                Posted at: {{ contest.created_at }}
+              </span>
+              {% if contest.status == "Cancelled" %}
+              <span class="badge bg-danger float-end mt-1">
+                {{ contest.status }}
+              </span>
+              {% elif contest.status == "Finished" %}
+              <span class="badge bg-success float-end mt-1">
+                {{ contest.status }}
+              </span>
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <p>{{ contest.description }}</p>
+              <ul>
+                <li>
+                  Starting at {{ contest.start_time }}
+                </li>
+                <li>
+                  Ending at: {{ contest.end_time }}
+                </li>
+                <li>
+                  Duration: {{ contest.start_time|timesince:contest.end_time }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock content %}
