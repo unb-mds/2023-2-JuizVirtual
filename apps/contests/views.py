@@ -1,8 +1,9 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from django.db.models.query import QuerySet
 from django.views import generic
 
+from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
 
 if TYPE_CHECKING:
@@ -19,6 +20,12 @@ class IndexView(IndexViewBase):
 
     def get_queryset(self) -> QuerySet[Contest]:
         return Contest._default_manager.order_by("start_time")[:5]
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        ctx["valid_statuses"] = (ContestStatus.PENDING, ContestStatus.RUNNING)
+
+        return ctx
 
 
 class DetailView(DetailViewBase):
