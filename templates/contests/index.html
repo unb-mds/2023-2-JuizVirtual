@@ -44,9 +44,12 @@
                 <li>
                   Duration: {{ contest.start_time|timesince:contest.end_time }}
                 </li>
-                <li>
-                  {{ contest.problems.all|length }} problems
-                </li>
+                {% if contest.problems.all.count > 0 %}
+                  <li>
+                    {{ contest.problems.all.count }}
+                    problem{{ contest.problems.all.count|pluralize:"s" }}
+                  </li>
+                {% endif %}
               </ul>
             </div>
           </div>
@@ -94,9 +97,12 @@
                 <li>
                   Duration: {{ contest.start_time|timesince:contest.end_time }}
                 </li>
-                <li>
-                  {{ contest.problems.all|length }} problems
-                </li>
+                {% if contest.problems.all.count > 0 %}
+                  <li>
+                    {{ contest.problems.all.count }}
+                    problem{{ contest.problems.all.count|pluralize:"s" }}
+                  </li>
+                {% endif %}
               </ul>
             </div>
           </div>
