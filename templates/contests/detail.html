@@ -2,17 +2,62 @@
 
 {% block title %}{{ contest.title }}{% endblock title %}
 
+{% load humanize %}
+
 {% block content %}
   <div>
-    <h1>{{ contest }}</h1>
+    <h1>
+      <a href="{% url 'contests:detail' contest.id %}">
+        {{ contest }}
+      </a>
+    </h1>
+    <hr>
     <p>{{ contest.description }}</p>
   </div>
 
-  <h2>Tasks</h2>
-
-  <ul>
-    {% for problem in contest.problems.all %}
-      <li><a href="{% url 'problems:detail' problem.id %}">{{ problem }}</a></li>
-    {% endfor %}
-  </ul>
+  <div class="mt-5">
+    <h2>Tasks</h2>
+    <hr>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col">Name</th>
+          <th class="col">Score</th>
+          <th class="col">Memory limit</th>
+          <th class="col">Time limit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for problem in contest.problems.all %}
+        <tr>
+          <td>
+            {% if problem.is_accessible %}
+              <a href="{% url 'problems:detail' problem.id %}">{{ problem }}</a>
+            {% else %}
+              {{ problem }}
+            {% endif %}
+          </td>
+          <td>
+            {{ problem.score|default:"???" }}
+          </td>
+          <td>
+            {% if problem.memory_limit %}
+              {{ problem.memory_limit|filesizeformat }}
+            {% else %}
+              Unlimited
+            {% endif %}
+          </td>
+          <td>
+            {% if problem.time_limit %}
+              {{ problem.time_limit}}
+              second{{ problem.time_limit|pluralize:"s" }}
+            {% else %}
+              Unlimited
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock content %}
