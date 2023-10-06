@@ -12,7 +12,6 @@ membros do grupo e a iniciação da documentação do projeto.
 
 Changelog
 ----------
-.. vale Vale.Spelling = NO
 
 - `Decidir o espaço e os horários das reuniões (#7) <https://github.com/unb-mds/2023-2-Squad06/issues/7>`_
 - `Relembrando Python/Django (#6) <https://github.com/unb-mds/2023-2-Squad06/issues/6>`_
