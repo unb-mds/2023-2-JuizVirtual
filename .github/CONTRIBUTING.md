@@ -1,17 +1,17 @@
 # Contributing Rules
 
-- The development will be done **in English**.
-- Commit messages **must** follow
-[Conventional Commits specifications](https://www.conventionalcommits.org/en/v1.0.0/#specification).
-- Branches **must** follow the
-[Git Flow pattern](https://github.com/nvie/gitflow).
-- Versioning must follow the
-[Semantic Versioning specifications](https://semver.org/).
-- Every contribution **must** be accompanied by a test suite that tests the new
-feature or simulates the bug to be fixed.
-- All code **must** follow its language's styling conventions.
-- Use present tense (e.g. "Add feature" not "Added feature").
-- Limit all lines to a maximum of 79 characters.
+- As mensagens de commit **devem** ser escritas em inglês.
+- Mensagens de commit **devem** seguir as
+[espeficicações do Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#specification).
+- Branches **devem** seguir o
+[padrão GitLab Flow pattern](https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/).
+- Versionamento deve seguir as
+[especificações do Semantic Versioning](https://semver.org/).
+- Toda contribuição **deve** ser acompanhada por uma suíte de testes que testa
+a nova feature ou simula o bug a ser consertado.
+- Todo o código **deve** seguir as convenções de estilização da sua linguagem.
+- Use o tempo presente (e.g. "Adicionar feature" not "Feature adicionada").
+- Limite todas as linhas para um máximo de 79 caracteres.
 
 ## Good Bug Reports
 
