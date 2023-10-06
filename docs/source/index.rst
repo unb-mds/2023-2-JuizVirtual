@@ -47,3 +47,4 @@ Explorar
    :titlesonly:
 
    reunioes/intro
+   scrum/intro
