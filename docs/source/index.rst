@@ -48,3 +48,4 @@ Explorar
 
    reunioes/intro
    scrum/intro
+   instalation/intro
