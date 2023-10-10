@@ -16,7 +16,10 @@ copyright = f"2023-present, {author}."
 #  General configuration  #
 ###########################
 
-extensions = ["sphinx_design"]
+extensions = [
+    "sphinx_design",
+    "sphinxawesome_theme.highlighting",
+]
 
 templates_path = ["_templates"]
 exclude_patterns: List[str] = []
