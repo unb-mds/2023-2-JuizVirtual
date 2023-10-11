@@ -17,18 +17,18 @@ distribuição Linux ou macOS, adapte os comandos de acordo.
 
 Para rodar o projeto, você precisará instalar Python 3.11.5 e o gerenciador de
 pacotes `Poetry <https://python-poetry.org/>`_. Se atente em instalar as
-versões corretas do Python e do Poetry, pois não há garantias de que o projeto
-funcionará em versões diferentes.
+versões corretas do Python e do Poetry, pois não há garantias de que funcionará
+em versões diferentes.
 
 Docker e Docker Compose
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-O projeto usa `Docker <https://docs.docker.com/engine/install/ubuntu/>`_
-e `Docker Compose <https://docs.docker.com/compose/install/linux/>`_ para
+Usamos `Docker <https://docs.docker.com/engine/install/ubuntu/>`_ e
+`Docker Compose <https://docs.docker.com/compose/install/linux/>`_ para
 facilitar a instalação e execução do projeto. Nós **recomendamos fortemente**
 que você use Docker e o Docker Compose para rodar o projeto, já que eles
-criam e configuram automaticamente o ambiente de desenvolvimento do projeto,
-incluindo o banco de dados e o servidor do Django.
+criam e configuram automaticamente o ambiente de desenvolvimento, incluindo o
+banco de dados e o servidor do Django.
 
 .. note::
 
