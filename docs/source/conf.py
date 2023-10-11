@@ -16,7 +16,10 @@ copyright = f"2023-present, {author}."
 #  General configuration  #
 ###########################
 
-extensions = ["sphinx_design"]
+extensions = [
+    "sphinx_design",
+    "sphinxawesome_theme.highlighting",
+]
 
 templates_path = ["_templates"]
 exclude_patterns: List[str] = []
@@ -31,8 +34,6 @@ html_title = author
 html_theme = "sphinxawesome_theme"
 html_copy_source = False
 html_permalinks_icon = Icons.permalinks_icon
-
-html_static_path = ["_static"]
 
 theme_options = ThemeOptions(
     show_prev_next=True,
