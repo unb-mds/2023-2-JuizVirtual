@@ -1,4 +1,4 @@
-# 2023-2-Squad06
+# MDS - Squad 06 (2023/2)
 
 Repositório contendo o código do projeto da disciplina de Métodos de
 Desenvolvimento de Software. O projeto consiste em um juíz online para
