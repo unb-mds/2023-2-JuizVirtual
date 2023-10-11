@@ -10,7 +10,7 @@ Ambiente
 --------
 
 Recomendamos o uso de **distribuições baseadas em Debian** como ambiente de
-desenvolvimento do projeto. Apesar desse projeto provalemente funcionar em
+desenvolvimento do projeto. Apesar desse projeto provavelmente funcionar em
 ambientes Windows, não damos suporte a esse tipo de instalação. Os comandos
 abaixo presume que você está usando um ambiente Ubuntu. Caso esteja usando
 outra distribuição, adapte os comandos de acordo.
@@ -19,6 +19,13 @@ Para rodar o projeto, você precisará instalar Python 3.11.5 e o gerenciador de
 pacotes `Poetry <https://python-poetry.org/>`_. Se atente em instalar as
 versões corretas do Python e do Poetry, pois não há garantias de que o projeto
 funcionará em versões diferentes.
+
+.. note::
+
+   Apesar de não ser obrigatório instalar o Python e o Poetry (já que o projeto
+   usa Docker), recomendamos que você instale-os de qualquer maneira, pois isso
+   facilitará a instalação de outras ferramentas de desenvolvimento que serão
+   mencionados no decorrer do guia.
 
 Docker e Docker Compose
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,22 +65,74 @@ Crie o arquivo de ambiente usando o script do próprio projeto:
 
    poetry run ./bin/create_env
 
+.. warning::
+
+   O comando acima não funciona em ambientes Windows. Se você estiver usando
+   Windows, crie o arquivo de ambiente manualmente usando o arquivo
+   ``config/.env.example`` como base.
+
 Por fim, rode o projeto com o Docker:
 
 .. code-block:: bash
 
-   docker compose build
+   docker compose up
+
+.. warning::
+
+   Caso você esteja enfrentando o seguinte erro:
+
+   .. code-block:: bash
+
+      docker env: bash\r: No such file or directory
+
+   Isso significa que você está usando um ambiente Windows. Para resolver esse
+   problema, olhe este `link <https://stackoverflow.com/q/70380310>`_.
+
+O site estará disponível em ``http://localhost:8000``, no entanto, é necessário
+rodar as migrações do banco de dados para que o site funcione corretamente.
+Feche o servidor do Django pressionando :kbd:`Ctrl+C` e reabra o servidor
+no modo de execução em segundo plano com o seguinte comando:
+
+.. code-block:: bash
+
    docker compose up -d
 
-O site estará disponível em ``http://localhost:8000``. Entretanto, é necessário
-rodar as migrações do banco de dados para que o site funcione corretamente.
-Você pode fazer isso com o seguinte comando:
+Desta vez, o servidor do Django estará rodando em segundo plano. Para rodar as
+migrações do banco de dados, você precisará criar um container temporário que
+executará as migrações. Faça isso com o seguinte comando:
 
 .. code-block:: bash
 
    # Isso criará um container temporário que executará as migrações.
    docker compose run --rm web python manage.py migrate
 
+.. note::
+
+   Você precisará executar esse comando toda vez que você atualizar o projeto
+   e houverem novas migrações.
+
+
+Para fechar o servidor do Django, use o seguinte comando:
+
+.. code-block:: bash
+
+   docker compose down
+   # Caso você queira remover os volumes do Docker, use:
+   docker compose down -v
+   # Isto removerá os volumes do Docker, o que significa que os dados do banco
+   # de dados serão perdidos.
+
+Para executar os testes do projeto, use o seguinte comando:
+
+.. code-block:: bash
+
+   docker compose run --rm django python manage.py test
+
+Se você precisar olhar os logs do servidor do Django, use o seguinte comando:
+
+.. code-block:: bash
+
+   docker compose logs
 
 Desenvolvimento Local
 ---------------------
