@@ -46,5 +46,6 @@ Explorar
 .. toctree::
    :titlesonly:
 
+   installation
    reunioes/intro
    scrum/intro
