@@ -35,8 +35,6 @@ html_theme = "sphinxawesome_theme"
 html_copy_source = False
 html_permalinks_icon = Icons.permalinks_icon
 
-html_static_path = ["_static"]
-
 theme_options = ThemeOptions(
     show_prev_next=True,
     extra_header_link_icons={
