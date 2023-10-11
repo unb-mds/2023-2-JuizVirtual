@@ -4,7 +4,7 @@
 - Commit messages **must** follow
 [Conventional Commits specifications](https://www.conventionalcommits.org/en/v1.0.0/#specification).
 - Branches **must** follow the
-[Git Flow pattern](https://github.com/nvie/gitflow).
+[GitLab Flow pattern](https://docs.gitlab.com/ee/topics/gitlab_flow.html).
 - Versioning must follow the
 [Semantic Versioning specifications](https://semver.org/).
 - Every contribution **must** be accompanied by a test suite that tests the new
@@ -29,27 +29,27 @@ response was given then the issue will be closed.
 ## Starting
 
 This guide assumes you have
-[Git Flow](https://github.com/nvie/gitflow/wiki/Installation) installed on your
-system. The `main` branch is **always** the production branch, and the
-`develop` branch is **always** the development branch.
+[GitLab Flow pattern](https://docs.gitlab.com/ee/topics/gitlab_flow.html)
+installed on your system. The `main` branch is **always** the development
+branch.
 
 To create a feature/bugfix branch, use the command:
 
 ```sh
-git flow feature start <feature-name>
+git checkout -b <feature-name> main
 # or
-git flow bugfix start <bugfix-name>
+git checkout -b <bugfix-name> main
 ```
 
-Git Flow will automatically create and checkout the branch, make the changes in
-your favorite code editor. When you're done with the changes, commit and use
-the following command to publish the feature on GitHub:
+Git will automatically create and checkout the branch, make the changes in your
+favorite code editor. When you're done with the changes, commit and use the
+following command to publish the feature on GitLab:
 
 ```sh
-git flow feature publish <feature-name>
+git push origin <feature-name>
 # or
-git flow bugfix publish <bugfix-name>
+git push origin <bugfix-name>
 ```
 
-The branch should automatically be published on GitHub. Wait a supervisor to
+The branch should automatically be published on GitLab. Wait a supervisor to
 review your code and merge or request changes if necessary.
