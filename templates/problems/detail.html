@@ -3,6 +3,37 @@
 {% block title %}{{ problem.title }}{% endblock title %}
 
 {% block content %}
-  <h1>{{ problem.title }}</h1>
-  <p>{{ problem.description }}</p>
+  <div>
+    <h1>
+      <a href="{% url 'problems:detail' problem.id %}">
+        {{ problem.title }}
+      </a>
+    </h1>
+    <hr>
+
+    <div>
+      <p>
+        <b>Score:</b> {{ problem.score|default:"???" }}
+      </p>
+      <p>
+        <b>Memory limit:</b>
+        {% if problem.memory_limit %}
+          {{ problem.memory_limit|filesizeformat }}
+        {% else %}
+          Unlimited
+        {% endif %}
+      </p>
+      <p>
+        <b>Time limit:</b>
+        {% if problem.time_limit %}
+         {{ problem.time_limit }}
+         second{{ problem.time_limit|pluralize:"s" }}
+        {% else %}
+          Unlimited
+        {% endif %}
+      </p>
+    </div>
+    <hr>
+    <p>{{ problem.description }}</p>
+  </div>
 {% endblock content %}
