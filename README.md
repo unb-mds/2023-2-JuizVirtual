@@ -25,10 +25,6 @@ desenvolvimento do projeto. No Windows, recomendamos o uso do [WSL](https://docs
 
 ### Começando
 
-
-Em caso de problemas com a instalação, verifique a [documentação](https://mds.kyomi.dev/pt/latest/installation.html).
-
-
 Você pode instalar o projeto com os seguintes comandos:
 
 ```bash
@@ -73,6 +69,8 @@ $ docker compose down
 $ docker compose down -v
 # Isto removerá os volumes do Docker, o que significa que os dados do banco de dados serão perdidos.
 ```
+## Erros
+Em caso de problemas com a instalação, verifique a [documentação](https://mds.kyomi.dev/pt/latest/installation.html).
 
 ## Links
 
