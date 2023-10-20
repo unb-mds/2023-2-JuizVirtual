@@ -25,6 +25,10 @@ desenvolvimento do projeto. No Windows, recomendamos o uso do [WSL](https://docs
 
 ### Começando
 
+
+#### Em caso de problemas, consulte nosso guia de instalação completo, presente em nossa documentação.
+
+
 Você pode instalar o projeto com os seguintes comandos:
 
 ```bash
