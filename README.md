@@ -4,6 +4,20 @@ Repositório contendo o código do projeto da disciplina de Métodos de
 Desenvolvimento de Software. O projeto consiste em um juíz online para
 programação competitiva.
 
+## Membros
+
+| Nome             | Matrícula | GitHub |
+|------------------|-----------|--------|
+| Caio Alexandre   | 221007644 | [@bitterteriyaki](https://github.com/bitterteriyaki) |
+| João Farias      | 221008187 | [@jpcfarias](https://github.com/jpcfarias) |
+| Gabriel Moura    | 221008060 | [@thegm445](https://github.com/thegm445) |
+| Luiza Maluf      | 221008294 | [@LuizaMaluf](https://github.com/LuizaMaluf) |
+| Letícia Hladczuk | 221039209 | [@HladczukLe](https://github.com/HladczukLe) |
+| Esther Silva     | 190106034 | [@EstherSousa](https://github.com/EstherSousa) |
+| Gabriel Fernando | 222022162 | [@MMcLovin](https://github.com/MMcLovin) |
+
+## Instalação
+
 ### Ambiente
 
 Recomendamos o uso de **distribuições baseadas em Debian** como ambiente de
