@@ -20,3 +20,4 @@ Sprints
    :titlesonly:
 
    sprints/sprint-0
+   sprints/sprint-1
