@@ -69,8 +69,9 @@ $ docker compose down
 $ docker compose down -v
 # Isto removerá os volumes do Docker, o que significa que os dados do banco de dados serão perdidos.
 ```
-## Erros
-Em caso de problemas com a instalação, verifique a [documentação](https://mds.kyomi.dev/pt/latest/installation.html).
+
+Em caso de problemas com a instalação, verifique a
+[documentação](https://mds-squad-06.readthedocs.io/pt/latest/installation.html).
 
 ## Links
 
