@@ -47,5 +47,6 @@ Explorar
    :titlesonly:
 
    installation
+   architecture
    reunioes/intro
    scrum/intro
