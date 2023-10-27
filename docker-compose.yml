@@ -1,7 +1,6 @@
 services:
   django:
     image: virtual-judge:dev
-    container_name: django
     build:
       context: .
       dockerfile: docker/django/Dockerfile
@@ -26,7 +25,6 @@ services:
 
   postgres:
     image: postgres:16.0-alpine
-    container_name: postgres
     volumes:
       - data:/var/lib/postgresql/data
     networks:
