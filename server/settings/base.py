@@ -142,6 +142,8 @@ LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
 
+REGISTER_URL = "register"
+
 # The model to use to represent an user.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-user-model
 
