@@ -71,10 +71,12 @@ class UserAdminTestCase(TestCase):
 
     def test_add_fieldsets(self) -> None:
         expected_add_fieldsets = (
-            None,
-            {
-                "classes": ("wide",),
-                "fields": ("username", "email", "passord1", "password2"),
-            },
+            (
+                None,
+                {
+                    "classes": ("wide",),
+                    "fields": ("username", "email", "password1", "password2"),
+                },
+            ),
         )
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
