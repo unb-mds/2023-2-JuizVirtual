@@ -141,7 +141,6 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 LOGIN_URL = "login"
-
 REGISTER_URL = "register"
 
 # The model to use to represent an user.

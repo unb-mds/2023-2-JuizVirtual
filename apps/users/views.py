@@ -8,11 +8,11 @@ from apps.users.forms import CreateUserForm
 class RegisterView(View):
     template_name = "registration/register.html"
 
-    def get(self, request: HttpRequest) -> HttpResponse | None:
+    def get(self, request: HttpRequest) -> HttpResponse:
         form = CreateUserForm()
         return render(request, self.template_name, {"form": form})
 
-    def post(self, request: HttpRequest) -> HttpResponse | None:
+    def post(self, request: HttpRequest) -> HttpResponse:
         form = CreateUserForm(self.request.POST)
         if form.is_valid():
             form.save()
