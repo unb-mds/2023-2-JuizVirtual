@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from .admin import UserAdmin
 from .models import User
 
 
@@ -44,4 +45,36 @@ class UserManagerTestCase(TestCase):
 
 
 class UserAdminTestCase(TestCase):
-    pass
+    def test_list_display(self) -> None:
+        self.assertEqual(
+            UserAdmin.list_display,
+            ("username", "email", "is_staff", "is_active"),
+        )
+
+    def test_fieldsets(self) -> None:
+        expected_fieldsets = [
+            (("Personal info"), {"fields": ("username", "email", "password")}),
+            (
+                ("Permissions"),
+                {
+                    "fields": (
+                        "user_permissions",
+                        "groups",
+                        "is_active",
+                        "is_staff",
+                        "is_superuser",
+                    )
+                },
+            ),
+        ]
+        self.assertEqual(UserAdmin.fieldsets, expected_fieldsets)
+
+    def test_add_fieldsets(self) -> None:
+        expected_add_fieldsets = (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "email", "passord1", "password2"),
+            },
+        )
+        self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
