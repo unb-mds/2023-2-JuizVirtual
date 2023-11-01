@@ -46,5 +46,7 @@ Explorar
 .. toctree::
    :titlesonly:
 
+   installation
+   architecture
    reunioes/intro
    scrum/intro
