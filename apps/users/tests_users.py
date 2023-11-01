@@ -8,7 +8,7 @@ class UserModelTestCase(TestCase):
         self.user_data = {
             "email": "test@example.com",
             "username": "user_test",
-            "password": "passwordtest",
+            "password": "testpassword",
         }
         self.user = User.objects.create(**self.user_data)
 
@@ -19,8 +19,28 @@ class UserModelTestCase(TestCase):
         self.assertIn("username", User().REQUIRED_FIELDS)
 
 
-class UserManagerTastCase(TestCase):
-    pass
+class UserManagerTestCase(TestCase):
+    def test_create_user(self) -> None:
+        user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpassword",
+        )
+        self.assertEqual(user.email, "test@example.com")
+        self.assertEqual(user.username, "testuser")
+        self.assertFalse(user.is_staff)
+        self.assertTrue(user.is_active)
+
+    def test_create_superuser(self) -> None:
+        superuser = User.objects.create_superuser(
+            username="adminuser",
+            email="admin@example.com",
+            password="adminpassword",
+        )
+        self.assertEqual(superuser.email, "admin@example.com")
+        self.assertEqual(superuser.username, "adminuser")
+        self.assertTrue(superuser.is_staff)
+        self.assertTrue(superuser.is_superuser)
 
 
 class UserAdminTestCase(TestCase):
