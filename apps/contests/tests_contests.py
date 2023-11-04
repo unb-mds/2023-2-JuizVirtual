@@ -1,13 +1,17 @@
+import unittest
 from datetime import timedelta
 
+from django.contrib.admin import AdminSite
+from django.forms import CharField, Textarea
 from django.test import TestCase
 from django.utils import timezone
 
+from apps.contests.admin import ContestAdmin, ContestModelForm
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
 
 
-class ContestModelFormTestCase(TestCase):
+class ContestTestCase(TestCase):
     def setUp(self) -> None:
         now = timezone.now()
         self.contest = Contest(
@@ -37,7 +41,7 @@ class ContestModelFormTestCase(TestCase):
         self.assertEqual(self.contest.status, ContestStatus.CANCELLED)
 
 
-class TestContestStatus(TestCase):
+class ContestStatusTesteCase(TestCase):
     def test_pending(self) -> None:
         self.assertEqual(ContestStatus.PENDING, "Pending")
 
@@ -49,3 +53,44 @@ class TestContestStatus(TestCase):
 
     def test_cancelled(self) -> None:
         self.assertEqual(ContestStatus.CANCELLED, "Cancelled")
+
+
+class ContestModelFormTestCase(TestCase):
+    def test_description_field_widget(self) -> None:
+        form = ContestModelForm()
+        description_field = form.fields["description"]
+
+        self.assertIsInstance(description_field, CharField)
+
+        self.assertIsInstance(description_field.widget, Textarea)
+        self.assertEqual(
+            description_field.widget.attrs, {"rows": 14, "cols": 80}
+        )
+
+    def test_model_and_fields(self) -> None:
+        form = ContestModelForm()
+
+        self.assertEqual(form._meta.model, Contest)
+
+
+class ContestAdminTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.site = AdminSite()
+        self.contest_admin = ContestAdmin(Contest, self.site)
+
+    def test_list_display(self) -> None:
+        expected_list_display = ("title", "start_time", "end_time", "status")
+        self.assertEqual(
+            self.contest_admin.list_display, expected_list_display
+        )
+
+    def test_list_filter(self) -> None:
+        expected_list_filter = ("start_time", "end_time")
+        self.assertEqual(self.contest_admin.list_filter, expected_list_filter)
+
+    def test_fieldsets(self) -> None:
+        expected_fieldsets = [
+            (("General"), {"fields": ("title", "description")}),
+            (("Other"), {"fields": ("start_time", "end_time", "cancelled")}),
+        ]
+        self.assertEqual(self.contest_admin.fieldsets, expected_fieldsets)
