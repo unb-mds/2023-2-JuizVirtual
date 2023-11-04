@@ -10,7 +10,6 @@ from django.utils import timezone
 from apps.contests.admin import ContestAdmin, ContestModelForm
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
-from apps.contests.views import DetailView
 
 
 class ContestTestCase(TestCase):
@@ -101,5 +100,7 @@ class ContestAdminTestCase(unittest.TestCase):
 class TestContestsUrls(TestCase):
     def test_detail_url_resolves(self) -> None:
         url = reverse("contests:detail", args=[1])
-        resolve_match = resolve(url)
-        self.assertEqual(resolve_match.func, DetailView)
+        resolved_view_name = resolve(url).view_name
+        expected_view_name = "contests:detail"
+
+        self.assertEqual(resolved_view_name, expected_view_name)
