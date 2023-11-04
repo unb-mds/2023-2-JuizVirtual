@@ -37,21 +37,15 @@ class ContestModelFormTestCase(TestCase):
         self.assertEqual(self.contest.status, ContestStatus.CANCELLED)
 
 
-class IndexViewTestCase(TestCase):
-    pass
+class TestContestStatus(TestCase):
+    def test_pending(self) -> None:
+        self.assertEqual(ContestStatus.PENDING, "Pending")
 
+    def test_running(self) -> None:
+        self.assertEqual(ContestStatus.RUNNING, "Running")
 
-class DetailViewTestCase(TestCase):
-    pass
+    def test_finished(self) -> None:
+        self.assertEqual(ContestStatus.FINISHED, "Finished")
 
-
-class ContestTestCase(TestCase):
-    pass
-
-
-class ContestStatusTestCase(TestCase):
-    pass
-
-
-class ContestAdminTestCase(TestCase):
-    pass
+    def test_cancelled(self) -> None:
+        self.assertEqual(ContestStatus.CANCELLED, "Cancelled")
