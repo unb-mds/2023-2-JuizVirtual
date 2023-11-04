@@ -4,11 +4,13 @@ from datetime import timedelta
 from django.contrib.admin import AdminSite
 from django.forms import CharField, Textarea
 from django.test import TestCase
+from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.admin import ContestAdmin, ContestModelForm
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
+from apps.contests.views import DetailView
 
 
 class ContestTestCase(TestCase):
@@ -94,3 +96,10 @@ class ContestAdminTestCase(unittest.TestCase):
             (("Other"), {"fields": ("start_time", "end_time", "cancelled")}),
         ]
         self.assertEqual(self.contest_admin.fieldsets, expected_fieldsets)
+
+
+class TestContestsUrls(TestCase):
+    def test_detail_url_resolves(self) -> None:
+        url = reverse("contests:detail", args=[1])
+        resolve_match = resolve(url)
+        self.assertEqual(resolve_match.func, DetailView)
