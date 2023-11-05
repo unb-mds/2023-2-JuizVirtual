@@ -5,22 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("problems", "0002_alter_problem_options_alter_problem_table"),
+        ("tasks", "0002_alter_task_options_alter_task_table"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="problem",
+            model_name="task",
             name="memory_limit",
             field=models.IntegerField(null=True),
         ),
         migrations.AddField(
-            model_name="problem",
+            model_name="task",
             name="score",
             field=models.IntegerField(null=True),
         ),
         migrations.AddField(
-            model_name="problem",
+            model_name="task",
             name="time_limit",
             field=models.IntegerField(null=True),
         ),

@@ -2,14 +2,14 @@ from typing import TYPE_CHECKING
 
 from django.views import generic
 
-from apps.problems.models import Problem
+from apps.tasks.models import Task
 
 if TYPE_CHECKING:
-    DetailViewBase = generic.DetailView[Problem]
+    DetailViewBase = generic.DetailView[Task]
 else:
     DetailViewBase = generic.DetailView
 
 
 class DetailView(DetailViewBase):
-    model = Problem
-    template_name = "problems/detail.html"
+    model = Task
+    template_name = "tasks/detail.html"

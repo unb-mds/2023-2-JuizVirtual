@@ -4,17 +4,17 @@ from django.contrib.admin import ModelAdmin, register
 from django.forms import CharField, IntegerField, ModelForm, Textarea
 from django.utils.translation import gettext_lazy as _
 
-from apps.problems.models import Problem
+from apps.tasks.models import Task
 
 if TYPE_CHECKING:
-    ProblemAdminBase = ModelAdmin[Problem]
-    ProblemModelFormBase = ModelForm[Problem]
+    TaskAdminBase = ModelAdmin[Task]
+    TaskModelFormBase = ModelForm[Task]
 else:
-    ProblemAdminBase = ModelAdmin
-    ProblemModelFormBase = ModelForm
+    TaskAdminBase = ModelAdmin
+    TaskModelFormBase = ModelForm
 
 
-class ProblemModelForm(ProblemModelFormBase):
+class TaskModelForm(TaskModelFormBase):
     description = CharField(widget=Textarea(attrs={"rows": 14, "cols": 80}))
     score = IntegerField(min_value=0, required=False)
 
@@ -26,13 +26,13 @@ class ProblemModelForm(ProblemModelFormBase):
     )
 
     class Meta:
-        model = Problem
+        model = Task
         fields = "__all__"
 
 
-@register(Problem)
-class ProblemAdmin(ProblemAdminBase):
-    form = ProblemModelForm
+@register(Task)
+class TaskAdmin(TaskAdminBase):
+    form = TaskModelForm
 
     list_display = ("title", "contest", "memory_limit", "time_limit")
     list_filter = ("contest", "score")
