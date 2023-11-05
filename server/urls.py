@@ -10,5 +10,5 @@ urlpatterns = [
     # Local views
     path("", IndexView.as_view(), name="home"),
     path("contests/", include("apps.contests.urls")),
-    path("problems/", include("apps.problems.urls")),
+    path("tasks/", include("apps.tasks.urls")),
 ]
