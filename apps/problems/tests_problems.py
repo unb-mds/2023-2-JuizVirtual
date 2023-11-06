@@ -4,11 +4,13 @@ from django.contrib.admin.sites import AdminSite
 
 # from django.forms import CharField, IntegerField
 from django.test import TestCase
+from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
 from apps.problems.admin import ProblemAdmin, ProblemModelForm
 from apps.problems.models import Problem
+from apps.problems.views import DetailView
 
 
 class ProblemTestCase(TestCase):
@@ -111,3 +113,19 @@ class ProblemAdminTestCase(TestCase):
             (("Limits"), {"fields": ("memory_limit", "time_limit")}),
         ]
         self.assertEqual(self.admin.fieldsets, expected_fieldsets)
+
+
+class ProblemURLsTestCase(TestCase):
+    def test_detail_url_resolves_to_detail_view(self) -> None:
+        url = reverse("problems:detail", args=[int])
+
+        resolver = resolve(url)
+
+        self.assertEqual(resolver.url_name, DetailView)
+
+    def test_detail_url_reverse(self) -> None:
+        expected_url = "/problems/int/"
+
+        generated_url = reverse("problems:detail", args=[int])
+
+        self.assertEqual(generated_url, expected_url)
