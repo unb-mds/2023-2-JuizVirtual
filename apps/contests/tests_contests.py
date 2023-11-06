@@ -106,6 +106,26 @@ class ContestsUrlsTestCase(TestCase):
         self.assertEqual(resolved_view_name, expected_view_name)
 
 
-class ContestViewsTesteCase(TestCase):
-    # tentar novamente depois
-    pass
+class ContestViewTestCase(TestCase):
+    def setUp(self) -> None:
+        now = timezone.now()
+        self.contest = Contest(
+            id=1,
+            title="Test Contest",
+            description="This is a test contest",
+            start_time=now,
+            end_time=now + timedelta(hours=1),
+            cancelled=False,
+        )
+
+    def test_index_view(self) -> None:
+        response = self.client.get(reverse("contests:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test Contest")
+
+    def test_detail_view(self) -> None:
+        response = self.client.get(
+            reverse("contests:detail", args=[self.contest.id])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Test Contest")

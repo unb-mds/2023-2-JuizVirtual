@@ -117,16 +117,16 @@ class ProblemAdminTestCase(TestCase):
 
 class ProblemURLsTestCase(TestCase):
     def test_detail_url_resolves_to_detail_view(self) -> None:
-        url = reverse("problems:detail", args=[int])
+        url = reverse("problems:detail", args=[1])
 
         resolver = resolve(url)
 
         self.assertEqual(resolver.url_name, DetailView)
 
     def test_detail_url_reverse(self) -> None:
-        expected_url = "/problems/int/"
+        expected_url = "/problems/1/"
 
-        generated_url = reverse("problems:detail", args=[int])
+        generated_url = reverse("problems:detail", args=[1])
 
         self.assertEqual(generated_url, expected_url)
 
