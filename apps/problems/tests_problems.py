@@ -129,3 +129,11 @@ class ProblemURLsTestCase(TestCase):
         generated_url = reverse("problems:detail", args=[int])
 
         self.assertEqual(generated_url, expected_url)
+
+
+class DetailViewTestCase(TestCase):
+    def test_detail_view_model_is_problem(self) -> None:
+        self.assertEqual(DetailView.model, Problem)
+
+    def test_detail_view_template_name_is_correct(self) -> None:
+        self.assertEqual(DetailView.template_name, "problems/detail.html")
