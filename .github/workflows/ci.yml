@@ -1,0 +1,62 @@
+name: Upload data to integrations
+
+on:
+  push:
+  pull_request:
+    types:
+      - reopened
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.6.1"]
+
+    env:
+      DATABASE_URL: "sqlite:///db.sqlite3"
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry ${{ matrix.poetry-version }}
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ matrix.poetry-version }}
+          virtualenvs-create: false
+          installer-parallel: true
+
+      - name: Install dependencies
+        run: |
+          poetry run pip install --no-deps --upgrade pip
+          poetry install --with dev
+
+      - name: Generate configuration file
+        run: ./bin/create-env
+
+      - name: Generate tests coverage report
+        run: |
+          poetry run coverage run \
+            --source="." manage.py test \
+            --settings=server.settings.development
+          poetry run coverage xml
+
+      - name: Upload tests coverage report (Codecov)
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+
+      - name: Upload tests coverage report (Code Climate)
+        uses: paambaati/codeclimate-action@v3.2.0
+        with:
+          coverageCommand: coverage report
