@@ -70,7 +70,7 @@
                     </a>
                   </li>
                 {% endif %}
-                <li><a href="#" class="dropdown-item">You profile</a></li>
+                <li><a href="#" class="dropdown-item">Your profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                   <a href="{% url 'logout' %}" class="dropdown-item">
@@ -80,6 +80,7 @@
               </ul>
             </div>
           {% else %}
+            <a href="{% url 'users:register' %}" class="nav-link text-white">Register</a>
             <a href="{% url 'login' %}" class="nav-link text-white">Sign in</a>
           {% endif %}
         </div>
