@@ -104,6 +104,12 @@ class ContestURLTestCase(TestCase):
 
         self.assertEqual(view_name, expected)
 
+    def test_detail_url_reverse(self) -> None:
+        url = reverse("contests:detail", args=[1])
+        expected = "/contests/1/"
+
+        self.assertEqual(url, expected)
+
 
 class ContestViewTestCase(TestCase):
     def setUp(self) -> None:
