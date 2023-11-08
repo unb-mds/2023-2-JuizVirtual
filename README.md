@@ -21,7 +21,8 @@ programação competitiva.
 ### Ambiente
 
 Recomendamos o uso de **distribuições baseadas em Debian** como ambiente de
-desenvolvimento do projeto. No Windows, recomendamos o uso do [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+desenvolvimento do projeto. No Windows, recomendamos o uso do
+[WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ### Começando
 
