@@ -67,52 +67,6 @@ class ProblemTestCase(TestCase):
         self.assertFalse(problem.is_accessible)
 
 
-# teste a seguir passou, porém na
-# hora do commit apresenta erros
-# class ProblemModelFormTesteCase(TestCase):
-
-
-#   def test_form_fields(self) -> None:
-#        data = {"description":
-#           "Problem description",
-#           "score": 10,"memory_limit":
-#           1024,"time_limit": 60,}
-#        form = ProblemModelForm(data)
-#        self.assertIsInstance
-#       (form.fields["description"], CharField)
-#        self.assertIsInstance
-#       (form.fields["score"], IntegerField)
-
-
-#        self.assertIsInstance
-#       (form.fields["memory_limit"], IntegerField)
-#        self.assertIsInstance(form.fields
-#       ["time_limit"], IntegerField)
-#        self.assertEqual(
-#           form.fields["description"]
-#       .widget.attrs, {"rows": 14, "cols": 80})
-
-
-#        self.assertEqual(form.fields
-#          ["score"].min_value, 0)
-#        self.assertFalse(form.fields
-#           ["score"].required)
-#        self.assertEqual(form.fields
-#          ["memory_limit"].min_value, 0)
-
-
-#        self.assertFalse(form.fields
-#       ["memory_limit"].required)
-#        self.assertEqual(form.fields
-#       ["memory_limit"].help_text, "In bytes.")
-#        self.assertEqual(form.fields
-#       ["time_limit"].min_value, 0)
-#        self.assertFalse(form.fields
-#       ["time_limit"].required)
-#        self.assertEqual(form.fields["time_limit"]
-#       .help_text, "In seconds.")
-
-
 class ProblemAdminTestCase(TestCase):
     def setUp(self) -> None:
         now = timezone.now()

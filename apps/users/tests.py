@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.translation import gettext as _
 
 from apps.users.admin import UserAdmin
 from apps.users.models import User
@@ -19,6 +20,7 @@ class UserManagerTestCase(TestCase):
             email="test@example.com",
             password="testpassword",
         )
+
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.username, "testuser")
         self.assertFalse(user.is_staff)
@@ -30,6 +32,7 @@ class UserManagerTestCase(TestCase):
             email="admin@example.com",
             password="adminpassword",
         )
+
         self.assertEqual(superuser.email, "admin@example.com")
         self.assertEqual(superuser.username, "adminuser")
         self.assertTrue(superuser.is_staff)
@@ -38,16 +41,25 @@ class UserManagerTestCase(TestCase):
 
 class UserAdminTestCase(TestCase):
     def test_list_display(self) -> None:
-        self.assertEqual(
-            UserAdmin.list_display,
-            ("username", "email", "is_staff", "is_active"),
-        )
+        list_display = UserAdmin.list_display
+        expected = ("username", "email", "is_staff", "is_active")
+
+        self.assertEqual(list_display, expected)
+
+    def test_list_filter(self) -> None:
+        list_filter = UserAdmin.list_filter
+        expected = ("is_staff", "is_superuser", "is_active", "groups")
+
+        self.assertEqual(list_filter, expected)
 
     def test_fieldsets(self) -> None:
-        expected_fieldsets = [
-            (("Personal info"), {"fields": ("username", "email", "password")}),
+        expected = [
             (
-                ("Permissions"),
+                _("Personal info"),
+                {"fields": ("username", "email", "password")},
+            ),
+            (
+                _("Permissions"),
                 {
                     "fields": (
                         "user_permissions",
@@ -59,7 +71,8 @@ class UserAdminTestCase(TestCase):
                 },
             ),
         ]
-        self.assertEqual(UserAdmin.fieldsets, expected_fieldsets)
+
+        self.assertEqual(UserAdmin.fieldsets, expected)
 
     def test_add_fieldsets(self) -> None:
         expected_add_fieldsets = (
@@ -71,4 +84,5 @@ class UserAdminTestCase(TestCase):
                 },
             ),
         )
+
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
