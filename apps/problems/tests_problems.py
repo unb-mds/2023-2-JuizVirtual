@@ -121,7 +121,7 @@ class ProblemURLsTestCase(TestCase):
 
         resolver = resolve(url)
 
-        self.assertEqual(resolver.url_name, DetailView)
+        self.assertEqual(resolver.view_name, "problems:detail")
 
     def test_detail_url_reverse(self) -> None:
         expected_url = "/problems/1/"
