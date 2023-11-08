@@ -7,7 +7,7 @@ Resumo
 ------
 
 Esta sprint teve como objetivo finalizar e polir o projeto, visto que esta
-sprint antecedeu a Primeira Release do projeto.
+sprint antecedeu a primeira release do projeto.
 
 Changelog
 ----------
