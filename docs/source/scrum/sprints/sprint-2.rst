@@ -1,7 +1,7 @@
 Sprint 2
 ========
 
-:bdg-info:`19/10/2023`
+:bdg-info:`25/10/2023`
 
 Resumo
 ------
