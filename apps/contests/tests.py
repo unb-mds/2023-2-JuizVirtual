@@ -95,13 +95,14 @@ class ContestAdminTestCase(TestCase):
         self.assertEqual(fieldsets, expected)
 
 
-class ContestsUrlsTestCase(TestCase):
+class ContestURLTestCase(TestCase):
     def test_detail_url_resolves(self) -> None:
         url = reverse("contests:detail", args=[1])
-        resolved_view_name = resolve(url).view_name
-        expected_view_name = "contests:detail"
 
-        self.assertEqual(resolved_view_name, expected_view_name)
+        view_name = resolve(url).view_name
+        expected = "contests:detail"
+
+        self.assertEqual(view_name, expected)
 
 
 class ContestViewTestCase(TestCase):
