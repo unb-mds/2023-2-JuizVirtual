@@ -1,22 +1,20 @@
 from datetime import timedelta
 
 from django.contrib.admin.sites import AdminSite
-
-# from django.forms import CharField, IntegerField
 from django.test import TestCase
 from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
-from apps.problems.admin import ProblemAdmin
-from apps.problems.models import Problem
-from apps.problems.views import DetailView
+from apps.tasks.admin import TaskAdmin
+from apps.tasks.models import Task
+from apps.tasks.views import DetailView
 
 
-class ProblemTestCase(TestCase):
-    def test_problem_to_string(self) -> None:
-        problem = Problem(title="Test Problem")
-        self.assertEqual(str(problem), "Test Problem")
+class TaskTestCase(TestCase):
+    def test_task_to_string(self) -> None:
+        task = Task(title="Test Task")
+        self.assertEqual(str(task), "Test Task")
 
     def test_running_contest_is_accessible(self) -> None:
         now = timezone.now()
@@ -25,9 +23,9 @@ class ProblemTestCase(TestCase):
         end_time = now + timedelta(hours=1)
 
         contest = Contest(start_time=start_time, end_time=end_time)
-        problem = Problem(contest=contest)
+        task = Task(contest=contest)
 
-        self.assertTrue(problem.is_accessible)
+        self.assertTrue(task.is_accessible)
 
     def test_past_contest_is_accessible(self) -> None:
         now = timezone.now()
@@ -36,9 +34,9 @@ class ProblemTestCase(TestCase):
         end_time = now - timedelta(hours=1)
 
         contest = Contest(start_time=start_time, end_time=end_time)
-        problem = Problem(contest=contest)
+        task = Task(contest=contest)
 
-        self.assertTrue(problem.is_accessible)
+        self.assertTrue(task.is_accessible)
 
     def test_future_contest_is_not_accessible(self) -> None:
         now = timezone.now()
@@ -47,9 +45,9 @@ class ProblemTestCase(TestCase):
         end_time = now + timedelta(hours=2)
 
         contest = Contest(start_time=start_time, end_time=end_time)
-        problem = Problem(contest=contest)
+        task = Task(contest=contest)
 
-        self.assertFalse(problem.is_accessible)
+        self.assertFalse(task.is_accessible)
 
     def test_cancelled_contest_is_not_accessible(self) -> None:
         now = timezone.now()
@@ -62,16 +60,16 @@ class ProblemTestCase(TestCase):
             end_time=end_time,
             cancelled=True,
         )
-        problem = Problem(contest=contest)
+        task = Task(contest=contest)
 
-        self.assertFalse(problem.is_accessible)
+        self.assertFalse(task.is_accessible)
 
 
-class ProblemAdminTestCase(TestCase):
+class TaskAdminTestCase(TestCase):
     def setUp(self) -> None:
         now = timezone.now()
         self.site = AdminSite()
-        self.admin = ProblemAdmin(Problem, self.site)
+        self.admin = TaskAdmin(Task, self.site)
 
         self.contest = Contest._default_manager.create(
             title="Test Contest 1",
@@ -105,25 +103,25 @@ class ProblemAdminTestCase(TestCase):
         self.assertEqual(fieldsets, expected)
 
 
-class ProblemURLTestCase(TestCase):
+class TaskURLTestCase(TestCase):
     def test_detail_url_to_view_name(self) -> None:
-        url = reverse("problems:detail", args=[1])
+        url = reverse("tasks:detail", args=[1])
 
         view_name = resolve(url).view_name
-        expected = "problems:detail"
+        expected = "tasks:detail"
 
         self.assertEqual(view_name, expected)
 
     def test_detail_url_reverse(self) -> None:
-        url = reverse("problems:detail", args=[1])
-        expected = "/problems/1/"
+        url = reverse("tasks:detail", args=[1])
+        expected = "/tasks/1/"
 
         self.assertEqual(url, expected)
 
 
 class DetailViewTestCase(TestCase):
-    def test_detail_view_model_is_problem(self) -> None:
-        self.assertEqual(DetailView.model, Problem)
+    def test_detail_view_model_is_task(self) -> None:
+        self.assertEqual(DetailView.model, Task)
 
     def test_detail_view_template_name_is_correct(self) -> None:
-        self.assertEqual(DetailView.template_name, "problems/detail.html")
+        self.assertEqual(DetailView.template_name, "tasks/detail.html")

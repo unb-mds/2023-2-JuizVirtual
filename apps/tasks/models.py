@@ -5,20 +5,20 @@ from apps.contests.models import Contest
 from core.models import TimestampedModel
 
 
-class Problem(TimestampedModel):
-    """Represents a problem in a contest."""
+class Task(TimestampedModel):
+    """Represents a task in a contest."""
 
     title = CharField(max_length=256)
     description = CharField(max_length=4096)
 
-    contest = ForeignKey(Contest, related_name="problems", on_delete=CASCADE)
+    contest = ForeignKey(Contest, related_name="tasks", on_delete=CASCADE)
     score = IntegerField(null=True)
 
     memory_limit = IntegerField(null=True)
     time_limit = IntegerField(null=True)
 
     class Meta:
-        db_table = "problems"
+        db_table = "tasks"
 
     def __str__(self) -> str:
         return self.title

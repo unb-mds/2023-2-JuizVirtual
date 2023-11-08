@@ -5,16 +5,16 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("problems", "0001_initial"),
+        ("tasks", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name="problem",
+            name="task",
             options={},
         ),
         migrations.AlterModelTable(
-            name="problem",
-            table="problems",
+            name="task",
+            table="tasks",
         ),
     ]

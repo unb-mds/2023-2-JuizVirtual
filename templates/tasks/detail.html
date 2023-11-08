@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ task.title }}{% endblock title %}
+
+{% block content %}
+  <div>
+    <h1>
+      <a href="{% url 'tasks:detail' task.id %}">
+        {{ task.title }}
+      </a>
+    </h1>
+    <hr>
+
+    <div>
+      <p>
+        <b>Score:</b> {{ task.score|default:"???" }}
+      </p>
+      <p>
+        <b>Memory limit:</b>
+        {% if task.memory_limit %}
+          {{ task.memory_limit|filesizeformat }}
+        {% else %}
+          Unlimited
+        {% endif %}
+      </p>
+      <p>
+        <b>Time limit:</b>
+        {% if task.time_limit %}
+         {{ task.time_limit }}
+         second{{ task.time_limit|pluralize:"s" }}
+        {% else %}
+          Unlimited
+        {% endif %}
+      </p>
+    </div>
+    <hr>
+    <p>{{ task.description }}</p>
+  </div>
+{% endblock content %}

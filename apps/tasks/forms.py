@@ -1,5 +1,5 @@
 from django.forms import CharField, Form
 
 
-class ProblemForm(Form):
+class TaskForm(Form):
     code = CharField(label="Source Code")

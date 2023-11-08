@@ -1,8 +1,8 @@
 from django.urls import path
 
-from apps.problems.views import DetailView
+from apps.tasks.views import DetailView
 
-app_name = "problems"
+app_name = "tasks"
 
 urlpatterns = [
     path("<int:pk>/", DetailView.as_view(), name="detail"),

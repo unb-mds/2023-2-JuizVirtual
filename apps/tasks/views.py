@@ -4,25 +4,25 @@ from django.http import HttpRequest, HttpResponse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 
-from apps.problems.forms import ProblemForm
-from apps.problems.models import Problem
+from apps.tasks.forms import TaskForm
+from apps.tasks.models import Task
 
 if TYPE_CHECKING:
-    DetailViewBase = generic.DetailView[Problem]
-    FormMixinBase = FormMixin[ProblemForm]
+    DetailViewBase = generic.DetailView[Task]
+    FormMixinBase = FormMixin[TaskForm]
 else:
     DetailViewBase = generic.DetailView
     FormMixinBase = FormMixin
 
 
 class DetailView(FormMixinBase, DetailViewBase):
-    model = Problem
-    template_name = "problems/detail.html"
-    form_class = ProblemForm
+    model = Task
+    template_name = "tasks/detail.html"
+    form_class = TaskForm
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["form"] = ProblemForm()
+        context["form"] = TaskForm()
 
         return context
 
@@ -36,5 +36,5 @@ class DetailView(FormMixinBase, DetailViewBase):
             else self.form_invalid(form)
         )
 
-    def form_valid(self, form: ProblemForm) -> HttpResponse:
+    def form_valid(self, form: TaskForm) -> HttpResponse:
         return super().form_valid(form)

@@ -28,31 +28,31 @@
         </tr>
       </thead>
       <tbody>
-        {% for problem in contest.problems.all %}
+        {% for task in contest.tasks.all %}
         <tr>
           <td>
-            {% if problem.is_accessible %}
-              <a href="{% url 'problems:detail' problem.id %}">
-                {{ problem }}
+            {% if task.is_accessible %}
+              <a href="{% url 'tasks:detail' task.id %}">
+                {{ task }}
               </a>
             {% else %}
-              {{ problem }}
+              {{ task }}
             {% endif %}
           </td>
           <td>
-            {{ problem.score|default:"???" }}
+            {{ task.score|default:"???" }}
           </td>
           <td>
-            {% if problem.memory_limit %}
-              {{ problem.memory_limit|filesizeformat }}
+            {% if task.memory_limit %}
+              {{ task.memory_limit|filesizeformat }}
             {% else %}
               Unlimited
             {% endif %}
           </td>
           <td>
-            {% if problem.time_limit %}
-              {{ problem.time_limit }}
-              second{{ problem.time_limit|pluralize:"s" }}
+            {% if task.time_limit %}
+              {{ task.time_limit }}
+              second{{ task.time_limit|pluralize:"s" }}
             {% else %}
               Unlimited
             {% endif %}
