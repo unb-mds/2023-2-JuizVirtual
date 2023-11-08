@@ -14,26 +14,51 @@ from apps.problems.views import DetailView
 
 
 class ProblemTestCase(TestCase):
-    def test_is_accessible(self) -> None:
+    def test_running_contest_is_accessible(self) -> None:
         now = timezone.now()
 
         start_time = now - timedelta(hours=1)
         end_time = now + timedelta(hours=1)
-        contest = Contest(start_time=start_time, end_time=end_time)
 
+        contest = Contest(start_time=start_time, end_time=end_time)
         problem = Problem(contest=contest)
 
         self.assertTrue(problem.is_accessible)
 
-        contest.start_time = now - timedelta(hours=2)
-        contest.end_time = now - timedelta(hours=1)
-        contest.save()
+    def test_past_contest_is_accessible(self) -> None:
+        now = timezone.now()
+
+        start_time = now - timedelta(hours=2)
+        end_time = now - timedelta(hours=1)
+
+        contest = Contest(start_time=start_time, end_time=end_time)
+        problem = Problem(contest=contest)
 
         self.assertTrue(problem.is_accessible)
 
-        contest.start_time = now + timedelta(hours=1)
-        contest.end_time = now + timedelta(hours=2)
-        contest.save()
+    def test_future_contest_is_not_accessible(self) -> None:
+        now = timezone.now()
+
+        start_time = now + timedelta(hours=1)
+        end_time = now + timedelta(hours=2)
+
+        contest = Contest(start_time=start_time, end_time=end_time)
+        problem = Problem(contest=contest)
+
+        self.assertFalse(problem.is_accessible)
+
+    def test_cancelled_contest_is_not_accessible(self) -> None:
+        now = timezone.now()
+
+        start_time = now - timedelta(hours=1)
+        end_time = now + timedelta(hours=1)
+
+        contest = Contest(
+            start_time=start_time,
+            end_time=end_time,
+            cancelled=True,
+        )
+        problem = Problem(contest=contest)
 
         self.assertFalse(problem.is_accessible)
 
