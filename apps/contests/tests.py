@@ -96,7 +96,7 @@ class ContestAdminTestCase(TestCase):
 
 
 class ContestURLTestCase(TestCase):
-    def test_detail_url_resolves(self) -> None:
+    def test_detail_url_to_view_name(self) -> None:
         url = reverse("contests:detail", args=[1])
 
         view_name = resolve(url).view_name

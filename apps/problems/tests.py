@@ -8,12 +8,16 @@ from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
-from apps.problems.admin import ProblemAdmin, ProblemModelForm
+from apps.problems.admin import ProblemAdmin
 from apps.problems.models import Problem
 from apps.problems.views import DetailView
 
 
 class ProblemTestCase(TestCase):
+    def test_problem_to_string(self) -> None:
+        problem = Problem(title="Test Problem")
+        self.assertEqual(str(problem), "Test Problem")
+
     def test_running_contest_is_accessible(self) -> None:
         now = timezone.now()
 
@@ -111,10 +115,11 @@ class ProblemTestCase(TestCase):
 
 class ProblemAdminTestCase(TestCase):
     def setUp(self) -> None:
+        now = timezone.now()
         self.site = AdminSite()
         self.admin = ProblemAdmin(Problem, self.site)
-        now = timezone.now()
-        self.contest = Contest(
+
+        self.contest = Contest._default_manager.create(
             title="Test Contest 1",
             description="This is a test contest",
             start_time=now,
@@ -123,37 +128,43 @@ class ProblemAdminTestCase(TestCase):
         )
         self.contest.save()
 
-    def test_admin_fields(self) -> None:
-        self.assertEqual(self.admin.form, ProblemModelForm)
+    def test_list_display(self) -> None:
+        list_display = self.admin.list_display
+        expected = ("title", "contest", "memory_limit", "time_limit")
 
-        self.assertEqual(
-            self.admin.list_display,
-            ("title", "contest", "memory_limit", "time_limit"),
-        )
-        self.assertEqual(self.admin.list_filter, ("contest", "score"))
+        self.assertEqual(list_display, expected)
 
-        expected_fieldsets = [
+    def test_list_filter(self) -> None:
+        list_filter = self.admin.list_filter
+        expected = ("contest", "score")
+
+        self.assertEqual(list_filter, expected)
+
+    def test_fieldsets(self) -> None:
+        fieldsets = self.admin.fieldsets
+        expected = [
             (("General"), {"fields": ("title", "description")}),
             (("Meta"), {"fields": ("contest", "score")}),
             (("Limits"), {"fields": ("memory_limit", "time_limit")}),
         ]
-        self.assertEqual(self.admin.fieldsets, expected_fieldsets)
+
+        self.assertEqual(fieldsets, expected)
 
 
-class ProblemURLsTestCase(TestCase):
-    def test_detail_url_resolves_to_detail_view(self) -> None:
+class ProblemURLTestCase(TestCase):
+    def test_detail_url_to_view_name(self) -> None:
         url = reverse("problems:detail", args=[1])
 
-        resolver = resolve(url)
+        view_name = resolve(url).view_name
+        expected = "problems:detail"
 
-        self.assertEqual(resolver.view_name, "problems:detail")
+        self.assertEqual(view_name, expected)
 
     def test_detail_url_reverse(self) -> None:
-        expected_url = "/problems/1/"
+        url = reverse("problems:detail", args=[1])
+        expected = "/problems/1/"
 
-        generated_url = reverse("problems:detail", args=[1])
-
-        self.assertEqual(generated_url, expected_url)
+        self.assertEqual(url, expected)
 
 
 class DetailViewTestCase(TestCase):
