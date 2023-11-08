@@ -118,6 +118,7 @@ class ContestViewTestCase(TestCase):
 
     def test_index_view(self) -> None:
         response = self.client.get(reverse("home"))
+
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Test Contest")
 
