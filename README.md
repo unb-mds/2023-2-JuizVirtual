@@ -13,7 +13,6 @@ programação competitiva.
 | Gabriel Moura    | 221008060 | [@thegm445](https://github.com/thegm445) |
 | Luiza Maluf      | 221008294 | [@LuizaMaluf](https://github.com/LuizaMaluf) |
 | Letícia Hladczuk | 221039209 | [@HladczukLe](https://github.com/HladczukLe) |
-| Esther Silva     | 190106034 | [@EstherSousa](https://github.com/EstherSousa) |
 | Gabriel Fernando | 222022162 | [@MMcLovin](https://github.com/MMcLovin) |
 
 ## Instalação
