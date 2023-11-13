@@ -17,22 +17,27 @@
 {% endif %}
 
 <form method="post" action="{% url 'login' %}">
-  {% csrf_token %}
-  <table>
-  <tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-  </tr>
-  <tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-  </tr>
-  </table>
-
-  <input type="submit" value="login">
-  <input type="hidden" name="next" value="{{ next }}">
+  <div class=" row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Login</div>
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="mb-3">
+            <label for="inputEmail1" class="form-label">{{ form.username.label_tag }}</label>
+              {{ form.username }}
+            </div>
+            <div class="mb-3">
+            <label for="inputPassword1" class="form-label">{{ form.password.label_tag }}</label>
+              {{ form.password }}
+            </div>
+            <input type="submit" class="btn btn-primary" value="Login">
+            <input type="hidden" name="next" value="{{ next }}">
+            {# Assumes you set up the password_reset view in your URLconf #}
+            <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
-
-{# Assumes you set up the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 {% endblock %}
