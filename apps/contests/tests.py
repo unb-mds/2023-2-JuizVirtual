@@ -69,6 +69,20 @@ class ContestStatusTestCase(TestCase):
     def test_cancelled(self) -> None:
         self.assertEqual(ContestStatus.CANCELLED, "Cancelled")
 
+    def test_valid_status(self) -> None:
+        valid_statuses = [
+            ContestStatus.PENDING,
+            ContestStatus.RUNNING,
+            ContestStatus.FINISHED,
+            ContestStatus.CANCELLED,
+        ]
+
+        for status in valid_statuses:
+            with self.subTest(status=status):
+                self.assertIsNone(
+                    ContestStatus.validate_contest_status(status)
+                )
+
 
 class ContestModelFormTestCase(TestCase):
     def test_description_field_widget(self) -> None:
