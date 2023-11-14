@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.admin import AdminSite
+from django.core.exceptions import ValidationError
 from django.forms import CharField, Textarea
 from django.test import TestCase
 from django.urls import resolve, reverse
@@ -9,6 +10,7 @@ from django.utils import timezone
 from apps.contests.admin import ContestAdmin, ContestModelForm
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
+from apps.users.models import User
 
 
 class ContestTestCase(TestCase):
@@ -18,6 +20,7 @@ class ContestTestCase(TestCase):
             description="This is a test contest",
             cancelled=False,
         )
+        self.user = User(username="test_user")
 
     def test_status_pending(self) -> None:
         self.contest.start_time = timezone.now() + timedelta(hours=1)
@@ -37,6 +40,20 @@ class ContestTestCase(TestCase):
     def test_status_cancelled(self) -> None:
         self.contest.cancelled = True
         self.assertEqual(self.contest.status, ContestStatus.CANCELLED)
+
+    def test_clean_method(self) -> None:
+        invalid_contest = Contest(
+            title="Invalid Contest",
+            description="This contest has invalid times",
+            start_time=timezone.now() + timedelta(days=2),
+            end_time=timezone.now() + timedelta(days=1),
+        )
+        with self.assertRaises(ValidationError) as context:
+            invalid_contest.clean()
+
+        self.assertEqual(
+            context.exception.messages, ["Start time must be before end time."]
+        )
 
 
 class ContestStatusTestCase(TestCase):
