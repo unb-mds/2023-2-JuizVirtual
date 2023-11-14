@@ -6,8 +6,10 @@ Sprint 3
 Resumo
 ------
 
-Esta sprint teve como objetivo finalizar e polir o projeto, visto que esta
-sprint antecedeu a primeira release do projeto.
+Esta sprint sucedeu a primeira release e começou a segunda fase da disciplina.
+Fase que é focada mais na implementação, portanto o objetivo desta sprint foi
+melhorar a aparência da página de registro de usuário e iniciar o
+desenvolvimento dos testes unitários (requisito presente no plano de ensino).
 
 Changelog
 ----------
