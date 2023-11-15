@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.core.exceptions import ValidationError
 from django.db.models import (
     BooleanField,
@@ -46,8 +44,6 @@ class Contest(TimestampedModel):
         else:
             return ContestStatus.RUNNING
 
-    def clean(self) -> Any:
-        super().clean()
-
+    def clean(self) -> None:
         if self.start_time > self.end_time:
             raise ValidationError("Start time must be before end time.")
