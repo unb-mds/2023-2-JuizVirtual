@@ -8,7 +8,9 @@ from core.models import TimestampedModel
 
 class Submission(TimestampedModel):
     """
-    Representa uma submissão de um usuário para uma task de um contest.
+    Represents a submission to a task by an user. The code field is
+    validated to have at least 15 characters and if it is a valid Python
+    code.
     """
 
     author = ForeignKey(User, related_name="submissions", on_delete=CASCADE)
