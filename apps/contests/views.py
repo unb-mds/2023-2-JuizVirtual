@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING, Any
 
+from django.core.exceptions import ValidationError
 from django.db.models.query import QuerySet
+from django.utils import timezone
 from django.views import generic
 
 from apps.contests.enums import ContestStatus
@@ -19,7 +21,12 @@ class IndexView(IndexViewBase):
     context_object_name = "contests"
 
     def get_queryset(self) -> QuerySet[Contest]:
-        return Contest._default_manager.order_by("start_time")[:5]
+        queryset = Contest._default_manager.filter(
+            start_time__gte=timezone.now()
+        ).order_by("start_time")[:5]
+        if not queryset.exists():
+            raise ValidationError("Não há concursos futuros disponíveis.")
+        return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
