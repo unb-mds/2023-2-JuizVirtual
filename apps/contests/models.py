@@ -34,10 +34,31 @@ class Contest(TimestampedModel):
 
     @property
     def status(self) -> ContestStatus:
+        """
+        Retorna o status atual do contest baseado no horário atual.
+
+        .. list-table:: Status do contest
+            :header-rows: 1
+
+        * - Status
+          - Descrição
+        * - :attr:`ContestStatus.PENDING`
+          - Quando o contest ainda não começou.
+        * - :attr:`ContestStatus.RUNNING`
+          - Quando o contest está acontecendo.
+        * - :attr:`ContestStatus.FINISHED`
+          - Quando o contest já terminou.
+        * - :attr:`ContestStatus.CANCELLED`
+          - Quando o contest foi cancelado.
+
+        Returns
+        -------
+        :class:`ContestStatus`
+            O status atual do contest.
+        """
         if self.cancelled:
             return ContestStatus.CANCELLED
-
-        if self.start_time > now():
+        elif self.start_time > now():
             return ContestStatus.PENDING
         elif self.end_time < now():
             return ContestStatus.FINISHED
@@ -45,5 +66,15 @@ class Contest(TimestampedModel):
             return ContestStatus.RUNNING
 
     def clean(self) -> None:
+        """
+        Validação do contest. Verifica se o :attr:`start_time` é menor
+        que o :attr:`end_time`, ou seja, se o contest começa antes de
+        terminar. Se não for, lança um :class:`ValidationError`.
+
+        Raises
+        ------
+        :class:`ValidationError`
+            Se o :attr:`start_time` for maior que o :attr:`end_time`.
+        """
         if self.start_time > self.end_time:
             raise ValidationError("Start time must be before end time.")
