@@ -30,7 +30,14 @@ class IndexView(IndexViewBase):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
-        ctx["valid_statuses"] = (ContestStatus.PENDING, ContestStatus.RUNNING)
+
+        valid_statuses = (ContestStatus.PENDING, ContestStatus.RUNNING)
+        if not all(status in ContestStatus for status in valid_statuses):
+            raise ValidationError(
+                "Defina pelo menos dois estados de concurso válidos."
+            )
+
+        ctx["valid_statuses"] = valid_statuses
 
         return ctx
 
