@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from django.db.models import CASCADE, ForeignKey, TextField
 
 from apps.tasks.models import Task
@@ -6,14 +7,16 @@ from core.models import TimestampedModel
 
 
 class Submission(TimestampedModel):
-    id: int
+    """
+    Representa uma submissão de um usuário para uma task de um contest.
+    """
 
     author = ForeignKey(User, related_name="submissions", on_delete=CASCADE)
     task = ForeignKey(Task, related_name="submissions", on_delete=CASCADE)
-    code = TextField()
+    code = TextField(validators=[MinLengthValidator(15)])
 
     class Meta:
         db_table = "submissions"
 
     def __str__(self) -> str:
-        return f"{self.code} #{self.id}"
+        return f"#{self.id}"
