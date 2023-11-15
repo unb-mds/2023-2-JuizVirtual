@@ -45,11 +45,6 @@ class ContestModelTestCase(TestCase):
             self.fail("ValidationError raised unexpectedly.")
 
     def test_start_time_after_end_time(self) -> None:
-        """
-        Se o :attr:`start_time` for maior que o :attr:`end_time` (ou
-        seja, o contest começa depois de terminar), devemos lançar um
-        :class:`ValidationError`.
-        """
         self.contest.start_time = timezone.now() + timedelta(hours=1)
         self.contest.end_time = timezone.now()
 
