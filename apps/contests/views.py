@@ -25,7 +25,7 @@ class IndexView(IndexViewBase):
             start_time__gte=timezone.now()
         ).order_by("start_time")[:5]
         if not queryset.exists():
-            raise ValidationError("Não há concursos futuros disponíveis.")
+            raise ValidationError("There are no future contests available.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -33,9 +33,7 @@ class IndexView(IndexViewBase):
 
         valid_statuses = (ContestStatus.PENDING, ContestStatus.RUNNING)
         if not all(status in ContestStatus for status in valid_statuses):
-            raise ValidationError(
-                "Defina pelo menos dois estados de concurso válidos."
-            )
+            raise ValidationError("Define at least two valid contest states.")
 
         ctx["valid_statuses"] = valid_statuses
 
