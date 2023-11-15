@@ -10,17 +10,11 @@ from django.utils import timezone
 from apps.contests.admin import ContestAdmin, ContestModelForm
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
-from apps.users.models import User
 
 
-class ContestTestCase(TestCase):
+class ContestModelTestCase(TestCase):
     def setUp(self) -> None:
-        self.contest = Contest(
-            title="Test Contest",
-            description="This is a test contest",
-            cancelled=False,
-        )
-        self.user = User(username="test_user")
+        self.contest = Contest(title="Test", description="Test contest")
 
     def test_status_pending(self) -> None:
         self.contest.start_time = timezone.now() + timedelta(hours=1)
@@ -41,47 +35,46 @@ class ContestTestCase(TestCase):
         self.contest.cancelled = True
         self.assertEqual(self.contest.status, ContestStatus.CANCELLED)
 
-    def test_clean_method(self) -> None:
-        invalid_contest = Contest(
-            title="Invalid Contest",
-            description="This contest has invalid times",
-            start_time=timezone.now() + timedelta(days=2),
-            end_time=timezone.now() + timedelta(days=1),
-        )
-        with self.assertRaises(ValidationError) as context:
-            invalid_contest.clean()
+    def test_start_time_before_end_time(self) -> None:
+        self.contest.start_time = timezone.now()
+        self.contest.end_time = timezone.now() + timedelta(hours=1)
 
-        self.assertEqual(
-            context.exception.messages, ["Start time must be before end time."]
-        )
+        try:
+            self.contest.clean()
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly.")
+
+    def test_start_time_after_end_time(self) -> None:
+        """
+        Se o :attr:`start_time` for maior que o :attr:`end_time` (ou
+        seja, o contest começa depois de terminar), devemos lançar um
+        :class:`ValidationError`.
+        """
+        self.contest.start_time = timezone.now() + timedelta(hours=1)
+        self.contest.end_time = timezone.now()
+
+        expected = ["Start time must be before end time."]
+
+        with self.assertRaises(ValidationError) as context:
+            self.contest.clean()
+
+        self.assertEqual(context.exception.messages, expected)
 
 
 class ContestStatusTestCase(TestCase):
-    def test_pending(self) -> None:
-        self.assertEqual(ContestStatus.PENDING, "Pending")
+    def test_statuses_values(self) -> None:
+        self.assertEqual(ContestStatus.PENDING.value, "Pending")
+        self.assertEqual(ContestStatus.RUNNING.value, "Running")
+        self.assertEqual(ContestStatus.FINISHED.value, "Finished")
+        self.assertEqual(ContestStatus.CANCELLED.value, "Cancelled")
 
-    def test_running(self) -> None:
-        self.assertEqual(ContestStatus.RUNNING, "Running")
-
-    def test_finished(self) -> None:
-        self.assertEqual(ContestStatus.FINISHED, "Finished")
-
-    def test_cancelled(self) -> None:
-        self.assertEqual(ContestStatus.CANCELLED, "Cancelled")
-
-    def test_valid_status(self) -> None:
-        valid_statuses = [
-            ContestStatus.PENDING,
-            ContestStatus.RUNNING,
-            ContestStatus.FINISHED,
-            ContestStatus.CANCELLED,
-        ]
-
-        for status in valid_statuses:
-            with self.subTest(status=status):
-                self.assertIsNone(
-                    ContestStatus.validate_contest_status(status)
-                )
+    def test_statuses_choices_length(self) -> None:
+        """
+        Devemos ter 4 opções de status de contests: Pending, Running,
+        Finished, Cancelled. Qualquer mudança nesse número deve ser
+        refletida aqui.
+        """
+        self.assertEqual(len(ContestStatus), 4)
 
 
 class ContestModelFormTestCase(TestCase):
