@@ -3,38 +3,36 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 
 {% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
+  {% if user.is_authenticated %}
+    <p>
+      Your account doesn't have access to this page. To proceed, please login
+      with an account that has access.
+    </p>
+  {% else %}
+    <p>
+      Please login to see this page.
+    </p>
+  {% endif %}
 {% endif %}
 
+{% load crispy_forms_tags %}
+
 <form method="post" action="{% url 'login' %}">
-  <div class=" row justify-content-center">
-    <div class="col-md-6">
+  {% csrf_token %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-9">
       <div class="card">
-        <div class="card-header">Login</div>
+        <div class="card-header">
+          Sign in to your account
+        </div>
         <div class="card-body">
-            {% csrf_token %}
-            <div class="mb-3">
-            <label for="inputEmail1" class="form-label">{{ form.username.label_tag }}</label>
-              {{ form.username }}
-            </div>
-            <div class="mb-3">
-            <label for="inputPassword1" class="form-label">{{ form.password.label_tag }}</label>
-              {{ form.password }}
-            </div>
-            <input type="submit" class="btn btn-primary" value="Login">
-            <input type="hidden" name="next" value="{{ next }}">
-            {# Assumes you set up the password_reset view in your URLconf #}
-            <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+          {{ form|crispy }}
+
+          <input type="submit" class="btn btn-primary" style="width: 100%; margin-top: 25px;" value="Login">
+          <input type="hidden" name="next" value="{{ next }}">
         </div>
       </div>
     </div>

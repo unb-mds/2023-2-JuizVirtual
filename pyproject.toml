@@ -13,6 +13,8 @@ psycopg2 = "^2.9.7"
 django-environ = "^0.11.2"
 django-guardian = "^2.4.0"
 django-bootstrap-v5 = "^1.0.11"
+django-crispy-forms = "^2.1"
+crispy-bootstrap5 = "^2023.10"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.4.0"
