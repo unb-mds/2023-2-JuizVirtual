@@ -74,6 +74,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "guardian",
     "bootstrap5",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 LOCAL_APPS = [
@@ -154,3 +156,11 @@ AUTH_USER_MODEL = "users.User"
 #####################
 
 ANONYMOUS_USER_NAME = None
+
+##################
+#  Crispy Forms  #
+##################
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

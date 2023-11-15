@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.admin import AdminSite
+from django.core.exceptions import ValidationError
 from django.forms import CharField, Textarea
 from django.test import TestCase
 from django.urls import resolve, reverse
@@ -11,13 +12,9 @@ from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
 
 
-class ContestTestCase(TestCase):
+class ContestModelTestCase(TestCase):
     def setUp(self) -> None:
-        self.contest = Contest(
-            title="Test Contest",
-            description="This is a test contest",
-            cancelled=False,
-        )
+        self.contest = Contest(title="Test", description="Test contest")
 
     def test_status_pending(self) -> None:
         self.contest.start_time = timezone.now() + timedelta(hours=1)
@@ -38,19 +35,41 @@ class ContestTestCase(TestCase):
         self.contest.cancelled = True
         self.assertEqual(self.contest.status, ContestStatus.CANCELLED)
 
+    def test_start_time_before_end_time(self) -> None:
+        self.contest.start_time = timezone.now()
+        self.contest.end_time = timezone.now() + timedelta(hours=1)
+
+        try:
+            self.contest.clean()
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly.")
+
+    def test_start_time_after_end_time(self) -> None:
+        self.contest.start_time = timezone.now() + timedelta(hours=1)
+        self.contest.end_time = timezone.now()
+
+        expected = ["Start time must be before end time."]
+
+        with self.assertRaises(ValidationError) as context:
+            self.contest.clean()
+
+        self.assertEqual(context.exception.messages, expected)
+
 
 class ContestStatusTestCase(TestCase):
-    def test_pending(self) -> None:
-        self.assertEqual(ContestStatus.PENDING, "Pending")
+    def test_statuses_values(self) -> None:
+        self.assertEqual(ContestStatus.PENDING.value, "Pending")
+        self.assertEqual(ContestStatus.RUNNING.value, "Running")
+        self.assertEqual(ContestStatus.FINISHED.value, "Finished")
+        self.assertEqual(ContestStatus.CANCELLED.value, "Cancelled")
 
-    def test_running(self) -> None:
-        self.assertEqual(ContestStatus.RUNNING, "Running")
-
-    def test_finished(self) -> None:
-        self.assertEqual(ContestStatus.FINISHED, "Finished")
-
-    def test_cancelled(self) -> None:
-        self.assertEqual(ContestStatus.CANCELLED, "Cancelled")
+    def test_statuses_choices_length(self) -> None:
+        """
+        Devemos ter 4 opções de status de contests: Pending, Running,
+        Finished, Cancelled. Qualquer mudança nesse número deve ser
+        refletida aqui.
+        """
+        self.assertEqual(len(ContestStatus), 4)
 
 
 class ContestModelFormTestCase(TestCase):
