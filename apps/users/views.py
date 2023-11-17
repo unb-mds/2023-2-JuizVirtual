@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -15,7 +16,14 @@ class RegisterView(View):
     def post(self, request: HttpRequest) -> HttpResponse:
         form = CreateUserForm(self.request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            user = form.save()
+
+            login(
+                request,
+                user,
+                backend="django.contrib.auth.backends.ModelBackend",
+            )
+
+            return redirect("home")
 
         return render(request, self.template_name, {"form": form})
