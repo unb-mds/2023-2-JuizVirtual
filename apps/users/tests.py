@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from apps.users.admin import UserAdmin
@@ -86,3 +87,18 @@ class UserAdminTestCase(TestCase):
         )
 
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
+
+    def test_email(self) -> None:
+        user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpassword",
+        )
+        self.client.force_login(user)
+
+        url = reverse("users:profile")
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, user.email)
