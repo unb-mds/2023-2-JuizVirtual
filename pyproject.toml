@@ -17,13 +17,13 @@ django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2023.10"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.4.0"
-black = "^23.9.1"
+pre-commit = "^3.5.0"
+black = "^23.11.0"
 isort = "^5.12.0"
-commitizen = "^3.9.0"
+commitizen = "^3.12.0"
 flake8 = "^6.1.0"
-mypy = "^1.5.1"
-django-stubs = {extras = ["compatible-mypy"], version = "^4.2.4"}
+mypy = "^1.6.1"
+django-stubs = {extras = ["compatible-mypy"], version = "^4.2.6"}
 coverage = "^7.3.2"
 
 [tool.poetry.group.docs]
