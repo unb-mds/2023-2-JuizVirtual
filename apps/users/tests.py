@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from apps.users.admin import UserAdmin
+from apps.users.forms import CreateUserForm
 from apps.users.models import User
 
 
@@ -86,3 +88,37 @@ class UserAdminTestCase(TestCase):
         )
 
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
+
+
+class RegisterViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse("users:register")
+        self.valid_data = {
+            "username": "testuser",
+            "email": "test@example.com",
+            "password1": "TestPassword123",
+            "password2": "TestPassword123",
+        }
+
+    def test_register_view_get(self) -> None:
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/register.html")
+        self.assertIsInstance(response.context["form"], CreateUserForm)
+
+    def test_post_valid_data(self) -> None:
+        response = self.client.post(
+            self.url, data=self.valid_data, folloe=True
+        )
+        # Verifica se a página foi redirecionada
+        # para a página inicial após o registro
+        self.assertRedirects(response, reverse("home"))
+        # Verifica se o usuário foi criado no banco de dados
+        self.assertTrue(
+            User.objects.filter(username=self.valid_data["username"]).exists()
+        )
+        # Autentica manualmente o usuário
+        user = User.objects.get(username=self.valid_data["username"])
+        self.client.force_login(user)
+        # Verifica se o usuário está autenticado após o registro
+        self.assertTrue(self.client.session["_auth_user_id"])
