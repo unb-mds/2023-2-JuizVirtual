@@ -9,7 +9,7 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     # Local views
     path("", IndexView.as_view(), name="home"),
-    path("contests/", include("apps.contests.urls")),
+    path("contests/", include("apps.contests.urls"), name="contests"),
     path("tasks/", include("apps.tasks.urls")),
     path("register/", include("apps.users.urls")),
 ]

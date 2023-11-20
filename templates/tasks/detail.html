@@ -40,7 +40,7 @@
 
 {% load crispy_forms_tags %}
 
-<form method="post" action="{% url 'users:register' %}">
+<form method="post" action="">
   {% csrf_token %}
 
   <div class="row justify-content-center">
@@ -50,7 +50,7 @@
           {{ form|crispy }}
 
           <input type="submit" class="btn btn-primary" style="width: 100%; margin-top: 25px;" value="Submit">
-          <input type="hidden" name="next" value="{{ next }}">
+          <input type="hidden" name="next" value="">
     </div>
   </div>
 </form>
