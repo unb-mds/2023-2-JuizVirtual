@@ -108,17 +108,12 @@ class RegisterViewTest(TestCase):
 
     def test_post_valid_data(self) -> None:
         response = self.client.post(
-            self.url, data=self.valid_data, folloe=True
+            self.url, data=self.valid_data, follow=True
         )
-        # Verifica se a página foi redirecionada
-        # para a página inicial após o registro
-        self.assertRedirects(response, reverse("home"))
-        # Verifica se o usuário foi criado no banco de dados
-        self.assertTrue(
-            User.objects.filter(username=self.valid_data["username"]).exists()
-        )
-        # Autentica manualmente o usuário
+
         user = User.objects.get(username=self.valid_data["username"])
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertIsNotNone(user)
         self.client.force_login(user)
-        # Verifica se o usuário está autenticado após o registro
         self.assertTrue(self.client.session["_auth_user_id"])
