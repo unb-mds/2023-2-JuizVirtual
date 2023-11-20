@@ -36,4 +36,23 @@
     <hr>
     <p>{{ task.description }}</p>
   </div>
+
+
+{% load crispy_forms_tags %}
+
+<form method="post" action="{% url 'users:register' %}">
+  {% csrf_token %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <br>
+          <h4>Submit your code!</h4>
+          {{ form|crispy }}
+
+          <input type="submit" class="btn btn-primary" style="width: 100%; margin-top: 25px;" value="Submit">
+          <input type="hidden" name="next" value="{{ next }}">
+    </div>
+  </div>
+</form>
+
 {% endblock content %}
