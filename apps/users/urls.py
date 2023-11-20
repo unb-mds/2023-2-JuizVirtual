@@ -9,7 +9,7 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path(
         "",
-        TemplateView.as_view(template_name="user/profile.html"),
+        TemplateView.as_view(template_name="users/profile.html"),
         name="profile",
     ),
 ]
