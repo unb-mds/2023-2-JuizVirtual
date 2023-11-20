@@ -1,9 +1,9 @@
 Reunião 04
 ==========
 
-:bdg-info:`13/11/2023`  :bdg-warning:`Sprint 4`
+:bdg-info:`25/10/2023`  :bdg-warning:`Sprint 3`
 
 Resumo
 ------
 
-Esta reunião teve como objetivos discutir o progresso, anunciar a saida de um integrante e possiveis duvidas
+Esta reunião teve como objetivos nivelar o nivel de conhecimento dos integrantes e retirada de duvidas.
