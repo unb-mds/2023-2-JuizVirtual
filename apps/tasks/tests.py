@@ -143,7 +143,7 @@ class DetailViewTestCase(TestCase):
             email="joaozinho@email.com", username="joaozinho", password="senha"
         )
 
-        self.client.login(email="joaozinho@email.com", password="senha")
+        self.client.force_login(self.user)
 
         self.response = self.client.post(
             reverse("tasks:detail", args=[self.task.id]), {"code": "codigo"}
