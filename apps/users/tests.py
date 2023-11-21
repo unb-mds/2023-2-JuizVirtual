@@ -96,7 +96,7 @@ class UserAdminTestCase(TestCase):
         )
         self.client.force_login(user)
 
-        url = reverse("users:profile")
+        url = reverse("users:profile", args=[user.username])
 
         response = self.client.get(url)
 
