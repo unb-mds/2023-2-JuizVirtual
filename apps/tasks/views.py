@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING, Any, Dict
 
-from djago.db.models import TextField
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from django.views import View, generic
@@ -37,9 +36,8 @@ class DetailView(FormMixinBase, DetailViewBase, View):
         form = self.get_form()
 
         if self.form_valid(form):
-            submission = Submission()
+            submission = Submission(code=request.POST)
 
-            submission.code = TextField(request.POST)
             submission.author = request.user
             submission.task = self.object
 
