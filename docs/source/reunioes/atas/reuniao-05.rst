@@ -6,4 +6,5 @@ Reunião 04
 Resumo
 ------
 
-Esta reunião teve como objetivos nivelar o nivel de conhecimento dos integrantes e retirada de duvidas.
+Esta reunião teve como objetivos nivelar o nivel de conhecimento dos integrantes e retirada
+de duvidas.

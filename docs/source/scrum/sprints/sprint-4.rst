@@ -6,7 +6,9 @@ Sprint 4
 Resumo
 ------
 
-Nesta sprint, a equipe de desenvolvimento começou a trabalhar na segunda release. As principais atividades foram o início do desenvolvimento da parte de submissões e a estilização da página de login para melhor acessibilidade do usuário.
+Nesta sprint, a equipe de desenvolvimento começou a trabalhar na segunda release. As
+principais atividades foram o início do desenvolvimento da parte de submissões e a
+estilização da página de login para melhor acessibilidade do usuário.
 
 
 Changelog
