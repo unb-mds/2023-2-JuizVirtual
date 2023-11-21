@@ -140,7 +140,7 @@ class DetailViewTestCase(TestCase):
         )
 
         self.user = User._default_manager.create(
-            email="joaozinho@email.com", username="joaozinho", password="senha"
+            email="user@email.com", username="user", password="password"
         )
 
         self.client.force_login(self.user)
