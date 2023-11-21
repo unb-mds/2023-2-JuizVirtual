@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.admin.sites import AdminSite
+from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import resolve, reverse
 from django.utils import timezone
@@ -125,3 +126,13 @@ class DetailViewTestCase(TestCase):
 
     def test_detail_view_template_name_is_correct(self) -> None:
         self.assertEqual(DetailView.template_name, "tasks/detail.html")
+
+    def test_insertion_in_db(self) -> None:
+        self.assertEqual(
+            DetailView.post(
+                DetailView(),
+                request=DetailView.request,
+                pk=DetailView.query_pk_and_slug,
+            ),
+            HttpResponse,
+        )
