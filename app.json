@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/unb-mds/2023-2-Squad06",
+  "addons": ["heroku-postgresql:mini", "papertrail:choklad"],
+  "buildpacks": [
+    {
+      "url": "https://github.com/moneymeets/python-poetry-buildpack.git"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "PYTHON_RUNTIME_VERSION": "3.11.5",
+    "POETRY_VERSION": "1.6.1",
+    "DISABLE_COLLECTSTATIC": "1"
+  }
+}
