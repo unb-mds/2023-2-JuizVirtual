@@ -36,12 +36,9 @@ class DetailView(FormMixinBase, DetailViewBase):
         form = self.get_form()
 
         if self.form_valid(form):
-            submission = Submission(code=request.POST)
-
-            submission.author = request.user
-            submission.task = self.object
-
-            submission.save()
+            Submission._default_manager.create(
+                code=request.POST, task=self.object, author=request.user
+            )
 
         return (
             self.form_valid(form)
