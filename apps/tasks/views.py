@@ -1,9 +1,12 @@
 from typing import TYPE_CHECKING, Any, Dict
 
+from djago.db.models import TextField
 from django.http import HttpRequest, HttpResponse
-from django.views import generic
+from django.urls import reverse
+from django.views import View, generic
 from django.views.generic.edit import FormMixin
 
+from apps.submissions.models import Submission
 from apps.tasks.forms import TaskForm
 from apps.tasks.models import Task
 
@@ -15,7 +18,7 @@ else:
     FormMixinBase = FormMixin
 
 
-class DetailView(FormMixinBase, DetailViewBase):
+class DetailView(FormMixinBase, DetailViewBase, View):
     model = Task
     template_name = "tasks/detail.html"
     form_class = TaskForm
@@ -26,9 +29,21 @@ class DetailView(FormMixinBase, DetailViewBase):
 
         return context
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+    def get_success_url(self) -> str:
+        return reverse("tasks:detail", args=[self.object.id])
+
+    def post(self, request: HttpRequest, *, pk: int) -> HttpResponse:
         self.object = self.get_object()
         form = self.get_form()
+
+        if self.form_valid(form):
+            submission = Submission()
+
+            submission.code = TextField(request.POST)
+            submission.author = request.user
+            submission.task = self.object
+
+            submission.save()
 
         return (
             self.form_valid(form)
