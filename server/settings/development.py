@@ -4,6 +4,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
+    ".herokuapp.com",
 ]
 
 # In development, we don't need a secure password hasher. We can use
