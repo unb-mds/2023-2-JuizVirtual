@@ -1,15 +1,16 @@
 from datetime import timedelta
 
 from django.contrib.admin.sites import AdminSite
-from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
+from apps.submissions.models import Submission
 from apps.tasks.admin import TaskAdmin
 from apps.tasks.models import Task
 from apps.tasks.views import DetailView
+from apps.users.models import User
 
 
 class TaskTestCase(TestCase):
@@ -121,18 +122,54 @@ class TaskURLTestCase(TestCase):
 
 
 class DetailViewTestCase(TestCase):
+    def setUp(self) -> None:
+        self.now = timezone.now()
+
+        self.start_time = self.now - timedelta(hours=1)
+
+        self.end_time = self.now + timedelta(hours=1)
+
+        self.contest = Contest._default_manager.create(
+            start_time=self.start_time, end_time=self.end_time
+        )
+
+        self.task = Task._default_manager.create(
+            title="OQueOPalmeirasTem",
+            description="LinkisNotinHere",
+            contest=self.contest,
+        )
+
+        self.user = User._default_manager.create(
+            email="joaozinho@email.com", username="joaozinho", password="senha"
+        )
+
+        self.client.login(email="joaozinho@email.com", password="senha")
+
+        self.response = self.client.post(
+            reverse("tasks:detail", args=[self.task.id]), {"code": "codigo"}
+        )
+
+        self.submission = Submission._default_manager.get(task=self.task.id)
+
     def test_detail_view_model_is_task(self) -> None:
         self.assertEqual(DetailView.model, Task)
 
     def test_detail_view_template_name_is_correct(self) -> None:
         self.assertEqual(DetailView.template_name, "tasks/detail.html")
 
-    def test_insertion_in_db(self) -> None:
+    def test_post_is_redirecting(self) -> None:
+        self.assertEqual(self.response.status_code, 302)
+
+    def test_is_submission_none(self) -> None:
+        self.assertIsNotNone(self.submission)
+
+    def test_is_submission_task(self) -> None:
+        self.assertEqual(self.submission.task, self.task)
+
+    def test_is_submission_author(self) -> None:
+        self.assertEqual(self.submission.author, self.user)
+
+    def test__is_submission_code(self) -> None:
         self.assertEqual(
-            DetailView.post(
-                DetailView(),
-                request=DetailView.request,
-                pk=DetailView.query_pk_and_slug,
-            ),
-            HttpResponse,
+            self.submission.code, "<QueryDict: {'code': ['codigo']}>"
         )
