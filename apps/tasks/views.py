@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any, Dict
 
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
-from django.views import View, generic
+from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from apps.submissions.models import Submission
@@ -17,7 +17,7 @@ else:
     FormMixinBase = FormMixin
 
 
-class DetailView(FormMixinBase, DetailViewBase, View):
+class DetailView(FormMixinBase, DetailViewBase):
     model = Task
     template_name = "tasks/detail.html"
     form_class = TaskForm
