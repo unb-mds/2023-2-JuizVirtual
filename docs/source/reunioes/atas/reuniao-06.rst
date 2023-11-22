@@ -1,7 +1,7 @@
 Reunião 06
 ==========
 
-:bdg-info:`13/11/2023`  :bdg-warning:`Sprint 4`
+:bdg-info:`13/11/2023` :bdg-warning:`Sprint 4`
 
 Resumo
 ------

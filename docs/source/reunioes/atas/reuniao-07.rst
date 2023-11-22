@@ -1,7 +1,7 @@
 Reunião 07
 ==========
 
-:bdg-info:`16/11/2023`  :bdg-warning:`Sprint 4`
+:bdg-info:`16/11/2023` :bdg-warning:`Sprint 4`
 
 Resumo
 ------
