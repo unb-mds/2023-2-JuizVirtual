@@ -6,4 +6,5 @@ Reunião 06
 Resumo
 ------
 
-Esta reunião teve como objetivos discutir o progresso, anunciar a saida de um integrante.
+Esta reunião teve como objetivos discutir o progresso, anunciar a saida de um
+integrante.
