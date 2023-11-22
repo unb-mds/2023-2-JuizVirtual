@@ -90,7 +90,7 @@
                     </a>
                   </li>
                 {% endif %}
-                <li><a href="#" class="dropdown-item">Your profile</a></li>
+                <li><a href="{% url 'users:profile' user.username %}" class="dropdown-item">Your profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                   <a href="{% url 'logout' %}" class="dropdown-item">

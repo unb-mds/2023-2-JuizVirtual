@@ -141,7 +141,7 @@ executará as migrações. Faça isso com o seguinte comando:
 
 .. code-block:: bash
 
-   $ docker compose run --rm web python manage.py migrate
+   $ docker compose run --rm django python manage.py migrate
 
 .. hint::
 
@@ -221,10 +221,10 @@ seguinte comando:
 
 .. code-block:: bash
 
-   $ docker compose run --rm web python manage.py createsuperuser
+   $ docker compose run --rm django python manage.py createsuperuser
 
 E para criar migrações do banco de dados, use o seguinte comando:
 
 .. code-block:: bash
 
-   $ docker compose run --rm web python manage.py makemigrations
+   $ docker compose run --rm django python manage.py makemigrations
