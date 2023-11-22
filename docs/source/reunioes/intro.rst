@@ -25,3 +25,6 @@ Atas
    atas/reuniao-02
    atas/reuniao-03
    atas/reuniao-04
+   atas/reuniao-05
+   atas/reuniao-06
+   atas/reuniao-07
