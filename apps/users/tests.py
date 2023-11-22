@@ -89,6 +89,7 @@ class UserAdminTestCase(TestCase):
 
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
 
+
 class RegisterViewTest(TestCase):
     def setUp(self) -> None:
         self.url = reverse("users:register")
@@ -116,7 +117,7 @@ class RegisterViewTest(TestCase):
         self.assertIsNotNone(user)
         self.client.force_login(user)
         self.assertTrue(self.client.session["_auth_user_id"])
-        
+
     def test_email(self) -> None:
         user = User.objects.create_user(
             username="testuser",
