@@ -1,59 +1,58 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}{{ task.title }}{% endblock title %}
 
 {% block content %}
-  <div>
-    <h1>
-      <a href="{% url 'tasks:detail' task.id %}">
-        {{ task.title }}
-      </a>
-    </h1>
-    <hr>
+<h1>
+  <a href="{% url 'tasks:detail' task.id %}">
+    {{ task.title }}
+  </a>
+</h1>
+<hr>
 
-    <div>
-      <p>
-        <b>Score:</b> {{ task.score|default:"???" }}
-      </p>
-      <p>
-        <b>Memory limit:</b>
-        {% if task.memory_limit %}
-          {{ task.memory_limit|filesizeformat }}
-        {% else %}
-          Unlimited
-        {% endif %}
-      </p>
-      <p>
-        <b>Time limit:</b>
-        {% if task.time_limit %}
-         {{ task.time_limit }}
-         second{{ task.time_limit|pluralize:"s" }}
-        {% else %}
-          Unlimited
-        {% endif %}
-      </p>
-    </div>
-    <hr>
-    <p>{{ task.description }}</p>
-  </div>
+<div>
+  <p>
+    <b>Score:</b> {{ task.score|default:"???" }}
+  </p>
+  <p>
+    <b>Memory limit:</b>
+    {% if task.memory_limit %}
+      {{ task.memory_limit|filesizeformat }}
+    {% else %}
+      Unlimited
+    {% endif %}
+  </p>
+  <p>
+    <b>Time limit:</b>
+    {% if task.time_limit %}
+      {{ task.time_limit }}
+      second{{ task.time_limit|pluralize:"s" }}
+    {% else %}
+      Unlimited
+    {% endif %}
+  </p>
+</div>
+<hr>
+<h4>Description</h4>
+<p>{{ task.description }}</p>
 
-{% load crispy_forms_tags %}
+<hr>
 
-<form method="post" action="" >
+<form method="post">
   {% csrf_token %}
 
   <div class="row justify-content-center">
-    <div class="col-md-9">
-      <br>
-          <h4>Submit your code!</h4>
-          {{ form|crispy }}
-          <input
-            type="submit"
-            class="btn btn-primary"
-            style="width: 100%; margin-top: 25px;"
-            value="Submit"
-          >
-    </div>
+    <br>
+    <h4>Submit</h4>
+    {{ form|crispy }}
+    <input
+      type="submit"
+      class="btn btn-primary"
+      style="width: 40%; margin-top: 25px;"
+      value="Submit"
+    >
   </div>
 </form>
 
