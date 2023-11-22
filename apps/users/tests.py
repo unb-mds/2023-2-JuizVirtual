@@ -117,3 +117,18 @@ class RegisterViewTest(TestCase):
         self.assertIsNotNone(user)
         self.client.force_login(user)
         self.assertTrue(self.client.session["_auth_user_id"])
+
+    def test_email(self) -> None:
+        user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpassword",
+        )
+        self.client.force_login(user)
+
+        url = reverse("users:profile", args=[user.username])
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, user.email)
