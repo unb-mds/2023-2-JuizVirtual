@@ -81,22 +81,16 @@ class SubmissionAdminTest(TestCase):
         self.submission_admin = SubmissionAdmin(Submission, self.site)
 
     def test_list_display(self) -> None:
-        expected_list_display = ("author", "task", "created_at")
-        self.assertEqual(
-            self.submission_admin.list_display, expected_list_display
-        )
+        expected = ("author", "task")
+        self.assertEqual(self.submission_admin.list_display, expected)
 
     def test_list_filter(self) -> None:
-        expected_list_filter = ("task",)
-        self.assertEqual(
-            self.submission_admin.list_filter, expected_list_filter
-        )
+        expected = ("task",)
+        self.assertEqual(self.submission_admin.list_filter, expected)
 
     def test_search_field(self) -> None:
-        expected_search_fields = ("author__username", "task__title")
-        self.assertEqual(
-            self.submission_admin.search_fields, expected_search_fields
-        )
+        expected = ("author__username", "task__title")
+        self.assertEqual(self.submission_admin.search_fields, expected)
 
     def test_fieldsets(self) -> None:
         expected_fieldsets = [
