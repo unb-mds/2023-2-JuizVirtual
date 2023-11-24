@@ -28,13 +28,13 @@ class SubmissionModelForm(SubmissionModelFormBase):
 class SubmissionAdmin(SubmissionAdminBase):
     form = SubmissionModelForm
 
-    list_display = ("author", "task", "status", "created_at")
-    list_filter = ("status", "task")
+    list_display = ("author", "task", "created_at")
+    list_filter = ("task",)
     search_fields = ("author__username", "task__title")
 
     fieldsets = [
         (
             _("Submission Details"),
-            {"fields": ("author", "task", "code", "status", "created_at")},
+            {"fields": ("author", "task", "code", "created_at")},
         )
     ]
