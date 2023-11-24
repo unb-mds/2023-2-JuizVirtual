@@ -28,7 +28,7 @@ class SubmissionModelForm(SubmissionModelFormBase):
 class SubmissionAdmin(SubmissionAdminBase):
     form = SubmissionModelForm
 
-    list_display = ("author", "task", "created_at")
+    list_display = ("author", "task")
     list_filter = ("task",)
     search_fields = ("author__username", "task__title")
 
