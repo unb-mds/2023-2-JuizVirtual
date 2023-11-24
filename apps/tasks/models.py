@@ -25,7 +25,4 @@ class Task(TimestampedModel):
 
     @property
     def is_accessible(self) -> bool:
-        return self.contest.status in (
-            ContestStatus.RUNNING,
-            ContestStatus.FINISHED,
-        )
+        return self.contest.status in (ContestStatus.RUNNING,)
