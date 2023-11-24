@@ -102,7 +102,7 @@ class SubmissionAdminTest(TestCase):
         expected_fieldsets = [
             (
                 ("Submission Details"),
-                {"fields": ("author", "task", "code", "created_at")},
+                {"fields": ("author", "task", "code")},
             )
         ]
         self.assertEqual(self.submission_admin.fieldsets, expected_fieldsets)

@@ -35,6 +35,6 @@ class SubmissionAdmin(SubmissionAdminBase):
     fieldsets = [
         (
             _("Submission Details"),
-            {"fields": ("author", "task", "code", "created_at")},
+            {"fields": ("author", "task", "code")},
         )
     ]
