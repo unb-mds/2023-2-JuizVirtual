@@ -33,4 +33,11 @@ class ProfileView(View):
 
     def get(self, request: HttpRequest, user_username: str) -> HttpResponse:
         user = get_object_or_404(User, username=user_username)
-        return render(request, self.template_name, {"user": user})
+
+        is_own_profile = user == request.user
+
+        return render(
+            request,
+            self.template_name,
+            {"user": user, "is_own_profile": is_own_profile},
+        )

@@ -19,6 +19,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
 
     email = EmailField(db_index=True, max_length=256, unique=True)
     username = CharField(db_index=True, max_length=128, unique=True)
+    score = 0
+    contest = 0
 
     # When a user no longer wishes to use our platform, they may try to
     # delete there account. That's a problem for us because the data we
