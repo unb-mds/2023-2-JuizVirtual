@@ -15,9 +15,7 @@ else:
 
 
 class SubmissionModelForm(SubmissionModelFormBase):
-    submission_data = CharField(
-        widget=Textarea(attrs={"rows": 10, "cols": 80})
-    )
+    code = CharField(widget=Textarea(attrs={"rows": 20, "cols": 80}))
 
     class Meta:
         model = Submission
@@ -28,13 +26,7 @@ class SubmissionModelForm(SubmissionModelFormBase):
 class SubmissionAdmin(SubmissionAdminBase):
     form = SubmissionModelForm
 
-    list_display = ("author", "task")
-    list_filter = ("task",)
-    search_fields = ("author__username", "task__title")
+    list_display = ("__str__", "author", "task")
+    list_filter = ("author", "task", "created_at")
 
-    fieldsets = [
-        (
-            _("Submission Details"),
-            {"fields": ("author", "task", "code")},
-        )
-    ]
+    fieldsets = [(_("Details"), {"fields": ("author", "task", "code")})]
