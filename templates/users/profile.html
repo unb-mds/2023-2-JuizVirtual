@@ -1,12 +1,15 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
-{% block title %}User{% endblock title %}
+    {% block title %}User{% endblock title %}
 
-{% block content %}
-    <div class="user-profile">
-        <h2>{{user.username}}</h2>
-        <p>Email: {{ user.email }}</p>
-        <p>Score: </p>
-        <p>Contests: </p>
-    </div>
-{% endblock content %}
+    {% block content %}
+        <div class="user-profile">
+            <h2>{{ user.username }}</h2>
+
+            {% if is_own_profile %}
+                <p>Email: {{ user.email }}</p>
+            {% endif %}
+                <p>Score: {{ user.score }}</p>
+                <p>Contests: {{ user.contest }}</p>
+        </div>
+    {% endblock content %}
