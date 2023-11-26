@@ -1,10 +1,13 @@
 from datetime import timedelta
 
+from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from apps.contests.models import Contest
+from apps.submissions.admin import SubmissionAdmin
 from apps.submissions.models import Submission
 from apps.tasks.models import Task
 from apps.users.models import User
@@ -71,3 +74,21 @@ class SubmissionTestCase(TestCase):
             submission.full_clean()
 
         self.assertEqual(context.exception.messages, expected)
+
+
+class SubmissionAdminTest(TestCase):
+    def setUp(self) -> None:
+        self.site = AdminSite()
+        self.submission_admin = SubmissionAdmin(Submission, self.site)
+
+    def test_list_display(self) -> None:
+        expected = ("__str__", "author", "task")
+        self.assertEqual(self.submission_admin.list_display, expected)
+
+    def test_list_filter(self) -> None:
+        expected = ("author", "task", "created_at")
+        self.assertEqual(self.submission_admin.list_filter, expected)
+
+    def test_fieldsets(self) -> None:
+        expected = [(_("Details"), {"fields": ("author", "task", "code")})]
+        self.assertEqual(self.submission_admin.fieldsets, expected)
