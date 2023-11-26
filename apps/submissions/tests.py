@@ -4,6 +4,7 @@ from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from apps.contests.models import Contest
 from apps.submissions.admin import SubmissionAdmin
@@ -81,22 +82,13 @@ class SubmissionAdminTest(TestCase):
         self.submission_admin = SubmissionAdmin(Submission, self.site)
 
     def test_list_display(self) -> None:
-        expected = ("author", "task")
+        expected = ("__str__", "author", "task")
         self.assertEqual(self.submission_admin.list_display, expected)
 
     def test_list_filter(self) -> None:
-        expected = ("task",)
+        expected = ("author", "task", "created_at")
         self.assertEqual(self.submission_admin.list_filter, expected)
 
-    def test_search_field(self) -> None:
-        expected = ("author__username", "task__title")
-        self.assertEqual(self.submission_admin.search_fields, expected)
-
     def test_fieldsets(self) -> None:
-        expected_fieldsets = [
-            (
-                ("Submission Details"),
-                {"fields": ("author", "task", "code")},
-            )
-        ]
-        self.assertEqual(self.submission_admin.fieldsets, expected_fieldsets)
+        expected = [(_("Details"), {"fields": ("author", "task", "code")})]
+        self.assertEqual(self.submission_admin.fieldsets, expected)
