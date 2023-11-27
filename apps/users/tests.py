@@ -106,6 +106,13 @@ class RegisterViewTest(TestCase):
         self.assertTemplateUsed(response, "registration/register.html")
         self.assertIsInstance(response.context["form"], CreateUserForm)
 
+    def test_register_view_post_invalid_data(self) -> None:
+        response = self.client.post(self.url, data={}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/register.html")
+        self.assertContains(response, "This field is required.")
+
     def test_post_valid_data(self) -> None:
         response = self.client.post(
             self.url, data=self.valid_data, follow=True
