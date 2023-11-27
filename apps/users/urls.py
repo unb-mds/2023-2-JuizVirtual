@@ -6,7 +6,5 @@ app_name = "users"
 
 urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
-    path(
-        "profile/<str:user_username>/", ProfileView.as_view(), name="profile"
-    ),
+    path("profile/<str:username>/", ProfileView.as_view(), name="profile"),
 ]

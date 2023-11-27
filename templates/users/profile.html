@@ -1,15 +1,26 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 
-    {% block title %}User{% endblock title %}
+{% block title %}{{ user.username }}{% endblock title %}
 
-    {% block content %}
-        <div class="user-profile">
-            <h2>{{ user.username }}</h2>
-
-            {% if is_own_profile %}
-                <p>Email: {{ user.email }}</p>
-            {% endif %}
-                <p>Score: {{ user.score }}</p>
-                <p>Contests: {{ user.contest }}</p>
-        </div>
-    {% endblock content %}
+{% block content %}
+  <div class="card">
+    <div
+      class="card-header"
+      style="display: flex; align-items: center; justify-content: space-between;"
+    >
+      <h2>{{ user.username }}</h2>
+      {% if user.is_staff %}
+        <span class="badge bg-primary float-end mt-1">
+          Staff
+        </span>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      {% if request.user.is_authenticated and request.user == user %}
+        <p>E-mail: {{ user.email }}</p>
+      {% endif %}
+      <p>Score: 0</p>
+      <p>Contests: {{ user.contests|length }}</p>
+    </div>
+  </div>
+{% endblock content %}
