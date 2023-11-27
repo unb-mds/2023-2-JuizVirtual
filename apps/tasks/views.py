@@ -32,6 +32,17 @@ class DetailView(FormMixinBase, DetailViewBase):
     def get_success_url(self) -> str:
         return reverse("tasks:detail", args=[self.object.id])
 
+    def get(
+        self, request: HttpRequest, *args: Any, **kwargs: Any
+    ) -> HttpResponse:
+        self.object = self.get_object()
+
+        if not self.object.is_accessible:
+            return redirect("home")
+
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
     def post(self, request: HttpRequest, *, pk: int) -> HttpResponse:
         # Unauthenticated users should not be able to submit
         # a submission to a task, so we redirect them to the
