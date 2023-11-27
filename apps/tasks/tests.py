@@ -179,3 +179,14 @@ class DetailViewTestCase(TestCase):
     def test_send_submission_without_authentication(self) -> None:
         response = self.client.post(self.url, data={"code": self.code})
         self.assertEqual(response.status_code, 302)
+
+    def test_access_task_that_is_accessible(self) -> None:
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_access_task_that_is_not_accessible(self) -> None:
+        self.task.contest.cancelled = True
+        self.task.contest.save()
+
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
