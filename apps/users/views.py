@@ -31,6 +31,6 @@ class RegisterView(View):
 class ProfileView(View):
     template_name = "users/profile.html"
 
-    def get(self, request: HttpRequest, user_username: str) -> HttpResponse:
-        user = get_object_or_404(User, username=user_username)
+    def get(self, request: HttpRequest, *, username: str) -> HttpResponse:
+        user = get_object_or_404(User, username=username)
         return render(request, self.template_name, {"user": user})

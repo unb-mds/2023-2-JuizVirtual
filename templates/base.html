@@ -71,7 +71,7 @@
               </a>
             </li>
           </ul>
-          {% if user.is_authenticated %}
+          {% if request.user.is_authenticated %}
             <div class="dropdown">
               <a
                 class="dropdown-toggle nav-link text-white"
@@ -80,10 +80,10 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{ user.username }}
+                {{ request.user.username }}
               </a>
               <ul class="dropdown-menu">
-                {% if user.is_staff %}
+                {% if request.user.is_staff %}
                   <li>
                     <a href="{% url 'admin:index' %}" class="dropdown-item">
                       Admin
