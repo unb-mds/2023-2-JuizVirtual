@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from apps.contests.models import Contest
 from apps.submissions.forms import SubmissionForm
-from apps.submissions.models import Submission
+from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin
 from apps.tasks.models import Task
 from apps.tasks.views import DetailView
@@ -149,6 +149,13 @@ class DetailViewTestCase(TestCase):
             password="password",
         )
 
+        self.submission = Submission._default_manager.create(
+            author=self.user,
+            task=self.task,
+            code="print('Hello, World!')",
+            status=SubmissionStatus.WAITING_JUDGE,
+        )
+
         self.url = reverse("tasks:detail", args=[self.task.id])
 
     def test_send_submission_successfully(self) -> None:
@@ -179,3 +186,41 @@ class DetailViewTestCase(TestCase):
     def test_send_submission_without_authentication(self) -> None:
         response = self.client.post(self.url, data={"code": self.code})
         self.assertEqual(response.status_code, 302)
+
+    def test_handle_submission_with_exception(self) -> None:
+        self.client.force_login(self.user)
+
+        # Enviar código que causará uma exceção
+        response = self.client.post(
+            self.url, data={"code": "raise Exception('Test exception')"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Error: Test exception", response.content.decode())
+
+        self.assertEqual(self.submission.status, "RE")
+
+    def test_handle_submission_with_correct_output(self) -> None:
+        self.client.force_login(self.user)
+
+        # Definir a saída esperada para a tarefa
+        self.task.output_file = "Hello, World!\n"
+        self.task.save()
+
+        # Enviar código que produzirá a saída correta
+        response = self.client.post(
+            self.url, data={"code": "print('Hello, World!')"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content.decode(), "Correct!")
+
+        self.assertEqual(self.submission.status, "AC")
+
+    # def test_get_success_url(self) -> None:
+    #     self.client.force_login(self.user)
+
+    #     # Enviar código válido
+    # response = self.client.post(
+    #               self.url,
+    #               data={"code": "print('Hello, World!')"}
+    #           )
+    #     self.assertEqual(response.status_code, 302)
