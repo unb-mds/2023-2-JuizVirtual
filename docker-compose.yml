@@ -21,6 +21,8 @@ services:
       - main
     env_file:
       - config/.env
+    depends_on:
+      - postgres
     command: python -Wd manage.py runserver 0.0.0.0:8000
 
   postgres:

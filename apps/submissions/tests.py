@@ -90,5 +90,7 @@ class SubmissionAdminTest(TestCase):
         self.assertEqual(self.submission_admin.list_filter, expected)
 
     def test_fieldsets(self) -> None:
-        expected = [(_("Details"), {"fields": ("author", "task", "code")})]
+        expected = [
+            (_("Details"), {"fields": ("author", "task", "code", "status")})
+        ]
         self.assertEqual(self.submission_admin.fieldsets, expected)
