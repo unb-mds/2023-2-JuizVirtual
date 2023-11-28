@@ -18,25 +18,62 @@ services:
     ports:
       - 8000:8000
     networks:
-      - main
+      - database
+      - message-broker
     env_file:
       - config/.env
     depends_on:
       - postgres
     command: python -Wd manage.py runserver 0.0.0.0:8000
 
+  celery:
+    image: virtual-judge:dev
+    build:
+      context: .
+      dockerfile: docker/django/Dockerfile
+      target: development-build
+      args:
+        - DJANGO_ENV=development
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+      cache_from:
+        - "virtual-judge:dev"
+        - "virtual-judge:latest"
+        - "*"
+    volumes:
+      - .:/app
+    networks:
+      - database
+      - message-broker
+    env_file:
+      - config/.env
+    depends_on:
+      - postgres
+    command: celery -A server worker -l INFO
+
   postgres:
     image: postgres:16.0-alpine
     volumes:
       - data:/var/lib/postgresql/data
     networks:
-      - main
+      - database
     env_file:
       - config/.env
     restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.12.9-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - message-broker
+    env_file:
+      - config/.env
 
 volumes:
   data:
 
 networks:
-  main:
+  database:
+  message-broker:

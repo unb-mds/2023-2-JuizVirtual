@@ -25,8 +25,8 @@ class Task(TimestampedModel):
     memory_limit = IntegerField(null=True)
     time_limit = IntegerField(null=True)
 
-    input_file = TextField()
-    output_file = TextField()
+    input_file = TextField(default="")
+    output_file = TextField(default="")
 
     class Meta:
         db_table = "tasks"
