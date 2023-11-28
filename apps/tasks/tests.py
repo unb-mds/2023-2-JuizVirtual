@@ -181,7 +181,7 @@ class TaskURLTestCase(TestCase):
         self.assertEqual(url, expected)
 
 
-class DetailViewTestCase(TestCase):
+class TasksViewTestCase(TestCase):
     def setUp(self) -> None:
         now = timezone.now()
         start_time = now - timedelta(hours=1)
@@ -214,6 +214,8 @@ class DetailViewTestCase(TestCase):
         )
 
         self.url = reverse("tasks:detail", args=[self.task.id])
+        self.view = DetailView()
+        self.view.object = self.task
 
     def test_send_submission_successfully(self) -> None:
         self.client.force_login(self.user)
@@ -289,3 +291,6 @@ class DetailViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertHTMLEqual(response.content.decode(), expected)
+
+    def test_form_success_url(self) -> None:
+        self.assertEqual(self.view.get_success_url(), self.url)
