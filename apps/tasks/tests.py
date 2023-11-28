@@ -238,13 +238,18 @@ class TasksViewTestCase(TestCase):
     def test_detail_view_form_class_is_submission_form(self) -> None:
         self.assertEqual(DetailView.form_class, SubmissionForm)
 
-    def test_send_submission_is_redirecting(self) -> None:
-        response = self.client.post(self.url, data={"code": self.code})
-        self.assertEqual(response.status_code, 302)
-
     def test_send_submission_without_authentication(self) -> None:
         response = self.client.post(self.url, data={"code": self.code})
+        expected_target = reverse("login")
+
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            expected_target,
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
 
     def test_access_task_that_is_accessible(self) -> None:
         response = self.client.get(self.url)
@@ -255,18 +260,31 @@ class TasksViewTestCase(TestCase):
         self.task.contest.save()
 
         response = self.client.get(self.url)
+        expected_target = reverse("home")
+
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            expected_target,
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
 
     def test_handle_submission_with_exception(self) -> None:
         self.client.force_login(self.user)
 
         code = "raise Exception('Test exception')"
-        expected = "Exception: Test exception"
-
         response = self.client.post(self.url, data={"code": code})
 
-        self.assertEqual(response.status_code, 200)
-        self.assertInHTML(expected, response.content.decode())
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            self.url,
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
 
     def test_handle_submission_with_correct_output(self) -> None:
         self.client.force_login(self.user)
@@ -275,10 +293,15 @@ class TasksViewTestCase(TestCase):
         self.task.save()
 
         response = self.client.post(self.url, data={"code": self.code})
-        expected = "Correct!"
 
-        self.assertEqual(response.status_code, 200)
-        self.assertHTMLEqual(response.content.decode(), expected)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            self.url,
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
 
     def test_handle_submission_with_wrong_output(self) -> None:
         self.client.force_login(self.user)
@@ -287,10 +310,15 @@ class TasksViewTestCase(TestCase):
         self.task.save()
 
         response = self.client.post(self.url, data={"code": self.code})
-        expected = "Incorrect!"
 
-        self.assertEqual(response.status_code, 200)
-        self.assertHTMLEqual(response.content.decode(), expected)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            self.url,
+            status_code=302,
+            target_status_code=200,
+            fetch_redirect_response=True,
+        )
 
     def test_form_success_url(self) -> None:
         self.assertEqual(self.view.get_success_url(), self.url)
