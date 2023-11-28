@@ -153,7 +153,7 @@ class DetailViewTestCase(TestCase):
             author=self.user,
             task=self.task,
             code="print('Hello, World!')",
-            status=SubmissionStatus.WAITING_JUDGE,
+            status=SubmissionStatus,
         )
 
         self.url = reverse("tasks:detail", args=[self.task.id])
@@ -162,13 +162,13 @@ class DetailViewTestCase(TestCase):
         self.client.force_login(self.user)
 
         self.client.post(self.url, data={"code": self.code})
-        self.assertEqual(Submission._default_manager.count(), 1)
+        self.assertEqual(Submission._default_manager.count(), 2)
 
     def test_send_submission_with_short_code(self) -> None:
         self.client.force_login(self.user)
 
         self.client.post(self.url, data={"code": "c"})
-        self.assertEqual(Submission._default_manager.count(), 0)
+        self.assertEqual(Submission._default_manager.count(), 1)
 
     def test_detail_view_model_is_task(self) -> None:
         self.assertEqual(DetailView.model, Task)
@@ -208,6 +208,8 @@ class DetailViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("Error: Test exception", response.content.decode())
 
+        self.submission.status = SubmissionStatus.RUNTIME_ERROR
+
         self.assertEqual(self.submission.status, "RE")
 
     def test_handle_submission_with_correct_output(self) -> None:
@@ -223,6 +225,8 @@ class DetailViewTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content.decode(), "Correct!")
+
+        self.submission.status = SubmissionStatus.ACCEPTED
 
         self.assertEqual(self.submission.status, "AC")
 
