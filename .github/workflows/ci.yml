@@ -6,15 +6,25 @@ on:
     types:
       - reopened
 
+env:
+  CELERY_BROKER_URL: "amqp://virtualjudge:virtualjudge@localhost:5672//"
+
 jobs:
   upload:
     runs-on: ubuntu-latest
+    services:
+      rabbitmq:
+        image: rabbitmq:3.12.9-alpine
+        env:
+          RABBITMQ_DEFAULT_USER: virtualjudge
+          RABBITMQ_DEFAULT_PASS: virtualjudge
+        ports:
+          - 5672:5672
     strategy:
       max-parallel: 4
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.6.1"]
-
     env:
       DATABASE_URL: "sqlite:///db.sqlite3"
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
