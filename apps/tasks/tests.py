@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.admin.sites import AdminSite
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import resolve, reverse
 from django.utils import timezone
@@ -239,3 +240,29 @@ class DetailViewTestCase(TestCase):
     #               data={"code": "print('Hello, World!')"}
     #           )
     #     self.assertEqual(response.status_code, 302)
+
+    def test_save_model(self) -> None:
+        input_file = SimpleUploadedFile("input.txt", b"input")
+        output_file = SimpleUploadedFile("output.txt", b"output")
+
+        response = self.client.post(
+            self.url,
+            data={
+                "title": "Example task",
+                "description": "Some Example Task",
+                "contest": self.contest.id,
+                "input_file": input_file,
+                "output_file": output_file,
+            },
+        )
+
+        response
+
+        self.assertEqual(self.task.title, self.submission.task.title)
+        self.assertEqual(
+            self.task.description, self.submission.task.description
+        )
+        self.assertEqual(self.task.input_file, self.submission.task.input_file)
+        self.assertEqual(
+            self.task.output_file, self.submission.task.output_file
+        )
