@@ -1,15 +1,17 @@
 from datetime import timedelta
+from io import BytesIO
 
 from django.contrib.admin.sites import AdminSite
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.test import TestCase
+from django.test.client import RequestFactory
 from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
 from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
-from apps.tasks.admin import TaskAdmin
+from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
 from apps.tasks.views import DetailView
 from apps.users.models import User
@@ -72,6 +74,7 @@ class TaskTestCase(TestCase):
 class TaskAdminTestCase(TestCase):
     def setUp(self) -> None:
         now = timezone.now()
+
         self.site = AdminSite()
         self.admin = TaskAdmin(Task, self.site)
 
@@ -82,7 +85,6 @@ class TaskAdminTestCase(TestCase):
             end_time=now + timedelta(hours=1),
             cancelled=False,
         )
-        self.contest.save()
 
     def test_list_display(self) -> None:
         list_display = self.admin.list_display
@@ -108,6 +110,60 @@ class TaskAdminTestCase(TestCase):
 
         self.assertEqual(fieldsets, expected)
 
+    def test_save_model(self) -> None:
+        title = "Example task"
+        description = "Some example task"
+        memory_limit = 256
+        time_limit = 1
+
+        input_text = "Hello, World!"
+        output_text = "Hello, World!"
+
+        input_file = InMemoryUploadedFile(
+            file=BytesIO(input_text.encode("utf-8")),
+            field_name="input_file",
+            name="input.txt",
+            content_type="text/plain",
+            size=13,
+            charset="utf-8",
+        )
+        output_file = InMemoryUploadedFile(
+            file=BytesIO(output_text.encode("utf-8")),
+            field_name="output_file",
+            name="output.txt",
+            content_type="text/plain",
+            size=13,
+            charset="utf-8",
+        )
+
+        # We're gonna use RequestFactory to mock a request. This is
+        # necessary because the save_model method requires a request
+        # object with the FILES attribute.
+        mock = RequestFactory()
+        request = mock.post("/admin/tasks/task/add/")
+
+        request.FILES["input_file"] = input_file
+        request.FILES["output_file"] = output_file
+
+        task = Task(
+            title=title,
+            description=description,
+            memory_limit=memory_limit,
+            time_limit=time_limit,
+            contest=self.contest,
+        )
+
+        self.admin.save_model(
+            request=request, obj=task, form=TaskModelForm(), change=False
+        )
+
+        self.assertEqual(task.title, title)
+        self.assertEqual(task.description, description)
+        self.assertEqual(task.memory_limit, memory_limit)
+        self.assertEqual(task.time_limit, time_limit)
+        self.assertEqual(task.input_file, input_text)
+        self.assertEqual(task.output_file, output_text)
+
 
 class TaskURLTestCase(TestCase):
     def test_detail_url_to_view_name(self) -> None:
@@ -131,7 +187,7 @@ class DetailViewTestCase(TestCase):
         start_time = now - timedelta(hours=1)
         end_time = now + timedelta(hours=1)
 
-        self.code = "print('Hello World')"
+        self.code = "print('Hello, World!')"
 
         self.contest = Contest._default_manager.create(
             title="Test Contest 1",
@@ -154,7 +210,7 @@ class DetailViewTestCase(TestCase):
             author=self.user,
             task=self.task,
             code="print('Hello, World!')",
-            status=SubmissionStatus,
+            status=SubmissionStatus.ACCEPTED,
         )
 
         self.url = reverse("tasks:detail", args=[self.task.id])
@@ -202,67 +258,34 @@ class DetailViewTestCase(TestCase):
     def test_handle_submission_with_exception(self) -> None:
         self.client.force_login(self.user)
 
-        # Enviar código que causará uma exceção
-        response = self.client.post(
-            self.url, data={"code": "raise Exception('Test exception')"}
-        )
+        code = "raise Exception('Test exception')"
+        expected = "Exception: Test exception"
+
+        response = self.client.post(self.url, data={"code": code})
+
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Error: Test exception", response.content.decode())
-
-        self.submission.status = SubmissionStatus.RUNTIME_ERROR
-
-        self.assertEqual(self.submission.status, "RE")
+        self.assertInHTML(expected, response.content.decode())
 
     def test_handle_submission_with_correct_output(self) -> None:
         self.client.force_login(self.user)
 
-        # Definir a saída esperada para a tarefa
         self.task.output_file = "Hello, World!\n"
         self.task.save()
 
-        # Enviar código que produzirá a saída correta
-        response = self.client.post(
-            self.url, data={"code": "print('Hello, World!')"}
-        )
+        response = self.client.post(self.url, data={"code": self.code})
+        expected = "Correct!"
+
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content.decode(), "Correct!")
+        self.assertHTMLEqual(response.content.decode(), expected)
 
-        self.submission.status = SubmissionStatus.ACCEPTED
+    def test_handle_submission_with_wrong_output(self) -> None:
+        self.client.force_login(self.user)
 
-        self.assertEqual(self.submission.status, "AC")
+        self.task.output_file = "Hello, World!"
+        self.task.save()
 
-    # def test_get_success_url(self) -> None:
-    #     self.client.force_login(self.user)
+        response = self.client.post(self.url, data={"code": self.code})
+        expected = "Incorrect!"
 
-    #     # Enviar código válido
-    # response = self.client.post(
-    #               self.url,
-    #               data={"code": "print('Hello, World!')"}
-    #           )
-    #     self.assertEqual(response.status_code, 302)
-
-    def test_save_model(self) -> None:
-        input_file = SimpleUploadedFile("input.txt", b"input")
-        output_file = SimpleUploadedFile("output.txt", b"output")
-
-        response = self.client.post(
-            self.url,
-            data={
-                "title": "Example task",
-                "description": "Some Example Task",
-                "contest": self.contest.id,
-                "input_file": input_file,
-                "output_file": output_file,
-            },
-        )
-
-        response
-
-        self.assertEqual(self.task.title, self.submission.task.title)
-        self.assertEqual(
-            self.task.description, self.submission.task.description
-        )
-        self.assertEqual(self.task.input_file, self.submission.task.input_file)
-        self.assertEqual(
-            self.task.output_file, self.submission.task.output_file
-        )
+        self.assertEqual(response.status_code, 200)
+        self.assertHTMLEqual(response.content.decode(), expected)
