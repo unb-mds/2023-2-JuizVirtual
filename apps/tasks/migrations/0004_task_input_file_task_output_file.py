@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="task",
             name="input_file",
-            field=models.TextField(),
+            field=models.TextField(default=""),
         ),
         migrations.AddField(
             model_name="task",
             name="output_file",
-            field=models.TextField(),
+            field=models.TextField(default=""),
         ),
     ]
