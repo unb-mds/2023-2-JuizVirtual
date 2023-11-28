@@ -97,10 +97,12 @@ class TaskAdminTestCase(TestCase):
 
     def test_fieldsets(self) -> None:
         fieldsets = self.admin.fieldsets
+
         expected = [
             (("General"), {"fields": ("title", "description")}),
             (("Meta"), {"fields": ("contest", "score")}),
             (("Limits"), {"fields": ("memory_limit", "time_limit")}),
+            ("Test case", {"fields": ("input_file", "output_file")}),
         ]
 
         self.assertEqual(fieldsets, expected)
@@ -171,8 +173,6 @@ class DetailViewTestCase(TestCase):
         self.assertEqual(DetailView.form_class, SubmissionForm)
 
     def test_send_submission_is_redirecting(self) -> None:
-        self.client.force_login(self.user)
-
         response = self.client.post(self.url, data={"code": self.code})
         self.assertEqual(response.status_code, 302)
 
