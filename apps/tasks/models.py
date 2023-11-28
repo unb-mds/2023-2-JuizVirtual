@@ -1,4 +1,10 @@
-from django.db.models import CASCADE, CharField, ForeignKey, IntegerField
+from django.db.models import (
+    CASCADE,
+    CharField,
+    ForeignKey,
+    IntegerField,
+    TextField,
+)
 
 from apps.contests.enums import ContestStatus
 from apps.contests.models import Contest
@@ -16,6 +22,9 @@ class Task(TimestampedModel):
 
     memory_limit = IntegerField(null=True)
     time_limit = IntegerField(null=True)
+
+    input_file = TextField()
+    output_file = TextField()
 
     class Meta:
         db_table = "tasks"

@@ -29,4 +29,6 @@ class SubmissionAdmin(SubmissionAdminBase):
     list_display = ("__str__", "author", "task")
     list_filter = ("author", "task", "created_at")
 
-    fieldsets = [(_("Details"), {"fields": ("author", "task", "code")})]
+    fieldsets = [
+        (_("Details"), {"fields": ("author", "task", "code", "status")})
+    ]
