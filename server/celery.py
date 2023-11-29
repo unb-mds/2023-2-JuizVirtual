@@ -3,9 +3,14 @@ from os import environ
 from celery import Celery
 from celery.app.task import Task
 
+from server.settings import env
+
 environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings.development")
 
-app = Celery("virtualjudge", broker_connection_retry_on_startup=False)
+broker = env("CLOUDAMQP_URL", default="")
+app = Celery(
+    "virtualjudge", broker=broker, broker_connection_retry_on_startup=False
+)
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
