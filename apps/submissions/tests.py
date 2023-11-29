@@ -128,7 +128,7 @@ class SubmissionListView(TestCase):
     def test_submission_list_view(self) -> None:
         self.client.login(email="testuser@example", password="testpassword")
 
-        url = reverse("submission_list")
+        url = reverse("submissions:list")
 
         response = self.client.get(url)
 
