@@ -1,7 +1,10 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from django.contrib.admin import ModelAdmin, register
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms import CharField, IntegerField, ModelForm, Textarea
+from django.forms.fields import FileField
+from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from apps.tasks.models import Task
@@ -19,11 +22,18 @@ class TaskModelForm(TaskModelFormBase):
     score = IntegerField(min_value=0, required=False)
 
     memory_limit = IntegerField(
-        min_value=0, required=False, help_text=_("In bytes.")
+        min_value=0,
+        required=False,
+        help_text=_("In bytes."),
     )
     time_limit = IntegerField(
-        min_value=0, required=False, help_text=_("In seconds.")
+        min_value=0,
+        required=False,
+        help_text=_("In seconds."),
     )
+
+    input_file = FileField()
+    output_file = FileField()
 
     class Meta:
         model = Task
@@ -41,4 +51,22 @@ class TaskAdmin(TaskAdminBase):
         (_("General"), {"fields": ("title", "description")}),
         (_("Meta"), {"fields": ("contest", "score")}),
         (_("Limits"), {"fields": ("memory_limit", "time_limit")}),
+        (_("Test case"), {"fields": ("input_file", "output_file")}),
     ]
+
+    def save_model(
+        self,
+        request: HttpRequest,
+        obj: Task,
+        form: TaskModelForm,
+        change: bool,
+    ) -> None:
+        # request.FILES does not cast to the correct type so we need to
+        # cast it manually, otherwise Mypy will complain.
+        input_file = cast(InMemoryUploadedFile, request.FILES["input_file"])
+        output_file = cast(InMemoryUploadedFile, request.FILES["output_file"])
+
+        obj.input_file = input_file.read().decode("utf-8")
+        obj.output_file = output_file.read().decode("utf-8")
+
+        return super().save_model(request, obj, form, change)
