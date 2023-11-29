@@ -12,7 +12,7 @@ export DATABASE_URL="postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES
 
 : "${RABBITMQ_HOST:=rabbitmq}"
 : "${RABBITMQ_PORT:=5672}"
-export CELERY_BROKER_URL="amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}:${RABBITMQ_PORT}/${RABBITMQ_VHOST}"
+export CLOUDAMQP_URL="amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@${RABBITMQ_HOST}:${RABBITMQ_PORT}/${RABBITMQ_VHOST}"
 
 # We need this line to make sure that this container is started after the one
 # with PostgreSQL:
