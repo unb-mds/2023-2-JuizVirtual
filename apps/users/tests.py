@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from apps.users.admin import UserAdmin
+from apps.users.forms import CreateUserForm
 from apps.users.models import User
 
 
@@ -86,3 +88,54 @@ class UserAdminTestCase(TestCase):
         )
 
         self.assertEqual(UserAdmin.add_fieldsets, expected_add_fieldsets)
+
+
+class RegisterViewTest(TestCase):
+    def setUp(self) -> None:
+        self.url = reverse("users:register")
+        self.valid_data = {
+            "username": "testuser",
+            "email": "test@example.com",
+            "password1": "TestPassword123",
+            "password2": "TestPassword123",
+        }
+
+    def test_register_view_get(self) -> None:
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/register.html")
+        self.assertIsInstance(response.context["form"], CreateUserForm)
+
+    def test_register_view_post_invalid_data(self) -> None:
+        response = self.client.post(self.url, data={}, follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/register.html")
+        self.assertContains(response, "This field is required.")
+
+    def test_post_valid_data(self) -> None:
+        response = self.client.post(
+            self.url, data=self.valid_data, follow=True
+        )
+
+        user = User.objects.get(username=self.valid_data["username"])
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertIsNotNone(user)
+        self.client.force_login(user)
+        self.assertTrue(self.client.session["_auth_user_id"])
+
+    def test_email(self) -> None:
+        user = User.objects.create_user(
+            username="testuser",
+            email="test@example.com",
+            password="testpassword",
+        )
+        self.client.force_login(user)
+
+        url = reverse("users:profile", args=[user.username])
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, user.email)

@@ -15,6 +15,8 @@ django-guardian = "^2.4.0"
 django-bootstrap-v5 = "^1.0.11"
 django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2023.10"
+gunicorn = "^21.2.0"
+whitenoise = "^6.6.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.5.0"
