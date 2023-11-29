@@ -15,6 +15,15 @@ programação competitiva.
 | Letícia Hladczuk | 221039209 | [@HladczukLe](https://github.com/HladczukLe) |
 | Gabriel Fernando | 222022162 | [@MMcLovin](https://github.com/MMcLovin) |
 
+## Resumo
+
+Um juiz online representa uma plataforma essencial em competições de programação, desempenhando o papel crucial de avaliar e classificar as soluções submetidas pelos participantes. Além de ser uma ferramenta valiosa para competições, também serve como um ambiente propício para a exploração e aprendizado de novas linguagens de programação. Nessa plataforma, os participantes enfrentam desafios por meio de questões específicas, e ao submeterem seus códigos, essas submissões são sujeitas a limites rigorosos de tempo e memória, adicionando uma dimensão adicional de desafio e eficiência à avaliação.
+
+
+## Motivação
+
+Nossa motivação é desenvolver um juiz online que adira estritamente aos princípios do Software Livre.
+
 ## Instalação
 
 ### Ambiente
