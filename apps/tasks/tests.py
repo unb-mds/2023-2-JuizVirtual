@@ -13,7 +13,7 @@ from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
-from apps.tasks.views import DetailView
+from apps.tasks.views import DetailView, handle_submission
 from apps.users.models import User
 
 
@@ -322,3 +322,70 @@ class TasksViewTestCase(TestCase):
 
     def test_form_success_url(self) -> None:
         self.assertEqual(self.view.get_success_url(), self.url)
+
+
+class BackgroundJobTaskTest(TestCase):
+    def setUp(self) -> None:
+        now = timezone.now()
+        start_time = now - timedelta(hours=1)
+        end_time = now + timedelta(hours=1)
+
+        self.code = "print('Hello, World!')"
+
+        self.contest = Contest._default_manager.create(
+            title="Test Contest 1",
+            description="This is a test contest",
+            start_time=start_time,
+            end_time=end_time,
+        )
+        self.task = Task._default_manager.create(
+            title="Example task",
+            description="Some example task",
+            contest=self.contest,
+        )
+        self.user = User._default_manager.create(
+            email="user@email.com",
+            username="user",
+            password="password",
+        )
+        self.submission = Submission._default_manager.create(
+            author=self.user,
+            task=self.task,
+            code=self.code,
+            status=SubmissionStatus.ACCEPTED,
+        )
+
+    def test_handle_submission_with_correct_output(self) -> None:
+        self.task.output_file = "Hello, World!\n"
+        self.task.save()
+
+        handle_submission.apply(
+            args=(self.code, self.task.id, self.submission.id)
+        )
+
+        self.submission.refresh_from_db()
+        expected = SubmissionStatus.ACCEPTED
+
+        self.assertEqual(self.submission.status, expected)
+
+    def test_handle_submission_with_wrong_output(self) -> None:
+        self.task.output_file = "Hello, World!"
+        self.task.save()
+
+        handle_submission.apply(
+            args=(self.code, self.task.id, self.submission.id)
+        )
+
+        self.submission.refresh_from_db()
+        expected = SubmissionStatus.WRONG_ANSWER
+
+        self.assertEqual(self.submission.status, expected)
+
+    def test_handle_submission_with_exception(self) -> None:
+        code = "raise Exception('Test exception')"
+        handle_submission.apply(args=(code, self.task.id, self.submission.id))
+
+        self.submission.refresh_from_db()
+        expected = SubmissionStatus.RUNTIME_ERROR
+
+        self.assertEqual(self.submission.status, expected)
