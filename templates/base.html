@@ -69,6 +69,7 @@
               <a class="nav-link text-white" href="#">
                 Ranking
               </a>
+              <a class="nav-link" href="{% url 'submissions: submissions_list' %}">Submissions</a>
             </li>
           </ul>
           {% if request.user.is_authenticated %}
