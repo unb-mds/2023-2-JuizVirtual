@@ -21,6 +21,14 @@ avaliação.
 Nossa motivação é desenvolver um juiz online que adira estritamente aos
 princípios do software livre.
 
+## Showcase
+
+Você pode olhar um showcase do nosso projeto através desses links:
+
+- [Ambiente de desenvolvimento](https://develop.squad06.com)
+- [Ambiente de homologação](https://staging.squad06.com)
+- [Ambiente de produção](https://squad06.com)
+
 ## Instalação
 
 ### Ambiente
@@ -80,11 +88,12 @@ $ docker compose down -v
 ```
 
 Em caso de problemas com a instalação, verifique a
-[documentação](https://mds-squad-06.readthedocs.io/pt/latest/installation.html).
+[documentação](https://docs.squad06.com/pt/latest/installation.html).
 
 ## Links
 
-- [Documentação](https://mds.kyomi.dev/pt/latest/)
+- [Documentação](https://docs.squad06.com/pt/latest/)
+- [Link para o projeto](https://squad06.com)
 
 ## Membros
 
