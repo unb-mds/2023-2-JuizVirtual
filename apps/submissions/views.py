@@ -12,5 +12,5 @@ else:
 
 class SubmissionListView(SubmissionViewBase):
     model = Submission
-    template_name = "submission_list.html"
+    template_name = "submissions/list.html"
     context_object_name = "submissions"
