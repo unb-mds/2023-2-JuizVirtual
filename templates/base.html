@@ -70,6 +70,11 @@
                 Ranking
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'submissions:list' %}">
+                Submissions
+              </a>
+            </li>
           </ul>
           {% if request.user.is_authenticated %}
             <div class="dropdown">
