@@ -15,6 +15,7 @@ class SubmissionListView(SubmissionViewBase):
     model = Submission
     template_name = "submissions/list.html"
     context_object_name = "submissions"
+    paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Submission]:
-        return Submission.objects.all().order_by("-created_at")  # type: ignore
+        return Submission._default_manager.all().order_by("-created_at")
