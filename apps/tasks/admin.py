@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, cast
 
 from django.contrib.admin import ModelAdmin, register
+from django.contrib.postgres.forms import SimpleArrayField
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.forms import CharField, IntegerField, ModelForm, Textarea
 from django.forms.fields import FileField
@@ -19,6 +20,9 @@ else:
 
 class TaskModelForm(TaskModelFormBase):
     description = CharField(widget=Textarea(attrs={"rows": 14, "cols": 80}))
+
+    constraints = SimpleArrayField(CharField(max_length=256))
+
     score = IntegerField(min_value=0, required=False)
 
     memory_limit = IntegerField(
@@ -48,7 +52,7 @@ class TaskAdmin(TaskAdminBase):
     list_filter = ("contest", "score")
 
     fieldsets = [
-        (_("General"), {"fields": ("title", "description")}),
+        (_("General"), {"fields": ("title", "description", "constraints")}),
         (_("Meta"), {"fields": ("contest", "score")}),
         (_("Limits"), {"fields": ("memory_limit", "time_limit")}),
         (_("Test case"), {"fields": ("input_file", "output_file")}),
