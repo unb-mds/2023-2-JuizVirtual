@@ -129,7 +129,6 @@ class SubmissionListViewtest(TestCase):
         self.client.login(email="testuser@example", password="testpassword")
 
         url = reverse("submissions:list")
-
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
