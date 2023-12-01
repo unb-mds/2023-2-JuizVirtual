@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, Any, List
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db.models import BooleanField, CharField, EmailField
+from django.db.models import BooleanField, CharField, EmailField, IntegerField
 
 from apps.users.managers import UserManager
 from core.models import TimestampedModel
@@ -19,6 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
 
     email = EmailField(db_index=True, max_length=256, unique=True)
     username = CharField(db_index=True, max_length=128, unique=True)
+    score = IntegerField(default=0)
 
     # When a user no longer wishes to use our platform, they may try to
     # delete there account. That's a problem for us because the data we
