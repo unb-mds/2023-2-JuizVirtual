@@ -38,6 +38,18 @@
 <h4>Description</h4>
 <p>{{ task.description }}</p>
 
+<h4>Constraints</h4>
+<ul>
+  {% if task.constraints %}
+    {% for constraint in task.constraints %}
+      <li>
+        {{constraint}}
+      </li>
+    {% endfor %}
+  {% else %}
+    <li> None </li>
+  {% endif %}
+</ul>
 <hr>
 
 <form method="post">
