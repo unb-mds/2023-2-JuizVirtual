@@ -39,3 +39,5 @@ repos:
         additional_dependencies:
           - 'django-stubs>=4.2.4,<5.0'
           - 'django-environ>=0.11.2,<1.0'
+          - 'celery[librabbitmq]>=5.3.6,<6.0'
+          - 'celery-types>=0.20.0,<1.0'

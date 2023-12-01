@@ -1,6 +1,5 @@
 import sys
 from io import StringIO
-from traceback import format_exc
 from typing import TYPE_CHECKING, Any, Dict
 
 from django.http import HttpRequest, HttpResponse
@@ -12,6 +11,7 @@ from django.views.generic.edit import FormMixin
 from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission
 from apps.tasks.models import Task
+from server import celery
 
 if TYPE_CHECKING:
     DetailViewBase = generic.DetailView[Task]
@@ -21,12 +21,10 @@ else:
     FormMixinBase = FormMixin
 
 
-def handle_submission(request: HttpRequest, task: Task) -> HttpResponse:
-    submission = Submission._default_manager.create(
-        code=request.POST["code"],
-        task=task,
-        author=request.user,
-    )
+@celery.task(ignore_result=True)
+def handle_submission(code: str, task_id: int, submission_id: int) -> None:
+    task = Task._default_manager.get(id=task_id)
+    submission = Submission._default_manager.get(id=submission_id)
 
     input_data = StringIO(task.input_file)
 
@@ -37,26 +35,19 @@ def handle_submission(request: HttpRequest, task: Task) -> HttpResponse:
     sys.stdout = stdout = StringIO()
 
     try:
-        eval(compile(request.POST["code"], "<string>", "exec"))
-    except Exception as exc:
+        eval(compile(code, "<string>", "exec"))
+    except Exception:
         submission.status = "RE"
         submission.save()
-
-        return HttpResponse(f"Error: {exc} {format_exc()}")
+        return
     finally:
         sys.stdout = old_stdout
         sys.stdin = old_stdin
 
     output = stdout.getvalue()
 
-    if output == task.output_file:
-        submission.status = "AC"
-        submission.save()
-        return HttpResponse("Correct!")
-    else:
-        submission.status = "WA"
-        submission.save()
-        return HttpResponse("Incorrect!")
+    submission.status = "AC" if output == task.output_file else "WA"
+    submission.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):
@@ -74,7 +65,10 @@ class DetailView(FormMixinBase, DetailViewBase):
         return reverse("tasks:detail", args=[self.object.id])
 
     def get(
-        self, request: HttpRequest, *args: Any, **kwargs: Any
+        self,
+        request: HttpRequest,
+        *args: Any,
+        **kwargs: Any,
     ) -> HttpResponse:
         self.object = self.get_object()
 
@@ -97,4 +91,16 @@ class DetailView(FormMixinBase, DetailViewBase):
         if not form.is_valid():
             return self.form_invalid(form)
 
-        return handle_submission(request, self.object)
+        submission = Submission._default_manager.create(
+            code=form.cleaned_data["code"],
+            task=self.object,
+            author=request.user,
+        )
+
+        handle_submission.delay(
+            form.cleaned_data["code"],
+            self.object.id,
+            submission.id,
+        )
+
+        return redirect(self.get_success_url())
