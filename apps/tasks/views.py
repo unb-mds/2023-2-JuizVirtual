@@ -62,7 +62,7 @@ class DetailView(FormMixinBase, DetailViewBase):
         return context
 
     def get_success_url(self) -> str:
-        return reverse("tasks:detail", args=[self.object.id])
+        return reverse("submissions:list")
 
     def get(
         self,
