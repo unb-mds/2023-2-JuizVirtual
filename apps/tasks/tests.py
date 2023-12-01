@@ -198,8 +198,10 @@ class TasksViewTestCase(TestCase):
         self.task = Task._default_manager.create(
             title="Example task",
             description="Some example task",
+            score=200,
             contest=self.contest,
         )
+
         self.user = User._default_manager.create(
             email="user@email.com",
             username="user",
@@ -210,7 +212,7 @@ class TasksViewTestCase(TestCase):
             author=self.user,
             task=self.task,
             code="print('Hello, World!')",
-            status=SubmissionStatus.ACCEPTED,
+            status=SubmissionStatus.WAITING_JUDGE,
         )
 
         self.url = reverse("tasks:detail", args=[self.task.id])

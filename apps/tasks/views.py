@@ -59,10 +59,12 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
         .exists()
     )
 
-    if submission.status == SubmissionStatus.ACCEPTED:
-        if not has_been_accepted:
-            submission.author.score += task.score
-            submission.author.save()
+    if (
+        submission.status == SubmissionStatus.ACCEPTED
+        and not has_been_accepted
+    ):
+        submission.author.score += task.score
+        submission.author.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):
