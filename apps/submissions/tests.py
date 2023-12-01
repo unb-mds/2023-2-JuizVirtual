@@ -97,7 +97,7 @@ class SubmissionAdminTest(TestCase):
         self.assertEqual(self.submission_admin.fieldsets, expected)
 
 
-class SubmissionListView(TestCase):
+class SubmissionListViewtest(TestCase):
     def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="testuser",
