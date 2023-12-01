@@ -49,9 +49,20 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
     submission.status = "AC" if output == task.output_file else "WA"
     submission.save()
 
+    has_been_accepted = (
+        Submission._default_manager.filter(
+            author=submission.author,
+            task=task,
+            status=SubmissionStatus.ACCEPTED,
+        )
+        .exclude(id=submission.id)
+        .exists()
+    )
+
     if submission.status == SubmissionStatus.ACCEPTED:
-        submission.author.score += task.score
-        submission.author.save()
+        if not has_been_accepted:
+            submission.author.score += task.score
+            submission.author.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):
