@@ -36,6 +36,7 @@
       <thead>
         <tr>
           <th>Submission ID</th>
+          <th>User</th>
           <th>Task</th>
           <th>Status</th>
           <th>Created at</th>
@@ -45,6 +46,7 @@
         {% for submission in submissions.all %}
           <tr>
             <td>{{ submission.id }}</td>
+            <td>{{ submission.author }}</td>
             <td>{{ submission.task.title }}</td>
             <td>{{ submission.status }}</td>
             <td>{{ submission.created_at}}</td>
