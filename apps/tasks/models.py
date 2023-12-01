@@ -17,7 +17,9 @@ class Task(TimestampedModel):
 
     title = CharField(max_length=256)
     description = CharField(max_length=4096)
-    constraints = ArrayField(CharField(max_length=256), blank=True)
+    constraints = ArrayField(
+        CharField(max_length=256), blank=True, default=list
+    )
 
     contest = ForeignKey(Contest, related_name="tasks", on_delete=CASCADE)
     score = IntegerField(null=True)
