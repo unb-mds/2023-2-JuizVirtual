@@ -280,11 +280,12 @@ class TasksViewTestCase(TestCase):
 
         code = "raise Exception('Test exception')"
         response = self.client.post(self.url, data={"code": code})
+        url = reverse("submissions:list")
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
-            self.url,
+            url,
             status_code=302,
             target_status_code=200,
             fetch_redirect_response=True,
@@ -297,11 +298,12 @@ class TasksViewTestCase(TestCase):
         self.task.save()
 
         response = self.client.post(self.url, data={"code": self.code})
+        url = reverse("submissions:list")
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
-            self.url,
+            url,
             status_code=302,
             target_status_code=200,
             fetch_redirect_response=True,
@@ -313,19 +315,21 @@ class TasksViewTestCase(TestCase):
         self.task.output_file = "Hello, World!"
         self.task.save()
 
+        url = reverse("submissions:list")
         response = self.client.post(self.url, data={"code": self.code})
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(
             response,
-            self.url,
+            url,
             status_code=302,
             target_status_code=200,
             fetch_redirect_response=True,
         )
 
     def test_form_success_url(self) -> None:
-        self.assertEqual(self.view.get_success_url(), self.url)
+        url = reverse("submissions:list")
+        self.assertEqual(self.view.get_success_url(), url)
 
 
 class BackgroundJobTaskTest(TestCase):
