@@ -132,5 +132,5 @@ class SubmissionListViewtest(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue("submissions" in response.context)
+        self.assertIn("submissions", response.context)
         self.assertIn(self.submission, response.context["submissions"])
