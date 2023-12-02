@@ -323,7 +323,7 @@ class TasksViewTestCase(TestCase):
             fetch_redirect_response=True,
         )
 
-    def test_submission_with_AC_status_increases_user_score(self) -> None:
+    def test_submission_has_accepted_status_increases_user_score(self) -> None:
         handle_submission(
             self.submission.code, self.task.id, self.submission.id
         )
@@ -334,7 +334,7 @@ class TasksViewTestCase(TestCase):
         self.assertEqual(self.submission.status, SubmissionStatus.ACCEPTED)
         self.assertEqual(self.user.score, self.task.score)
 
-    def test_submission_with_non_AC_status_does_not_increase_user_score(
+    def test_submission_without_accepted_status_does_not_increase_user_score(
         self,
     ) -> None:
         self.submission.code = 'print("Hello, Word")'
@@ -347,7 +347,7 @@ class TasksViewTestCase(TestCase):
 
         self.assertEqual(self.user.score, 0)
 
-    def test_second_AC_submission_does_not_increase_user_score(self) -> None:
+    def test_repeated_accepted_submission_cant_sum_to_user_score(self) -> None:
         handle_submission.apply(
             args=(self.submission.code, self.task.id, self.submission.id)
         )
@@ -364,7 +364,6 @@ class TasksViewTestCase(TestCase):
         )
 
         self.user.refresh_from_db()
-
         self.assertEqual(self.user.score, self.task.score)
 
     def test_form_success_url(self) -> None:
