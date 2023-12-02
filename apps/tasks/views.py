@@ -49,7 +49,7 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
     submission.status = "AC" if output == task.output_file else "WA"
     submission.save()
 
-    has_been_accepted = (
+    has_already_scored = (
         Submission._default_manager.filter(
             author=submission.author,
             task=task,
@@ -61,7 +61,7 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
 
     if (
         submission.status == SubmissionStatus.ACCEPTED
-        and not has_been_accepted
+        and not has_already_scored
     ):
         submission.author.score += task.score
         submission.author.save()
