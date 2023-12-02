@@ -324,8 +324,8 @@ class TasksViewTestCase(TestCase):
         )
 
     def test_submission_has_accepted_status_increases_user_score(self) -> None:
-        handle_submission(
-            self.submission.code, self.task.id, self.submission.id
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
         )
 
         self.submission.refresh_from_db()
@@ -344,7 +344,6 @@ class TasksViewTestCase(TestCase):
         )
 
         self.user.refresh_from_db()
-
         self.assertEqual(self.user.score, 0)
 
     def test_repeated_accepted_submission_cant_sum_to_user_score(self) -> None:
