@@ -339,8 +339,8 @@ class TasksViewTestCase(TestCase):
     ) -> None:
         self.submission.code = 'print("Hello, Word")'
 
-        handle_submission(
-            self.submission.code, self.task.id, self.submission.id
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
         )
 
         self.user.refresh_from_db()
@@ -348,8 +348,8 @@ class TasksViewTestCase(TestCase):
         self.assertEqual(self.user.score, 0)
 
     def test_second_AC_submission_does_not_increase_user_score(self) -> None:
-        handle_submission(
-            self.submission.code, self.task.id, self.submission.id
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
         )
 
         second_submission = Submission._default_manager.create(
