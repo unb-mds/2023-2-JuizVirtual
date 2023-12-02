@@ -20,9 +20,7 @@ else:
 
 class TaskModelForm(TaskModelFormBase):
     description = CharField(widget=Textarea(attrs={"rows": 14, "cols": 80}))
-
     constraints = SimpleArrayField(CharField(max_length=256))
-
     score = IntegerField(min_value=0, required=False)
 
     memory_limit = IntegerField(
