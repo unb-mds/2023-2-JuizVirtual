@@ -15,7 +15,6 @@ class Migration(migrations.Migration):
             name="constraints",
             field=django.contrib.postgres.fields.ArrayField(
                 base_field=models.CharField(max_length=256),
-                blank=True,
                 default=list,
                 size=None,
             ),
