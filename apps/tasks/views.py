@@ -59,10 +59,9 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
         .exists()
     )
 
-    if (
-        submission.status == SubmissionStatus.ACCEPTED
-        and not has_already_scored
-    ):
+    is_accepted = submission.status == SubmissionStatus.ACCEPTED
+
+    if is_accepted and not has_already_scored:
         submission.author.score += task.score
         submission.author.save()
 
