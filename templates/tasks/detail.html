@@ -1,10 +1,27 @@
 {% extends "base.html" %}
 
 {% load crispy_forms_tags %}
+{% load djangocodemirror_tags %}
 
 {% block title %}{{ task.title }}{% endblock title %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/monokai.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/3024-day.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/3024-night.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/cobalt.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/eclipse.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/theme/rubyblue.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/edit/matchtags.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.1/addon/edit/closetag.min.js"></script>
+
 <h1>
   <a href="{% url 'tasks:detail' task.id %}">
     {{ task.title }}
@@ -46,7 +63,21 @@
   <div class="row justify-content-center">
     <br>
     <h4>Submit</h4>
-    {{ form|crispy }}
+
+    <div class="form-group">
+      <label for="id_theme">Select Theme:</label>
+      <select id="id_theme" name="theme" class="form-control" style="margin-bottom:10px;">
+        <option value="dracula">Dracula</option>
+        <option value="monokai">Monokai</option>
+        <option value="3024-day">3024 Day</option>
+        <option value="3024-night">3024 Night</option>
+        <option value="cobalt">Cobalt</option>
+        <option value="eclipse">Eclipse</option>
+        <option value="rubyblue">Rubyblue</option>
+      </select>
+    </div>
+
+    <textarea id="id_code" name="code" class="form-control" style="margin-left:10px;"></textarea>
     <input
       type="submit"
       class="btn btn-primary"
@@ -55,5 +86,23 @@
     >
   </div>
 </form>
+
+<script>
+  var codemirror = CodeMirror.fromTextArea(
+    document.getElementById("id_code"),
+    {
+      mode: "python",
+      theme: "dracula",
+      lineNumbers: true,
+      autoCloseBrackets: true,
+      matchBrackets: true,
+    }
+  );
+
+  document.getElementById("id_theme").addEventListener("change", function () {
+    var selectedTheme = this.value;
+    codemirror.setOption("theme", selectedTheme);
+  });
+</script>
 
 {% endblock content %}

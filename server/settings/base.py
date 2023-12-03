@@ -1,6 +1,8 @@
 from os.path import join
 from typing import List
 
+from djangocodemirror.settings import *
+
 from server.settings import BASE_DIR, env
 
 ######################
@@ -70,6 +72,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "djangocodemirror",
 ]
 
 THIRD_PARTY_APPS = [
