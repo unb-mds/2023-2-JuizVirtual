@@ -3,8 +3,13 @@ from typing import TYPE_CHECKING, cast
 from django.contrib.admin import ModelAdmin, register
 from django.contrib.postgres.forms import SimpleArrayField
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.forms import CharField, IntegerField, ModelForm, Textarea
-from django.forms.fields import FileField
+from django.forms import (
+    CharField,
+    FileField,
+    IntegerField,
+    ModelForm,
+    Textarea,
+)
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
@@ -20,7 +25,7 @@ else:
 
 class TaskModelForm(TaskModelFormBase):
     description = CharField(widget=Textarea(attrs={"rows": 14, "cols": 80}))
-    constraints = SimpleArrayField(CharField(max_length=256))
+    constraints = SimpleArrayField(CharField(max_length=256), required=False)
     score = IntegerField(min_value=0, required=False)
 
     memory_limit = IntegerField(
@@ -63,6 +68,9 @@ class TaskAdmin(TaskAdminBase):
         form: TaskModelForm,
         change: bool,
     ) -> None:
+        if change and len(request.FILES) == 0:
+            return super().save_model(request, obj, form, change)
+
         # request.FILES does not cast to the correct type so we need to
         # cast it manually, otherwise Mypy will complain.
         input_file = cast(InMemoryUploadedFile, request.FILES["input_file"])
