@@ -71,10 +71,17 @@ class TaskAdmin(TaskAdminBase):
         if change and len(request.FILES) == 0:
             return super().save_model(request, obj, form, change)
 
-        # request.FILES does not cast to the correct type so we need to
-        # cast it manually, otherwise Mypy will complain.
-        input_file = cast(InMemoryUploadedFile, request.FILES["input_file"])
-        output_file = cast(InMemoryUploadedFile, request.FILES["output_file"])
+        try:
+            # request.FILES does not cast to the correct type so we need
+            # to cast it manually, otherwise Mypy will complain.
+            input_file = cast(
+                InMemoryUploadedFile, request.FILES["input_file"]
+            )
+            output_file = cast(
+                InMemoryUploadedFile, request.FILES["output_file"]
+            )
+        except KeyError:
+            return super().save_model(request, obj, form, change)
 
         obj.input_file = input_file.read().decode("utf-8")
         obj.output_file = output_file.read().decode("utf-8")
