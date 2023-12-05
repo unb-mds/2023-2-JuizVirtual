@@ -102,7 +102,7 @@ class TaskAdminTestCase(TestCase):
         fieldsets = self.admin.fieldsets
 
         expected = [
-            (("General"), {"fields": ("title", "description")}),
+            (("General"), {"fields": ("title", "description", "constraints")}),
             (("Meta"), {"fields": ("contest", "score")}),
             (("Limits"), {"fields": ("memory_limit", "time_limit")}),
             ("Test case", {"fields": ("input_file", "output_file")}),
@@ -113,6 +113,7 @@ class TaskAdminTestCase(TestCase):
     def test_save_model(self) -> None:
         title = "Example task"
         description = "Some example task"
+        constraints = (["A sad task constraint"],)
         memory_limit = 256
         time_limit = 1
 
@@ -148,6 +149,7 @@ class TaskAdminTestCase(TestCase):
         task = Task(
             title=title,
             description=description,
+            constraints=constraints,
             memory_limit=memory_limit,
             time_limit=time_limit,
             contest=self.contest,
@@ -159,10 +161,136 @@ class TaskAdminTestCase(TestCase):
 
         self.assertEqual(task.title, title)
         self.assertEqual(task.description, description)
+        self.assertEqual(task.constraints, constraints)
         self.assertEqual(task.memory_limit, memory_limit)
         self.assertEqual(task.time_limit, time_limit)
         self.assertEqual(task.input_file, input_text)
         self.assertEqual(task.output_file, output_text)
+
+    def test_save_model_without_files(self) -> None:
+        title = "Example task"
+        description = "Some example task"
+        constraints = (["A sad task constraint"],)
+        memory_limit = 256
+        time_limit = 1
+
+        task = Task(
+            title=title,
+            description=description,
+            constraints=constraints,
+            memory_limit=memory_limit,
+            time_limit=time_limit,
+            contest=self.contest,
+        )
+
+        # We're gonna use RequestFactory to mock a request. This is
+        # necessary because the save_model method requires a request
+        # object with the FILES attribute.
+        mock = RequestFactory()
+        request = mock.post("/admin/tasks/task/add/")
+
+        self.admin.save_model(
+            request=request, obj=task, form=TaskModelForm(), change=False
+        )
+
+        self.assertEqual(task.title, title)
+        self.assertEqual(task.description, description)
+        self.assertEqual(task.constraints, constraints)
+        self.assertEqual(task.memory_limit, memory_limit)
+        self.assertEqual(task.time_limit, time_limit)
+        self.assertEqual(task.input_file, "")
+        self.assertEqual(task.output_file, "")
+
+    def test_save_model_with_change(self) -> None:
+        title = "Example task"
+        description = "Some example task"
+        constraints = (["A sad task constraint"],)
+        memory_limit = 256
+        time_limit = 1
+
+        input_text = "Hello, World!"
+        output_text = "Hello, World!"
+
+        input_file = InMemoryUploadedFile(
+            file=BytesIO(input_text.encode("utf-8")),
+            field_name="input_file",
+            name="input.txt",
+            content_type="text/plain",
+            size=13,
+            charset="utf-8",
+        )
+        output_file = InMemoryUploadedFile(
+            file=BytesIO(output_text.encode("utf-8")),
+            field_name="output_file",
+            name="output.txt",
+            content_type="text/plain",
+            size=13,
+            charset="utf-8",
+        )
+
+        # We're gonna use RequestFactory to mock a request. This is
+        # necessary because the save_model method requires a request
+        # object with the FILES attribute.
+        mock = RequestFactory()
+        request = mock.post("/admin/tasks/task/add/")
+
+        request.FILES["input_file"] = input_file
+        request.FILES["output_file"] = output_file
+
+        task = Task(
+            title=title,
+            description=description,
+            constraints=constraints,
+            memory_limit=memory_limit,
+            time_limit=time_limit,
+            contest=self.contest,
+        )
+
+        self.admin.save_model(
+            request=request, obj=task, form=TaskModelForm(), change=True
+        )
+
+        self.assertEqual(task.title, title)
+        self.assertEqual(task.description, description)
+        self.assertEqual(task.constraints, constraints)
+        self.assertEqual(task.memory_limit, memory_limit)
+        self.assertEqual(task.time_limit, time_limit)
+        self.assertEqual(task.input_file, input_text)
+        self.assertEqual(task.output_file, output_text)
+
+    def test_save_model_with_change_without_files(self) -> None:
+        title = "Example task"
+        description = "Some example task"
+        constraints = (["A sad task constraint"],)
+        memory_limit = 256
+        time_limit = 1
+
+        task = Task(
+            title=title,
+            description=description,
+            constraints=constraints,
+            memory_limit=memory_limit,
+            time_limit=time_limit,
+            contest=self.contest,
+        )
+
+        # We're gonna use RequestFactory to mock a request. This is
+        # necessary because the save_model method requires a request
+        # object with the FILES attribute.
+        mock = RequestFactory()
+        request = mock.post("/admin/tasks/task/add/")
+
+        self.admin.save_model(
+            request=request, obj=task, form=TaskModelForm(), change=True
+        )
+
+        self.assertEqual(task.title, title)
+        self.assertEqual(task.description, description)
+        self.assertEqual(task.constraints, constraints)
+        self.assertEqual(task.memory_limit, memory_limit)
+        self.assertEqual(task.time_limit, time_limit)
+        self.assertEqual(task.input_file, "")
+        self.assertEqual(task.output_file, "")
 
 
 class TaskURLTestCase(TestCase):
@@ -198,6 +326,7 @@ class TasksViewTestCase(TestCase):
         self.task = Task._default_manager.create(
             title="Example task",
             description="Some example task",
+            constraints=["A sad task constraint"],
             contest=self.contest,
         )
         self.user = User._default_manager.create(

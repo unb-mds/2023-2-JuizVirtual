@@ -72,7 +72,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    "djangocodemirror",
+    "django.contrib.postgres",
 ]
 
 THIRD_PARTY_APPS = [
