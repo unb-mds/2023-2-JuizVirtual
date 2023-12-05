@@ -461,6 +461,16 @@ class TasksViewTestCase(TestCase):
         url = reverse("submissions:list")
         self.assertEqual(self.view.get_success_url(), url)
 
+    def test_invalid_form_submission(self) -> None:
+        invalid_code = "invalid code"
+
+        response = self.client.post(self.url, data={"code": invalid_code})
+
+        self.assertEqual(response.status_code, 302)
+
+        if response.context is not None:
+            self.assertNotIn("form", response.context)
+
 
 class BackgroundJobTaskTest(TestCase):
     def setUp(self) -> None:
