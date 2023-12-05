@@ -327,6 +327,7 @@ class TasksViewTestCase(TestCase):
             title="Example task",
             description="Some example task",
             score=200,
+            constraints=["A sad task constraint"],
             contest=self.contest,
             output_file="Hello, World!\n",
         )
