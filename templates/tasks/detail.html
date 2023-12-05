@@ -40,6 +40,17 @@
 
 <hr>
 
+<h4>Constraints</h4>
+<ul>
+  {% for constraint in task.constraints %}
+    <li>{{ constraint }}</li>
+  {% empty %}
+    <li>None</li>
+  {% endfor %}
+</ul>
+
+<hr>
+
 <form method="post">
   {% csrf_token %}
 

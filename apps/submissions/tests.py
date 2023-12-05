@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
@@ -94,3 +95,42 @@ class SubmissionAdminTest(TestCase):
             (_("Details"), {"fields": ("author", "task", "code", "status")})
         ]
         self.assertEqual(self.submission_admin.fieldsets, expected)
+
+
+class SubmissionListViewtest(TestCase):
+    def setUp(self) -> None:
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example",
+            password="testpassword",
+        )
+
+        self.contest = Contest._default_manager.create(
+            title="Test Contest",
+            description="This is a test contest",
+            start_time=timezone.now(),
+            end_time=timezone.now() + timedelta(hours=1),
+            cancelled=False,
+        )
+
+        self.task = Task._default_manager.create(
+            title="Test Task",
+            description="This is a test task",
+            contest=self.contest,
+        )
+
+        self.submission = Submission._default_manager.create(
+            author=self.user,
+            task=self.task,
+            code="test code",
+        )
+
+    def test_submission_list_view(self) -> None:
+        self.client.login(email="testuser@example", password="testpassword")
+
+        url = reverse("submissions:list")
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("submissions", response.context)
+        self.assertIn(self.submission, response.context["submissions"])
