@@ -64,9 +64,7 @@ class UserAdminTestCase(TestCase):
         expected = [
             (
                 _("Personal info"),
-                {
-                    "fields": ("username", "email", "password", "score")
-                },  # Adicione 'score' aqui
+                {"fields": ("username", "email", "password", "score")},
             ),
             (
                 _("Permissions"),
@@ -96,7 +94,7 @@ class UserAdminTestCase(TestCase):
                         "password1",
                         "password2",
                         "score",
-                    ),  # Adicione 'score' aqui
+                    ),
                 },
             ),
         )

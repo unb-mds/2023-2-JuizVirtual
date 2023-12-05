@@ -8,6 +8,11 @@ on:
 
 env:
   CLOUDAMQP_URL: "amqp://virtualjudge:virtualjudge@localhost:5672//"
+  POSTGRES_HOST: localhost
+  POSTGRES_PORT: 5432
+  POSTGRES_USER: virtualjudge
+  POSTGRES_PASSWORD: virtualjudge
+  POSTGRES_DB: virtualjudge
 
 jobs:
   build:
@@ -20,13 +25,21 @@ jobs:
           RABBITMQ_DEFAULT_PASS: virtualjudge
         ports:
           - 5672:5672
+      postgresql:
+        image: postgres:16.0-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: virtualjudge
+          POSTGRES_PASSWORD: virtualjudge
+          POSTGRES_DB: virtualjudge
     strategy:
       max-parallel: 4
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.6.1"]
     env:
-      DATABASE_URL: "sqlite:///db.sqlite3"
+      DATABASE_URL: "postgres://virtualjudge:virtualjudge@localhost:5432/virtualjudge"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

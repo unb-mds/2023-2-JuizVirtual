@@ -25,6 +25,8 @@
     }
   </style>
 
+  {% block head %}{% endblock head %}
+
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
@@ -68,6 +70,11 @@
             <li class="nav-item">
               <a class="nav-link text-white" href="#">
                 Ranking
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{% url 'submissions:list' %}">
+                Submissions
               </a>
             </li>
           </ul>

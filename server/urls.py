@@ -12,4 +12,5 @@ urlpatterns = [
     path("contests/", include("apps.contests.urls"), name="contests"),
     path("tasks/", include("apps.tasks.urls")),
     path("", include("apps.users.urls")),
+    path("submissions/", include("apps.submissions.urls")),
 ]
