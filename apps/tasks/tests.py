@@ -355,8 +355,13 @@ class TasksViewTestCase(TestCase):
     def test_send_submission_with_short_code(self) -> None:
         self.client.force_login(self.user)
 
+        initial_submission_count = Submission._default_manager.count()
+
         self.client.post(self.url, data={"code": "c"})
-        self.assertEqual(Submission._default_manager.count(), 1)
+
+        final_submission_count = Submission._default_manager.count()
+
+        self.assertEqual(final_submission_count, initial_submission_count + 1)
 
     def test_detail_view_model_is_task(self) -> None:
         self.assertEqual(DetailView.model, Task)
