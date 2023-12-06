@@ -507,21 +507,13 @@ class TasksViewTestCase(TestCase):
         self.assertEqual(self.view.get_success_url(), url)
 
     def test_invalid_form_submission(self) -> None:
-        invalid_code = "invalid code"
+        self.client.force_login(self.user)
 
-        response = self.client.post(self.url, data={"code": invalid_code})
+        response = self.client.post(self.url, data={"code": ""})
 
-        self.assertEqual(response.status_code, 302)
-
-        redirected_url = response.headers["Location"]
-
-        redirected_response = self.client.get(redirected_url)
-
-        self.assertEqual(redirected_response.status_code, 200)
-
-        if redirected_response.context is not None:
-            self.assertIn("form", redirected_response.context)
-            self.assertFalse(redirected_response.context["form"].is_valid())
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasks/detail.html")
+        self.assertFalse(response.context["form"].is_valid())
 
 
 class BackgroundJobTaskTest(TestCase):
