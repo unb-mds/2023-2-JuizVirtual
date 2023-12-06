@@ -71,30 +71,24 @@
 <form method="post">
   {% csrf_token %}
 
-  <div class="row justify-content-center">
-    <br>
-    <h4>Submit</h4>
+  <h4>Submit</h4>
 
-    <div class="form-group">
-      <label for="id_theme">Select Theme:</label>
-      <select id="id_theme" name="theme" class="form-control" style="margin-bottom:10px;">
-        <option value="dracula">Dracula</option>
-        <option value="monokai">Monokai</option>
-        <option value="3024-day">3024 Day</option>
-        <option value="3024-night">3024 Night</option>
-        <option value="cobalt">Cobalt</option>
-        <option value="eclipse">Eclipse</option>
-        <option value="rubyblue">Rubyblue</option>
-      </select>
+  <div style="display: flex; flex-direction: column; gap: 20px; justify-content: center;">
+    <div style="display: flex; flex-direction: column; gap: 25px; font-size: 0.8rem;">
+      <textarea
+        id="id_code"
+        name="code"
+        class="form-control"
+      ></textarea>
     </div>
 
-    <textarea id="id_code" name="code" class="form-control" style="margin-left:10px;"></textarea>
-    <input
-      type="submit"
-      class="btn btn-primary"
-      style="width: 40%; margin-top: 25px;"
-      value="Submit"
-    >
+      <input
+        type="submit"
+        class="btn btn-primary"
+        style="width: 100px;"
+        value="Submit"
+      >
+    </div>
   </div>
 </form>
 
@@ -109,11 +103,6 @@
       matchBrackets: true,
     }
   );
-
-  document.getElementById("id_theme").addEventListener("change", function () {
-    var selectedTheme = this.value;
-    codemirror.setOption("theme", selectedTheme);
-  });
 </script>
 
 {% endblock content %}
