@@ -521,6 +521,7 @@ class TasksViewTestCase(TestCase):
 
         if redirected_response.context is not None:
             self.assertIn("form", redirected_response.context)
+            self.assertFalse(redirected_response.context["form"].is_valid())
 
 
 class BackgroundJobTaskTest(TestCase):
