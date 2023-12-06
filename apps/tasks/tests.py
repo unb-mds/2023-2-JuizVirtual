@@ -513,8 +513,15 @@ class TasksViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-        if response.context is not None:
-            self.assertNotIn("form", response.context)
+        redirected_url = response.headers["Location"]
+
+        redirected_response = self.client.get(redirected_url)
+
+        self.assertEqual(redirected_response.status_code, 200)
+        self.assertTemplateUsed(redirected_response, "registration/login.html")
+
+        if redirected_response.context is not None:
+            self.assertIn("form", redirected_response.context)
 
 
 class BackgroundJobTaskTest(TestCase):
