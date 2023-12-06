@@ -1,5 +1,7 @@
 import sys
 from io import StringIO
+from resource import RLIMIT_AS, getrlimit, setrlimit
+from signal import SIGALRM, alarm, signal
 from typing import TYPE_CHECKING, Any, Dict
 
 from django.http import HttpRequest, HttpResponse
@@ -21,31 +23,56 @@ else:
     FormMixinBase = FormMixin
 
 
+def signal_handler(signum: int, frame: object) -> None:
+    raise TimeoutError("Time limit exceeded")
+
+
+def set_memory_limit(task: Task) -> None:
+    if task.memory_limit is not None:
+        _, hard = getrlimit(RLIMIT_AS)
+        setrlimit(RLIMIT_AS, (task.memory_limit, hard))
+
+
+def set_time_limit(task: Task) -> None:
+    if task.time_limit is not None:
+        signal(SIGALRM, signal_handler)
+        alarm(task.time_limit)
+
+
 @celery.task(ignore_result=True)
 def handle_submission(code: str, task_id: int, submission_id: int) -> None:
     task = Task._default_manager.get(id=task_id)
     submission = Submission._default_manager.get(id=submission_id)
 
+    # Change stdout and stdin to StringIO so we can capture the output
+    # of the code.
     input_data = StringIO(task.input_file)
 
-    old_stdin = sys.stdin
     sys.stdin = input_data
-
-    old_stdout = sys.stdout
     sys.stdout = stdout = StringIO()
+
+    set_memory_limit(task)
+    set_time_limit(task)
 
     try:
         eval(compile(code, "<string>", "exec"))
+    except MemoryError:
+        submission.status = "MLE"
+        submission.save()
+        return
+    except TimeoutError:
+        submission.status = "TLE"
+        submission.save()
+        return
     except Exception:
         submission.status = "RE"
         submission.save()
         return
-    finally:
-        sys.stdout = old_stdout
-        sys.stdin = old_stdin
 
-    output = stdout.getvalue()
+    check_answer(submission, task, stdout.getvalue())
 
+
+def check_answer(submission: Submission, task: Task, output: str) -> None:
     submission.status = "AC" if output == task.output_file else "WA"
     submission.save()
 
@@ -58,7 +85,6 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
         .exclude(id=submission.id)
         .exists()
     )
-
     is_accepted = submission.status == SubmissionStatus.ACCEPTED
 
     if is_accepted and not has_already_scored:
