@@ -50,7 +50,7 @@ class UserAdminTestCase(TestCase):
             "is_staff",
             "is_active",
             "score",
-        )  # Adicione 'score' aqui
+        )
 
         self.assertEqual(list_display, expected)
 
