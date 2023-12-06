@@ -326,9 +326,12 @@ class TasksViewTestCase(TestCase):
         self.task = Task._default_manager.create(
             title="Example task",
             description="Some example task",
+            score=200,
             constraints=["A sad task constraint"],
             contest=self.contest,
+            output_file="Hello, World!\n",
         )
+
         self.user = User._default_manager.create(
             email="user@email.com",
             username="user",
@@ -339,7 +342,7 @@ class TasksViewTestCase(TestCase):
             author=self.user,
             task=self.task,
             code="print('Hello, World!')",
-            status=SubmissionStatus.ACCEPTED,
+            status=SubmissionStatus.WAITING_JUDGE,
         )
 
         self.url = reverse("tasks:detail", args=[self.task.id])
@@ -451,6 +454,48 @@ class TasksViewTestCase(TestCase):
             target_status_code=200,
             fetch_redirect_response=True,
         )
+
+    def test_submission_has_accepted_status_increases_user_score(self) -> None:
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
+        )
+
+        self.submission.refresh_from_db()
+        self.user.refresh_from_db()
+
+        self.assertEqual(self.submission.status, SubmissionStatus.ACCEPTED)
+        self.assertEqual(self.user.score, self.task.score)
+
+    def test_submission_without_accepted_status_does_not_increase_user_score(
+        self,
+    ) -> None:
+        self.submission.code = 'print("Hello, Word")'
+
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
+        )
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.score, 0)
+
+    def test_repeated_accepted_submission_cant_sum_to_user_score(self) -> None:
+        handle_submission.apply(
+            args=(self.submission.code, self.task.id, self.submission.id)
+        )
+
+        second_submission = Submission._default_manager.create(
+            author=self.user,
+            task=self.task,
+            code="print('Hello, World!')",
+            status=SubmissionStatus.WAITING_JUDGE,
+        )
+
+        handle_submission.apply(
+            args=(second_submission.code, self.task.id, second_submission.id)
+        )
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.score, self.task.score)
 
     def test_form_success_url(self) -> None:
         url = reverse("submissions:list")

@@ -9,7 +9,7 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from apps.submissions.forms import SubmissionForm
-from apps.submissions.models import Submission
+from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.models import Task
 from server import celery
 
@@ -48,6 +48,22 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
 
     submission.status = "AC" if output == task.output_file else "WA"
     submission.save()
+
+    has_already_scored = (
+        Submission._default_manager.filter(
+            author=submission.author,
+            task=task,
+            status=SubmissionStatus.ACCEPTED,
+        )
+        .exclude(id=submission.id)
+        .exists()
+    )
+
+    is_accepted = submission.status == SubmissionStatus.ACCEPTED
+
+    if is_accepted and not has_already_scored:
+        submission.author.score += task.score
+        submission.author.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):

@@ -7,9 +7,12 @@ from apps.users.models import User
 
 @register(User)
 class UserAdmin(DefaultUserAdmin):
-    list_display = ("username", "email", "is_staff", "is_active")
+    list_display = ("username", "email", "is_staff", "is_active", "score")
     fieldsets = [
-        (_("Personal info"), {"fields": ("username", "email", "password")}),
+        (
+            _("Personal info"),
+            {"fields": ("username", "email", "password", "score")},
+        ),
         (
             _("Permissions"),
             {
@@ -28,7 +31,13 @@ class UserAdmin(DefaultUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "email", "password1", "password2"),
+                "fields": (
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "score",
+                ),
             },
         ),
     )
