@@ -44,7 +44,13 @@ class UserManagerTestCase(TestCase):
 class UserAdminTestCase(TestCase):
     def test_list_display(self) -> None:
         list_display = UserAdmin.list_display
-        expected = ("username", "email", "is_staff", "is_active")
+        expected = (
+            "username",
+            "email",
+            "is_staff",
+            "is_active",
+            "score",
+        )
 
         self.assertEqual(list_display, expected)
 
@@ -58,7 +64,7 @@ class UserAdminTestCase(TestCase):
         expected = [
             (
                 _("Personal info"),
-                {"fields": ("username", "email", "password")},
+                {"fields": ("username", "email", "password", "score")},
             ),
             (
                 _("Permissions"),
@@ -82,7 +88,13 @@ class UserAdminTestCase(TestCase):
                 None,
                 {
                     "classes": ("wide",),
-                    "fields": ("username", "email", "password1", "password2"),
+                    "fields": (
+                        "username",
+                        "email",
+                        "password1",
+                        "password2",
+                        "score",
+                    ),
                 },
             ),
         )

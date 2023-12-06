@@ -19,7 +19,7 @@
       {% if request.user.is_authenticated and request.user == user %}
         <p>E-mail: {{ user.email }}</p>
       {% endif %}
-      <p>Score: 0</p>
+      <p>Score: {{ user.score }} </p>
       <p>Contests: {{ user.contests|length }}</p>
     </div>
   </div>
