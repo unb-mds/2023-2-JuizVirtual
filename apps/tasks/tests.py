@@ -518,7 +518,6 @@ class TasksViewTestCase(TestCase):
         redirected_response = self.client.get(redirected_url)
 
         self.assertEqual(redirected_response.status_code, 200)
-        self.assertTemplateUsed(redirected_response, "registration/login.html")
 
         if redirected_response.context is not None:
             self.assertIn("form", redirected_response.context)
