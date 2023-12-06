@@ -73,7 +73,6 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django.contrib.postgres",
-    "djangocodemirror",
 ]
 
 THIRD_PARTY_APPS = [
@@ -81,6 +80,7 @@ THIRD_PARTY_APPS = [
     "bootstrap5",
     "crispy_forms",
     "crispy_bootstrap5",
+    "djangocodemirror",
 ]
 
 LOCAL_APPS = [
