@@ -1,10 +1,11 @@
-from django.forms import CharField, Form, Textarea
+from django.forms import Form
+from djangocodemirror.fields import CodeMirrorField
 
 
 class SubmissionForm(Form):
-    code = CharField(
-        label="Source Code",
-        required=True,
+    code = CodeMirrorField(
         min_length=15,
-        widget=Textarea(attrs={"rows": 12, "style": "width: 100%;"}),
+        label="Code",
+        required=True,
+        config_name="python",
     )

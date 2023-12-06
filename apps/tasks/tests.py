@@ -501,6 +501,15 @@ class TasksViewTestCase(TestCase):
         url = reverse("submissions:list")
         self.assertEqual(self.view.get_success_url(), url)
 
+    def test_invalid_form_submission(self) -> None:
+        self.client.force_login(self.user)
+
+        response = self.client.post(self.url, data={"code": ""})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasks/detail.html")
+        self.assertFalse(response.context["form"].is_valid())
+
 
 class BackgroundJobTaskTest(TestCase):
     def setUp(self) -> None:

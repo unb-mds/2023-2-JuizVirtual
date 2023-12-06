@@ -1,6 +1,8 @@
 from os.path import join
 from typing import List
 
+from djangocodemirror.settings import *
+
 from server.settings import BASE_DIR, env
 
 ######################
@@ -78,6 +80,7 @@ THIRD_PARTY_APPS = [
     "bootstrap5",
     "crispy_forms",
     "crispy_bootstrap5",
+    "djangocodemirror",
 ]
 
 LOCAL_APPS = [
