@@ -24,6 +24,21 @@
     th {
       background-color: #f2f2f2;
     }
+    .success {
+      background-color: #dff0d8;
+    }
+    .wating {
+      background-color: #2f00ff;
+    }
+    .wrong {
+      background-color: #ff0000;
+    }
+    .time {
+      background-color: #ff0000;
+    }
+    .memory{
+      background-color: #ff0000;
+    }
   </style>
 {% endblock head %}
 
@@ -41,7 +56,7 @@
     </thead>
     <tbody>
       {% for submission in page_obj %}
-        <tr>
+        <tr class ="{% if submission.status == 'AC' %}success{% elif submission.status == 'WA' or submission.status == 'MLE' or submission.status == 'TLE' %}wrong{% elif submission.status == 'WJ' %}wating{% endif %}">
           <td>{{ submission.id }}</td>
           <td>
             <a href="{% url 'users:profile' submission.author.username %}">
