@@ -1,10 +1,19 @@
+from typing import TYPE_CHECKING
+
 from django.contrib.auth import login
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from django.views.generic import ListView
 
 from apps.users.forms import CreateUserForm
 from apps.users.models import User
+
+if TYPE_CHECKING:
+    RankingViewBase = ListView[User]
+else:
+    RankingViewBase = ListView
 
 
 class RegisterView(View):
@@ -34,3 +43,13 @@ class ProfileView(View):
     def get(self, request: HttpRequest, *, username: str) -> HttpResponse:
         user = get_object_or_404(User, username=username)
         return render(request, self.template_name, {"user": user})
+
+
+class RankingView(RankingViewBase):
+    model = User
+    template_name = "ranking/list.html"
+    context_object_name = "ranking"
+    paginate_by = 10
+
+    def get_queryset(self) -> QuerySet[User]:
+        return User._default_manager.all().order_by("-score")
