@@ -27,7 +27,7 @@
     .success {
       background-color: #47fc00b7;
     }
-    .wating {
+    .waiting {
       background-color: #ff88008c;
     }
     .wrong {
@@ -50,9 +50,10 @@
     </thead>
     <tbody>
       {% for submission in page_obj %}
-      <tr class="{% if submission.status == 'AC' %}success{%
-        elif submission.status in ['WA', 'MLE', 'TLE', 'RE', 'CE'] %}wrong{%
-        elif submission.status == 'WJ' %}waiting{% endif %}">
+      <tr class="{% if submission.status == 'AC' %}success
+                {% elif submission.status == 'WA' or submission.status == 'MLE' or submission.status == 'TLE' or submission.status == 'RE' or submission.status == 'CE' %}wrong
+                {% elif submission.status == 'WJ' %}waiting
+                {% endif %}">
         <td>{{ submission.id }}</td>
           <td>
             <a href="{% url 'users:profile' submission.author.username %}">
