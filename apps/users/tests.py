@@ -151,3 +151,32 @@ class RegisterViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, user.email)
+
+
+class RankingListViewtest(TestCase):
+    def setUp(self) -> None:
+        self.user = User._default_manager.create(
+            username="testuser1",
+            email="testuser@example1",
+            password="testpassword1",
+            score=100,
+        )
+        self.user = User._default_manager.create(
+            username="testuser2",
+            email="testuser@example2",
+            password="testpassword2",
+            score=90,
+        )
+
+    def test_ranking_list_view(self) -> None:
+        self.client.login(email="testuser@example", password="testpassword")
+
+        url = reverse("users:ranking")
+        response = self.client.get(url)
+        ranking_order = [user.username for user in response.context["ranking"]]
+        expected_order = ["testuser1", "testuser2"]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("ranking", response.context)
+        self.assertIn(self.user, response.context["ranking"])
+        self.assertEqual(ranking_order, expected_order)
