@@ -1,19 +1,22 @@
 import os
 from datetime import timedelta
 from io import BytesIO
+from typing import cast
 
 from django.contrib.admin.sites import AdminSite
 from django.core.files.uploadedfile import (
     InMemoryUploadedFile,
     SimpleUploadedFile,
+    UploadedFile,
 )
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import resolve, reverse
 from django.utils import timezone
+from django.utils.datastructures import MultiValueDict
 
 from apps.contests.models import Contest
-from apps.submissions.forms import SubmissionForm
+from apps.submissions.forms import SubmissionForm, UploadFileForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
@@ -539,6 +542,23 @@ class TasksViewTestCase(TestCase):
         with open(file_path, "rb") as file:
             content = file.read()
             self.assertEqual(content, file_content)
+
+    def test_upload_file_form_valid(self) -> None:
+        file_content = b"Test file content"
+
+        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
+
+        form_data = {"title": "Test Title"}
+        files_data = MultiValueDict(
+            {"file": [cast(UploadedFile, uploaded_file)]}
+        )
+
+        form = UploadFileForm(data=form_data, files=files_data)
+
+        if not form.is_valid():
+            print(form.errors)
+
+        self.assertTrue(form.is_valid())
 
 
 class BackgroundJobTaskTest(TestCase):
