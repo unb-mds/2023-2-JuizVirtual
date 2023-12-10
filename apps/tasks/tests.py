@@ -1,8 +1,12 @@
+import os
 from datetime import timedelta
 from io import BytesIO
 
 from django.contrib.admin.sites import AdminSite
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.uploadedfile import (
+    InMemoryUploadedFile,
+    SimpleUploadedFile,
+)
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import resolve, reverse
@@ -13,7 +17,11 @@ from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
-from apps.tasks.views import DetailView, handle_submission
+from apps.tasks.views import (
+    DetailView,
+    handle_submission,
+    handle_uploaded_file,
+)
 from apps.users.models import User
 
 
@@ -348,6 +356,7 @@ class TasksViewTestCase(TestCase):
         self.url = reverse("tasks:detail", args=[self.task.id])
         self.view = DetailView()
         self.view.object = self.task
+        self.factory = RequestFactory()
 
     def test_send_submission_successfully(self) -> None:
         self.client.force_login(self.user)
@@ -509,6 +518,25 @@ class TasksViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "tasks/detail.html")
         self.assertFalse(response.context["form"].is_valid())
+
+    def test_handle_uploaded_file(self) -> None:
+        file_content = b"Test file content"
+        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
+
+        request = self.factory.post(self.url, {"file": uploaded_file})
+        request.user = self.user
+
+        handle_uploaded_file(request, self.task.id, self.submission.id)
+
+        self.submission.refresh_from_db()
+        self.assertEqual(self.submission.status, "WJ")
+
+        file_path = os.path.join("apps/tasks/uploads/", "test_file.txt")
+        self.assertTrue(os.path.exists(file_path))
+
+        with open(file_path, "rb") as file:
+            content = file.read()
+            self.assertEqual(content, file_content)
 
 
 class BackgroundJobTaskTest(TestCase):

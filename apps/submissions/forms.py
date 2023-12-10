@@ -1,4 +1,4 @@
-from django.forms import Form
+from django.forms import CharField, FileField, Form
 from djangocodemirror.fields import CodeMirrorField
 
 
@@ -9,3 +9,8 @@ class SubmissionForm(Form):
         required=True,
         config_name="python",
     )
+
+
+class UploadFileForm(Form):
+    title = CharField(max_length=255)
+    file = FileField()
