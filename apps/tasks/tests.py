@@ -529,7 +529,9 @@ class TasksViewTestCase(TestCase):
         handle_uploaded_file(request, self.task.id, self.submission.id)
 
         self.submission.refresh_from_db()
-        self.assertEqual(self.submission.status, "WJ")
+        self.assertEqual(
+            self.submission.status, SubmissionStatus.WAITING_JUDGE
+        )
 
         file_path = os.path.join("apps/tasks/uploads/", "test_file.txt")
         self.assertTrue(os.path.exists(file_path))
