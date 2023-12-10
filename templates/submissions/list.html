@@ -6,23 +6,38 @@
 
 {% block head %}
   <style>
-    .center-table {
-      display: flex;
-      justify-content: center;
-    }
     table {
       border-collapse: collapse;
       width: 100%;
       margin: 20px 0;
     }
+
     th, td {
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;
       text-align: center;
     }
+
     th {
       background-color: #f2f2f2;
+    }
+
+    .center-table {
+      display: flex;
+      justify-content: center;
+    }
+
+    .success {
+      background-color: #47fc00b7;
+    }
+
+    .waiting {
+      background-color: #ff88008c;
+    }
+
+    .wrong {
+      background-color: #ff00006b;
     }
   </style>
 {% endblock head %}
@@ -41,7 +56,16 @@
     </thead>
     <tbody>
       {% for submission in page_obj %}
-        <tr>
+      <tr
+        class="
+          {% if submission.status == 'AC' %}
+            success
+          {% elif submission.status == 'WJ' %}
+            waiting
+          {% else %}
+            wrong
+          {% endif %}
+        ">
           <td>{{ submission.id }}</td>
           <td>
             <a href="{% url 'users:profile' submission.author.username %}">
