@@ -543,7 +543,7 @@ class TasksViewTestCase(TestCase):
             content = file.read()
             self.assertEqual(content, file_content)
 
-    def test_upload_file_form_valid(self) -> None:
+    def test_upload_file_valid(self) -> None:
         file_content = b"Test file content"
 
         uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
@@ -553,29 +553,29 @@ class TasksViewTestCase(TestCase):
             {"file": [cast(UploadedFile, uploaded_file)]}
         )
 
-        form = UploadFileForm(data=form_data, files=files_data)
+        upload_form = UploadFileForm(data=form_data, files=files_data)
 
-        if not form.is_valid():
-            print(form.errors)
+        if not upload_form.is_valid():
+            print(upload_form.errors)
 
-        self.assertTrue(form.is_valid())
+        self.assertTrue(upload_form.is_valid())
 
     def test_upload_form_valid(self) -> None:
         file_content = b"Test file content"
 
-        upload_form = SimpleUploadedFile("test_file.txt", file_content)
+        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
 
         form_data = {"title": "Test Title"}
         files_data = MultiValueDict(
-            {"file": [cast(UploadedFile, upload_form)]}
+            {"file": [cast(UploadedFile, uploaded_file)]}
         )
 
-        form = UploadFileForm(data=form_data, files=files_data)
+        upload_form = UploadFileForm(data=form_data, files=files_data)
 
-        if not form.is_valid():
-            print(form.errors)
+        if not upload_form.is_valid():
+            print(upload_form.errors)
 
-        self.assertTrue(form.is_valid())
+        self.assertTrue(upload_form.is_valid())
 
 
 class BackgroundJobTaskTest(TestCase):
