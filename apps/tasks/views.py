@@ -77,14 +77,16 @@ def handle_uploaded_file(
     uploaded_file = request.FILES.get("file")
 
     if uploaded_file:
-        with open(
-            os.path.join(destination_dir, uploaded_file.name or ""), "wb+"
-        ) as destination:
-            for chunk in uploaded_file.chunks():
-                destination.write(chunk)
+        upload_form = UploadFileForm(request.POST, request.FILES)
+        if upload_form.is_valid():
+            with open(
+                os.path.join(destination_dir, uploaded_file.name or ""), "wb+"
+            ) as destination:
+                for chunk in uploaded_file.chunks():
+                    destination.write(chunk)
 
-        submission.status = SubmissionStatus.WAITING_JUDGE
-        submission.save()
+            submission.status = SubmissionStatus.WAITING_JUDGE
+            submission.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):
