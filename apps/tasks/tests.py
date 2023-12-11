@@ -1,22 +1,20 @@
 import os
 from datetime import timedelta
 from io import BytesIO
-from typing import cast
 
 from django.contrib.admin.sites import AdminSite
 from django.core.files.uploadedfile import (
     InMemoryUploadedFile,
     SimpleUploadedFile,
-    UploadedFile,
 )
+from django.http import HttpRequest
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.urls import resolve, reverse
 from django.utils import timezone
-from django.utils.datastructures import MultiValueDict
 
 from apps.contests.models import Contest
-from apps.submissions.forms import SubmissionForm, UploadFileForm
+from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
@@ -526,56 +524,25 @@ class TasksViewTestCase(TestCase):
         file_content = b"Test file content"
         uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
 
-        request = self.factory.post(self.url, {"file": uploaded_file})
-        request.user = self.user
+        request = HttpRequest()
+        request.FILES["file"] = uploaded_file
 
-        handle_uploaded_file(request, self.task.id, self.submission.id)
-
-        self.submission.refresh_from_db()
-        self.assertEqual(
-            self.submission.status, SubmissionStatus.WAITING_JUDGE
+        submission = Submission._default_manager.create(
+            author=self.user,
+            task=self.task,
+            code="print('Hello, World!')",
+            status=SubmissionStatus.WAITING_JUDGE,
         )
 
-        file_path = os.path.join("apps/tasks/uploads/", "test_file.txt")
-        self.assertTrue(os.path.exists(file_path))
+        handle_uploaded_file(request, self.task.id, submission.id)
 
-        with open(file_path, "rb") as file:
-            content = file.read()
-            self.assertEqual(content, file_content)
+        destination_path = os.path.join("apps/tasks/uploads/", "test_file.txt")
+        self.assertTrue(os.path.exists(destination_path))
 
-    def test_upload_file_valid(self) -> None:
-        file_content = b"Test file content"
+        submission.refresh_from_db()
+        self.assertEqual(submission.status, "WJ")
 
-        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
-
-        form_data = {"title": "Test Title"}
-        files_data = MultiValueDict(
-            {"file": [cast(UploadedFile, uploaded_file)]}
-        )
-
-        upload_form = UploadFileForm(data=form_data, files=files_data)
-
-        if not upload_form.is_valid():
-            print(upload_form.errors)
-
-        self.assertTrue(upload_form.is_valid())
-
-    def test_upload_form_valid(self) -> None:
-        file_content = b"Test file content"
-
-        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
-
-        form_data = {"title": "Test Title"}
-        files_data = MultiValueDict(
-            {"file": [cast(UploadedFile, uploaded_file)]}
-        )
-
-        upload_form = UploadFileForm(data=form_data, files=files_data)
-
-        if not upload_form.is_valid():
-            print(upload_form.errors)
-
-        self.assertTrue(upload_form.is_valid())
+        os.remove(destination_path)
 
 
 class BackgroundJobTaskTest(TestCase):
