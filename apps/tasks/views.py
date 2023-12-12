@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 
-from apps.submissions.forms import SubmissionForm, UploadFileForm
+from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.models import Task
 from server import celery
@@ -77,16 +77,14 @@ def handle_uploaded_file(
     uploaded_file = request.FILES.get("file")
 
     if uploaded_file:
-        upload_form = UploadFileForm(request.POST, request.FILES)
-        if upload_form.is_valid():
-            with open(
-                os.path.join(destination_dir, uploaded_file.name or ""), "wb+"
-            ) as destination:
-                for chunk in uploaded_file.chunks():
-                    destination.write(chunk)
+        with open(
+            os.path.join(destination_dir, uploaded_file.name or ""), "wb+"
+        ) as destination:
+            for chunk in uploaded_file.chunks():
+                destination.write(chunk)
 
-            submission.status = SubmissionStatus.WAITING_JUDGE
-            submission.save()
+        submission.status = SubmissionStatus.WAITING_JUDGE
+        submission.save()
 
 
 class DetailView(FormMixinBase, DetailViewBase):
@@ -142,10 +140,5 @@ class DetailView(FormMixinBase, DetailViewBase):
             self.object.id,
             submission.id,
         )
-
-        if uploaded_file:
-            upload_form = UploadFileForm(request.POST, request.FILES)
-            if upload_form.is_valid():
-                handle_uploaded_file(request, self.object.id, submission.id)
 
         return redirect(self.get_success_url())

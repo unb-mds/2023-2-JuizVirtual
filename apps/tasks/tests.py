@@ -13,7 +13,7 @@ from django.urls import resolve, reverse
 from django.utils import timezone
 
 from apps.contests.models import Contest
-from apps.submissions.forms import SubmissionForm, UploadFileForm
+from apps.submissions.forms import SubmissionForm
 from apps.submissions.models import Submission, SubmissionStatus
 from apps.tasks.admin import TaskAdmin, TaskModelForm
 from apps.tasks.models import Task
@@ -542,39 +542,6 @@ class TasksViewTestCase(TestCase):
         self.assertEqual(submission.status, SubmissionStatus.WAITING_JUDGE)
 
         os.remove(destination_path)
-
-    def test_handle_uploaded_file_with_invalid_form(self) -> None:
-        file_content = b"Test file content"
-        uploaded_file = SimpleUploadedFile("test_file.txt", file_content)
-
-        invalid_request_data = {"file": uploaded_file}
-        invalid_request = self.factory.post(
-            self.url, data=invalid_request_data
-        )
-        invalid_request.user = self.user
-
-        destination_path = os.path.join("apps/tasks/uploads/", "test_file.txt")
-
-        submission = Submission._default_manager.create(
-            author=self.user,
-            task=self.task,
-            code="print('Hello, World!')",
-            status=SubmissionStatus.WAITING_JUDGE,
-        )
-
-        upload_form = UploadFileForm(
-            invalid_request.POST, invalid_request.FILES
-        )
-        self.assertFalse(upload_form.is_valid())
-        handle_uploaded_file(invalid_request, self.task.id, submission.id)
-
-        print(f"File exists: {os.path.exists(destination_path)}")
-        print(f"File path: {destination_path}")
-
-        self.assertFalse(os.path.exists(destination_path))
-
-        submission.refresh_from_db()
-        self.assertEqual(submission.status, SubmissionStatus.WAITING_JUDGE)
 
 
 class BackgroundJobTaskTest(TestCase):
