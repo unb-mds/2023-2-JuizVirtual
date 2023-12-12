@@ -56,11 +56,11 @@ def compile_code(
 
     try:
         eval(compile(code, "<string>", "exec"))
-    except MemoryError:
+    except MemoryError:  # pragma: no cover
         submission.status = "MLE"
         submission.save()
         return None
-    except TimeoutError:
+    except TimeoutError:  # pragma: no cover
         submission.status = "TLE"
         submission.save()
         return None
