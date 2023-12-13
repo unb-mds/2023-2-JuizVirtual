@@ -1,3 +1,4 @@
+import os
 import sys
 from io import StringIO
 from resource import RLIMIT_AS, getrlimit, setrlimit
@@ -92,6 +93,26 @@ def check_answer(submission: Submission, task: Task, output: str) -> None:
         submission.author.save()
 
 
+def handle_uploaded_file(
+    request: HttpRequest, task_id: int, submission_id: int
+) -> None:
+    submission: Submission = Submission._default_manager.get(id=submission_id)
+    destination_dir = "apps/tasks/uploads/"
+    os.makedirs(destination_dir, exist_ok=True)
+
+    uploaded_file = request.FILES.get("file")
+
+    if uploaded_file:
+        with open(
+            os.path.join(destination_dir, uploaded_file.name or ""), "wb+"
+        ) as destination:
+            for chunk in uploaded_file.chunks():
+                destination.write(chunk)
+
+        submission.status = SubmissionStatus.WAITING_JUDGE
+        submission.save()
+
+
 class DetailView(FormMixinBase, DetailViewBase):
     model = Task
     template_name = "tasks/detail.html"
@@ -129,18 +150,19 @@ class DetailView(FormMixinBase, DetailViewBase):
 
         self.object = self.get_object()
         form = self.get_form()
+        uploaded_file = request.FILES.get("file")
 
-        if not form.is_valid():
+        if not form.is_valid() and not uploaded_file:
             return self.form_invalid(form)
 
         submission = Submission._default_manager.create(
-            code=form.cleaned_data["code"],
+            code=form.cleaned_data.get("code", ""),
             task=self.object,
             author=request.user,
         )
 
         handle_submission.delay(
-            form.cleaned_data["code"],
+            form.cleaned_data.get("code", ""),
             self.object.id,
             submission.id,
         )
