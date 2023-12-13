@@ -24,6 +24,8 @@ services:
       - config/.env
     depends_on:
       - postgres
+      - rabbitmq
+      - celery
     command: python -Wd manage.py runserver 0.0.0.0:8000
 
   celery:

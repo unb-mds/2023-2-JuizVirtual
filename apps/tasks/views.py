@@ -1,6 +1,8 @@
 import sys
 from io import StringIO
-from typing import TYPE_CHECKING, Any, Dict
+from resource import RLIMIT_AS, getrlimit, setrlimit
+from signal import SIGALRM, alarm, signal
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
@@ -21,31 +23,56 @@ else:
     FormMixinBase = FormMixin
 
 
+def signal_handler(signum: int, frame: object) -> None:
+    raise TimeoutError("Time limit exceeded")
+
+
 @celery.task(ignore_result=True)
 def handle_submission(code: str, task_id: int, submission_id: int) -> None:
     task = Task._default_manager.get(id=task_id)
     submission = Submission._default_manager.get(id=submission_id)
 
+    if task.memory_limit is not None:
+        _, hard = getrlimit(RLIMIT_AS)
+        setrlimit(RLIMIT_AS, (task.memory_limit, hard))
+
+    if task.time_limit is not None:
+        signal(SIGALRM, signal_handler)
+        alarm(task.time_limit)
+
+    if (output := compile_code(submission, task, code)) is None:
+        return
+
+    check_answer(submission, task, output)
+
+
+def compile_code(
+    submission: Submission, task: Task, code: str
+) -> Optional[str]:
     input_data = StringIO(task.input_file)
 
-    old_stdin = sys.stdin
     sys.stdin = input_data
-
-    old_stdout = sys.stdout
     sys.stdout = stdout = StringIO()
 
     try:
         eval(compile(code, "<string>", "exec"))
+    except MemoryError:  # pragma: no cover
+        submission.status = "MLE"
+        submission.save()
+        return None
+    except TimeoutError:  # pragma: no cover
+        submission.status = "TLE"
+        submission.save()
+        return None
     except Exception:
         submission.status = "RE"
         submission.save()
-        return
-    finally:
-        sys.stdout = old_stdout
-        sys.stdin = old_stdin
+        return None
 
-    output = stdout.getvalue()
+    return stdout.getvalue()
 
+
+def check_answer(submission: Submission, task: Task, output: str) -> None:
     submission.status = "AC" if output == task.output_file else "WA"
     submission.save()
 
@@ -58,7 +85,6 @@ def handle_submission(code: str, task_id: int, submission_id: int) -> None:
         .exclude(id=submission.id)
         .exists()
     )
-
     is_accepted = submission.status == SubmissionStatus.ACCEPTED
 
     if is_accepted and not has_already_scored:
