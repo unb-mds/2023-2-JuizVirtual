@@ -11,6 +11,17 @@ Fase que é focada mais na implementação, portanto o objetivo desta sprint foi
 melhorar a aparência da página de registro de usuário e iniciar o
 desenvolvimento dos testes unitários (requisito presente no plano de ensino).
 
+
+Missões da sprint
+-----------------
+
+Nesta sprint as metas eram:
+
+- (ir bem na prova de EDA1/EDA2)
+- Adicionar partes fundamentais para o funcionamento do projeto
+
+
+
 Changelog
 ----------
 

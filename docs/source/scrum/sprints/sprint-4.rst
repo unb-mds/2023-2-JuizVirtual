@@ -1,14 +1,24 @@
 Sprint 4
 ========
 
-:bdg-info:`19/11/2023`
+:bdg-info:`15/11/2023`
 
 Resumo
 ------
 
-Nesta sprint, a equipe de desenvolvimento começou a trabalhar na segunda release. As
-principais atividades foram o início do desenvolvimento da parte de submissões e a
-estilização da página de login para melhor acessibilidade do usuário.
+Nesta sprint, a equipe de desenvolvimento começou a trabalhar na segunda
+release. As principais atividades foram o início do desenvolvimento da parte de
+submissões e a estilização da página de login para melhor acessibilidade do
+usuário.
+
+Missões da sprint
+-----------------
+
+Nesta sprint as metas eram:
+
+- Adicionar submissões (parte integrante do conceito de Juiz Virtual)
+- Estilizar certas páginas
+- Alterar e melhorar documentação
 
 
 Changelog

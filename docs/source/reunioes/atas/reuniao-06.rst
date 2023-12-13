@@ -6,5 +6,7 @@ Reunião 06
 Resumo
 ------
 
-Esta reunião teve como objetivos discutir o progresso, anunciar a saida de um
-integrante.
+Esta reunião teve como objetivos anunciar a saída de um dos integrantes, assim
+como discutir quanto às submissões, de que forma seriam julgadas e se todos
+concordavam com a aparência do formulário das submissões. Outro objetivo menor
+foi explicar o conceito de validadores.

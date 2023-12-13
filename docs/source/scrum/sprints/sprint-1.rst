@@ -11,8 +11,18 @@ modelagem incial do projeto. O fim desta sprint era, também, ter uma estrutura
 para que possamos trabalhar nas partes cruciais do projeto, como as submissões
 e os contests.
 
+
+Missões da sprint
+-----------------
+
+Nesta sprint as metas eram:
+
+- Adicionar/Instalar ferramentas (tanto nos ambientes quanto no github)
+- Dar forma à aplicação, bootstrap e outros 'cosméticos'
+- Organizar README.md e CONTRIBUTING.md
+
 Changelog
-----------
+---------
 
 - `Adicionar bootstrap inicial da aplicação (#13) <https://github.com/unb-mds/2023-2-Squad06/pull/13>`_
 - `Adicionar barra de navegação ao HTML base (#14)  <https://github.com/unb-mds/2023-2-Squad06/pull/14>`_

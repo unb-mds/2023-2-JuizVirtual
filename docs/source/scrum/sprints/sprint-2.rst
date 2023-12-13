@@ -9,6 +9,15 @@ Resumo
 Esta sprint teve como objetivo finalizar e polir o projeto, visto que esta
 sprint antecedeu a primeira release do projeto.
 
+Missões da sprint
+-----------------
+
+Nesta sprint as metas eram:
+
+- Apresentar o que fizemos até o presente momento
+- Terminar de organizar a documentação
+- Desenhar e desenvolver alguns itens avaliativos do plano de ensino
+
 Changelog
 ----------
 
