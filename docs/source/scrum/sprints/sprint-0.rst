@@ -10,6 +10,16 @@ Esta sprint teve como objetivo primário criar o ambiente inicial de
 desenvolvimento, a definição do tema, separação dos papéis exercidos pelos
 membros do grupo e a iniciação da documentação do projeto.
 
+Missões da sprint
+-----------------
+
+Nesta sprints precisávamos nos situar na matéria, metas a bater:
+- Começar o estudo das ferramentas  OK
+- Decidir quem fará qual papel  OK
+- Definir o tema (colocar issues para prof escolher)  OK
+- Documentação inicial  OK
+
+
 Changelog
 ----------
 

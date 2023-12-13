@@ -24,3 +24,6 @@ Sprints
    sprints/sprint-2
    sprints/sprint-3
    sprints/sprint-4
+   sprints/sprint-5
+   sprints/sprint-6
+   sprints/sprint-7
