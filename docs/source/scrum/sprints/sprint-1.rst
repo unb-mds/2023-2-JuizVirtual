@@ -17,9 +17,9 @@ Missões da sprint
 
 Nesta sprint as metas eram:
 
-- Adicionar/Instalar ferramentas (tanto nos ambientes quanto no github)  OK
-- Dar forma à aplicação, bootstrap e outros 'cosméticos'  OK
-- Organizar README.md e CONTRIBUTING.md  OK
+- Adicionar/Instalar ferramentas (tanto nos ambientes quanto no github)
+- Dar forma à aplicação, bootstrap e outros 'cosméticos'
+- Organizar README.md e CONTRIBUTING.md
 
 Changelog
 ---------

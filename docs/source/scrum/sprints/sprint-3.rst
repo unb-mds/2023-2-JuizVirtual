@@ -18,7 +18,7 @@ Missões da sprint
 Nesta sprint as metas eram:
 
 - (ir bem na prova de EDA1/EDA2)
-- Adicionar partes fundamentais para o funcionamento do projeto  OK
+- Adicionar partes fundamentais para o funcionamento do projeto
 
 
 

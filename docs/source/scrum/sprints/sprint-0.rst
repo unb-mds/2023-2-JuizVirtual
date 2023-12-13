@@ -15,10 +15,10 @@ Missões da sprint
 
 Nesta sprints precisávamos nos situar na matéria, metas a bater:
 
-- Começar o estudo das ferramentas  OK
-- Decidir quem fará qual papel  OK
-- Definir o tema (colocar issues para prof escolher)  OK
-- Documentação inicial  OK
+- Começar o estudo das ferramentas
+- Decidir quem fará qual papel
+- Definir o tema (colocar issues para prof escolher)
+- Documentação inicial
 
 
 Changelog

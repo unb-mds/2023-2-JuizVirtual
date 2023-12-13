@@ -8,10 +8,12 @@ Resumo e Missões da sprint
 Nesta sprint o objetivo era melhorar o que foi feito na sprint passada,
 cumprindo as seguintes metas:
 
+
 - Melhorar a aparência do campo do código no formulário de submissão
+
 - Adicionar pontuação para quando as submissões receberem AC quando julgadas
-- Adicionar campo de restrições (afinal, o que é um Juiz Virtual sem
- *1 < N < 10^6*
+
+- Adicionar campo de restrições; afinal, o que é um Juiz Virtual sem *1 < N < 10^6*
 
 Changelog
 ----------

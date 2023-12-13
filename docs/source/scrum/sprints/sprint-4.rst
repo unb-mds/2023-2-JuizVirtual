@@ -16,9 +16,9 @@ Missões da sprint
 
 Nesta sprint as metas eram:
 
-- Adicionar submissões (parte integrante do conceito de Juiz Virtual)  OK
-- Estilizar certas páginas  OK
-- Alterar e melhorar documentação  OK
+- Adicionar submissões (parte integrante do conceito de Juiz Virtual)
+- Estilizar certas páginas
+- Alterar e melhorar documentação
 
 
 Changelog

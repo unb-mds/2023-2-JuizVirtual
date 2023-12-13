@@ -10,7 +10,7 @@ parecer cada vez mais com outros juízes virtuais:
 
 - Criando umas das partes mais fundamentais de um Juiz Virtual (as submissões)
 - Criando uma página onde o usuário pode ver as informações da conta
-- Adicionando LaTeX nas descrições de tasks para que fórmulas sejam renderizadas
+- Adicionando LaTeX nas descrições de tasks para renderizar fórmulas
 
 Todos objetivos foram cumpridos com êxito.
 
