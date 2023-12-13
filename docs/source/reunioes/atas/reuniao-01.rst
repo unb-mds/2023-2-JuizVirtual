@@ -1,7 +1,7 @@
 Reunião 01
 ==========
 
-:bdg-info:`18/09/2023` :bdg-warning:`Sprint 0`
+:bdg-info:`18/09/2023`
 
 Resumo
 ------

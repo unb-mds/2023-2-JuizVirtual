@@ -6,5 +6,6 @@ Reunião 07
 Resumo
 ------
 
-Esta reunião teve como objetivos redistribuir as partes de cada integrante e a
-redução do prazo para entrega das issues.
+Esta reunião tomou como objetivos a redistribuição de papéis, dada a saída
+prévia de um dos integrantes. Outra questão a se resolver foi a diminuição do
+período das sprints. Reunião rápida, condizente com a metodologia usada.

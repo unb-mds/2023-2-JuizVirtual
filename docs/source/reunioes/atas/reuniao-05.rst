@@ -6,5 +6,7 @@ Reunião 04
 Resumo
 ------
 
-Esta reunião teve como objetivos nivelar o nivel de conhecimento dos integrantes e retirada
-de duvidas.
+Esta reunião finalizou a sprint 3, que trouxe conhecimentos e requisitos novos
+ao projeto, como os testes unitários. O objetivo foi explicar aos integrantes
+que a partir do momento, cada um estaria resposável por fazer os testes para
+qualquer código que fosse escrito.
